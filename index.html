@@ -984,21 +984,46 @@
                 <p class="phone-number">0411-33243750</p> 
                 <p class="email-text">یا با تکمیل فرم مقابل با ما در ارتباط باشید</p> 
             </div>             
-            <div class="contact-right"> 
-                <form class="contact-form mx-5" id="contact-form">
-                    <input type="text" name="entry.1234567890" id="subject" placeholder="موضوع *" required class="w-full p-3 border border-gray-300 rounded-lg">
-                    <input type="text" name="entry.0987654321" id="name" placeholder="نام و نام خانوادگی *" required class="w-full p-3 border border-gray-300 rounded-lg">
-                    <input type="email" name="entry.1122334455" id="email" placeholder="ایمیل *" required class="w-full p-3 border border-gray-300 rounded-lg">
-                    <textarea name="entry.5566778899" id="message" placeholder="متن پیام *" required class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
-                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">ارسال</button>               
-                </form>     
-                <div id="success-message" class="hidden text-green-600 text-center mt-4 bg-green-100 p-3 rounded-lg">
-                    پیام شما با موفقیت ارسال شد!
-                </div>
-                <div id="error-message" class="hidden text-red-600 text-center mt-4 bg-red-100 p-3 rounded-lg">
-                    خطایی رخ داد. لطفاً دوباره تلاش کنید.
-                </div>
-            </div>                        
+<div class="contact-right">
+  <form class="contact-form mx-5" id="contact-form">
+    <!-- Row 1: Subject and Name -->
+    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 md:space-x-reverse">
+      <div class="flex-1">
+        <input type="text" name="entry.1234567890" id="subject" placeholder="موضوع *" required class="w-full p-3 border border-gray-300 rounded-lg">
+      </div>
+      <div class="flex-1">
+        <input type="text" name="entry.0987654321" id="name" placeholder="نام و نام خانوادگی *" required class="w-full p-3 border border-gray-300 rounded-lg">
+      </div>
+    </div>
+    <!-- Row 2: Email and Mobile -->
+    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 md:space-x-reverse mt-4">
+      <div class="flex-1">
+        <input type="email" name="entry.1122334455" id="email" placeholder="ایمیل *" required class="w-full p-3 border border-gray-300 rounded-lg">
+      </div>
+      <div class="flex-1">
+        <input type="tel" name="entry.6677889900" id="mobile" placeholder="شماره موبایل * (مثال: 09123456789)" required class="w-full p-3 border border-gray-300 rounded-lg" pattern="09[0-9]{9}" title="شماره موبایل باید 10 رقم باشد و با 09 شروع شود">
+      </div>
+    </div>
+    <!-- Address -->
+    <div class="mt-4">
+      <textarea name="entry.9988776655" id="address" placeholder="آدرس (اختیاری)" class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
+    </div>
+    <!-- Message -->
+    <div class="mt-4">
+      <textarea name="entry.5566778899" id="message" placeholder="متن پیام *" required class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
+    </div>
+    <!-- Submit Button -->
+    <div class="mt-4">
+      <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">ارسال</button>
+    </div>
+  </form>
+  <div id="success-message" class="hidden text-green-600 text-center mt-4 bg-green-100 p-3 rounded-lg">
+    پیام شما با موفقیت ارسال شد!
+  </div>
+  <div id="error-message" class="hidden text-red-600 text-center mt-4 bg-red-100 p-3 rounded-lg">
+    خطایی رخ داد. لطفاً دوباره تلاش کنید.
+  </div>
+</div>
         </section>         
         <!-- فوتر -->         
         <footer class="footer"> 
@@ -1953,6 +1978,51 @@
         closeInsertModal();
       }
     });
+
+// ارسال فرم کانتکت            
+document.getElementById("contact-form").addEventListener("submit", function (event) {
+    event.preventDefault();
+
+    // Validate mobile number
+    const mobileInput = document.getElementById("mobile");
+    const mobilePattern = /^09[0-9]{8}$/;
+    if (!mobilePattern.test(mobileInput.value)) {
+      document.getElementById("error-message").textContent = "شماره موبایل باید 10 رقم باشد و با 09 شروع شود.";
+      document.getElementById("error-message").classList.remove("hidden");
+      document.getElementById("success-message").classList.add("hidden");
+      return;
+    }
+
+    // Show loading state
+    const submitButton = this.querySelector("button[type=submit]");
+    submitButton.disabled = true;
+    submitButton.textContent = "در حال ارسال...";
+
+    // Collect form data
+    const formData = new FormData(this);
+    const formAction = "https://docs.google.com/forms/u/0/d/e/YOUR_FORM_ID/formResponse";
+
+    // Send form data via AJAX
+    fetch(formAction, {
+      method: "POST",
+      body: formData,
+      mode: "no-cors",
+    })
+      .then(() => {
+        document.getElementById("success-message").classList.remove("hidden");
+        document.getElementById("error-message").classList.add("hidden");
+        document.getElementById("contact-form").reset();
+      })
+      .catch(() => {
+        document.getElementById("error-message").textContent = "خطایی رخ داد. لطفاً دوباره تلاش کنید.";
+        document.getElementById("error-message").classList.remove("hidden");
+        document.getElementById("success-message").classList.add("hidden");
+      })
+      .finally(() => {
+        submitButton.disabled = false;
+        submitButton.textContent = "ارسال";
+      });
+  });
   </script>         
     </body>     
 </html>
