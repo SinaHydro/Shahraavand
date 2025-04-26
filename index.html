@@ -985,14 +985,20 @@
                 <p class="email-text">یا با تکمیل فرم مقابل با ما در ارتباط باشید</p> 
             </div>             
             <div class="contact-right"> 
-                <form class="contact-form" action="mailto:support@shahraavand.ir" method="post" enctype="text/plain">
-                    <input type="text" name="subject" placeholder="موضوع *" required> 
-                    <input type="text" name="name" placeholder="نام و نام خانوادگی *" required> 
-                    <input type="email" name="email" placeholder="ایمیل *" required> 
-                    <textarea name="message" placeholder="متن پیام *" required></textarea> 
-                    <button type="submit">ارسال</button>                     
-                </form>                 
-            </div>             
+                <form class="contact-form mx-5" id="contact-form">
+                    <input type="text" name="entry.1234567890" id="subject" placeholder="موضوع *" required class="w-full p-3 border border-gray-300 rounded-lg">
+                    <input type="text" name="entry.0987654321" id="name" placeholder="نام و نام خانوادگی *" required class="w-full p-3 border border-gray-300 rounded-lg">
+                    <input type="email" name="entry.1122334455" id="email" placeholder="ایمیل *" required class="w-full p-3 border border-gray-300 rounded-lg">
+                    <textarea name="entry.5566778899" id="message" placeholder="متن پیام *" required class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
+                    <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">ارسال</button>               
+                </form>     
+                <div id="success-message" class="hidden text-green-600 text-center mt-4 bg-green-100 p-3 rounded-lg">
+                    پیام شما با موفقیت ارسال شد!
+                </div>
+                <div id="error-message" class="hidden text-red-600 text-center mt-4 bg-red-100 p-3 rounded-lg">
+                    خطایی رخ داد. لطفاً دوباره تلاش کنید.
+                </div>
+            </div>                        
         </section>         
         <!-- فوتر -->         
         <footer class="footer"> 
