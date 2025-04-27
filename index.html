@@ -1985,48 +1985,36 @@
     });
 
     // ارسال فرم کانتکت            
-    document.getElementById("contact-form").addEventListener("submit", function (event) {
-    event.preventDefault();
+    // ارسال فرم تماس به Google Forms
+    document.getElementById('contact-form').addEventListener('submit', async function(e) {
+        e.preventDefault();
+        const form = e.target;
+        const formData = new FormData(form);
+        const successMessage = document.getElementById('success-message');
+        const errorMessage = document.getElementById('error-message');
 
-    // Validate mobile number
-    const mobileInput = document.getElementById("mobile");
-    const mobilePattern = /^09[0-9]{8}$/;
-    if (!mobilePattern.test(mobileInput.value)) {
-      document.getElementById("error-message").textContent = "شماره موبایل باید 10 رقم باشد و با 09 شروع شود.";
-      document.getElementById("error-message").classList.remove("hidden");
-      document.getElementById("success-message").classList.add("hidden");
-      return;
-    }
+        // پنهان کردن پیام‌های قبلی
+        successMessage.classList.add('hidden');
+        errorMessage.classList.add('hidden');
 
-    // Show loading state
-    const submitButton = this.querySelector("button[type=submit]");
-    submitButton.disabled = true;
-    submitButton.textContent = "در حال ارسال...";
+        // جایگزین کردن YOUR_FORM_ID با شناسه واقعی Google Form
+        const googleFormUrl = 'https://docs.google.com/forms/u/0/d/e/YOUR_FORM_ID/formResponse';
 
-    // Collect form data
-    const formData = new FormData(this);
-    const formAction = "https://docs.google.com/forms/u/0/d/e/YOUR_FORM_ID/formResponse";
-
-    // Send form data via AJAX
-    fetch(formAction, {
-      method: "POST",
-      body: formData,
-      mode: "no-cors",
-    })
-      .then(() => {
-        document.getElementById("success-message").classList.remove("hidden");
-        document.getElementById("error-message").classList.add("hidden");
-        document.getElementById("contact-form").reset();
-      })
-      .catch(() => {
-        document.getElementById("error-message").textContent = "خطایی رخ داد. لطفاً دوباره تلاش کنید.";
-        document.getElementById("error-message").classList.remove("hidden");
-        document.getElementById("success-message").classList.add("hidden");
-      })
-      .finally(() => {
-        submitButton.disabled = false;
-        submitButton.textContent = "ارسال";
-      });
-  </script>         
+        try {
+            const response = await fetch(googleFormUrl, {
+                method: 'POST',
+                body: formData,
+                mode: 'no-cors'
+            });
+            form.reset();
+            successMessage.classList.remove('hidden');
+            setTimeout(() => successMessage.classList.add('hidden'), 5000);
+        } catch (error) {
+            console.error('Error submitting form:', error);
+            errorMessage.classList.remove('hidden');
+            setTimeout(() => errorMessage.classList.add('hidden'), 5000);
+        }
+    });
+    </script>         
     </body>     
 </html>
