@@ -324,35 +324,105 @@
                 color: #6b6b6b; 
             } 
             .contact-form { 
-                display: flex; 
-                flex-direction: column; 
-                gap: 15px; 
-            } 
-            .contact-form input, 
-            .contact-form textarea { 
-                width: 100%; 
-                padding: 10px; 
-                border: 1px solid #e0e0e0; 
-                border-radius: 5px; 
-                font-size: 16px; 
-            } 
-            .contact-form textarea { 
-                height: 150px; 
-                resize: none; 
-            } 
-            .contact-form button { 
-                padding: 12px; 
-                background: #25D366; 
-                color: #fff; 
-                border: none; 
-                border-radius: 5px; 
-                cursor: pointer; 
-                font-size: 16px; 
-                transition: background 0.3s ease; 
-            } 
-            .contact-form button:hover { 
-                background: #1ebe57; 
-            } 
+            /* استایل‌های فرم تماس */
+            .contact-form {
+                display: flex;
+                flex-direction: column;
+                gap: 20px;
+            }
+
+            .form-row {
+                display: flex;
+                gap: 15px;
+            }
+
+            .form-group {
+                flex: 1;
+                display: flex;
+                flex-direction: column;
+            }
+
+            .contact-form input,
+            .contact-form textarea {
+                width: 100%;
+                padding: 12px;
+                border: 1px solid #ddd;
+                border-radius: 5px;
+                font-size: 16px;
+                transition: border-color 0.3s;
+            }
+
+            .contact-form input:focus,
+            .contact-form textarea:focus {
+                border-color: #007aff;
+                outline: none;
+            }
+
+            .contact-form textarea {
+                height: 150px;
+                resize: vertical;
+            }
+
+            .error-message {
+                color: #e74c3c;
+                font-size: 14px;
+                margin-top: 5px;
+                display: none;
+            }
+
+            .form-actions {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .submit-button {
+                background-color: #25D366;
+                color: white;
+                border: none;
+                padding: 12px 20px;
+                border-radius: 5px;
+                cursor: pointer;
+                font-size: 16px;
+                transition: background-color 0.3s;
+            }
+
+            .submit-button:hover {
+                background-color: #1ebe57;
+            }
+
+            #form-messages {
+                display: flex;
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .message {
+                padding: 12px;
+                border-radius: 5px;
+                display: flex;
+                align-items: center;
+                gap: 10px;
+                display: none;
+            }
+
+            .success-message {
+                background-color: #d4edda;
+                color: #155724;
+            }
+
+            .error-message {
+                background-color: #f8d7da;
+                color: #721c24;
+            }
+
+            /* رسپانسیو برای موبایل */
+            @media (max-width: 768px) {
+                .form-row {
+                    flex-direction: column;
+                    gap: 15px;
+                }
+            }
             .footer { 
                 background: #fff; 
                 padding: 40px 20px; 
