@@ -977,54 +977,59 @@
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12620.542719541728!2d46.3499785153125!3d38.045961466444666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzjCsDAyJzQ1LjUiTiA0NsKwMjEnNDUuMSJF!5e0!3m2!1sfa!2s!4v1698765432100!5m2!1sfa!2s" width="800" height="200" style="border:0;" allowfullscreen="" loading="lazy" alt="نقشه دفتر مهندسی شهرآوند"></iframe>             
         </section>         
         <!-- پنل تماس با ما -->         
-        <section class="contact-section" id="contact-section"> 
-            <div class="contact-left"> <i class="fas fa-phone"></i> 
-                <h2>تماس با ما</h2> 
-                <p class="contact-text">تماس با شماره زیر</p> 
-                <p class="phone-number">0411-33243750</p> 
-                <p class="email-text">یا با تکمیل فرم مقابل با ما در ارتباط باشید</p> 
-            </div>             
-            <div class="contact-right">
-              <form class="contact-form mx-5" id="contact-form">
-                <!-- Row 1: Subject and Name -->
-                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 md:space-x-reverse">
-                  <div class="flex-1">
-                    <input type="text" name="entry.1234567890" id="subject" placeholder="موضوع *" required class="w-full p-3 border border-gray-300 rounded-lg">
-                  </div>
-                  <div class="flex-1">
-                    <input type="text" name="entry.0987654321" id="name" placeholder="نام و نام خانوادگی *" required class="w-full p-3 border border-gray-300 rounded-lg">
-                  </div>
-                </div>
-                <!-- Row 2: Email and Mobile -->
-                <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 md:space-x-reverse mt-4">
-                  <div class="flex-1">
-                    <input type="email" name="entry.1122334455" id="email" placeholder="ایمیل *" required class="w-full p-3 border border-gray-300 rounded-lg">
-                  </div>
-                  <div class="flex-1">
-                    <input type="tel" name="entry.6677889900" id="mobile" placeholder="شماره موبایل * (مثال: 09123456789)" required class="w-full p-3 border border-gray-300 rounded-lg" pattern="09[0-9]{9}" title="شماره موبایل باید 10 رقم باشد و با 09 شروع شود">
-                  </div>
-                </div>
-                <!-- Address -->
-                <div class="mt-4">
-                  <textarea name="entry.9988776655" id="address" placeholder="آدرس (اختیاری)" class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
-                </div>
-                <!-- Message -->
-                <div class="mt-4">
-                  <textarea name="entry.5566778899" id="message" placeholder="متن پیام *" required class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
-                </div>
-                <!-- Submit Button -->
-                <div class="mt-4">
-                  <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">ارسال</button>
-                </div>
-              </form>
-              <div id="success-message" class="hidden text-green-600 text-center mt-4 bg-green-100 p-3 rounded-lg">
-                پیام شما با موفقیت ارسال شد!
-              </div>
-              <div id="error-message" class="hidden text-red-600 text-center mt-4 bg-red-100 p-3 rounded-lg">
-                خطایی رخ داد. لطفاً دوباره تلاش کنید.
-              </div>
+        <!-- پنل تماس با ما -->
+        <section class="contact-section" id="contact-section">
+            <div class="contact-left">
+                <i class="fas fa-phone"></i>
+                <h2>تماس با ما</h2>
+                <p class="contact-text">تماس با شماره زیر</p>
+                <p class="phone-number">0411-33243750</p>
+                <p class="email-text">یا با تکمیل فرم مقابل با ما در ارتباط باشید</p>
             </div>
-        </section>         
+            <div class="contact-right">
+                <form class="contact-form" id="contact-form">
+                    <!-- Row 1: Subject and Name -->
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 md:space-x-reverse">
+                        <div class="flex-1">
+                            <input type="text" name="entry.1234567890" id="subject" placeholder="موضوع *" required class="w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div class="flex-1">
+                            <input type="text" name="entry.0987654321" id="name" placeholder="نام و نام خانوادگی *" required class="w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                    </div>
+                    <!-- Row 2: Email and Mobile -->
+                    <div class="flex flex-col md:flex-row space-y-4 md:space-y-0 md:space-x-4 md:space-x-reverse mt-4">
+                        <div class="flex-1">
+                            <input type="email" name="entry.1122334455" id="email" placeholder="ایمیل *" required class="w-full p-3 border border-gray-300 rounded-lg">
+                        </div>
+                        <div class="flex-1">
+                            <input type="tel" name="entry.6677889900" id="mobile" placeholder="شماره موبایل * (مثال: 09123456789)" required class="w-full p-3 border border-gray-300 rounded-lg" pattern="09[0-9]{9}" title="شماره موبایل باید 10 رقم باشد و با 09 شروع شود">
+                        </div>
+                    </div>
+                    <!-- Address -->
+                    <div class="mt-4">
+                        <textarea name="entry.9988776655" id="address" placeholder="آدرس (اختیاری)" class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
+                    </div>
+                    <!-- Message -->
+                    <div class="mt-4">
+                        <textarea name="entry.5566778899" id="message" placeholder="متن پیام *" required class="w-full p-3 border border-gray-300 rounded-lg"></textarea>
+                    </div>
+                    <!-- Submit Button -->
+                    <div class="mt-4">
+                        <button type="submit" class="w-full bg-green-600 text-white py-3 rounded-lg hover:bg-green-700">ارسال</button>
+                    </div>
+                    <!-- Messages Container -->
+                    <div class="mt-4">
+                        <div id="success-message" class="hidden text-center p-3 rounded-lg bg-green-100 text-green-700">
+                            پیام شما با موفقیت ارسال شد!
+                        </div>
+                        <div id="error-message" class="hidden text-center p-3 rounded-lg bg-red-100 text-red-700">
+                            خطایی رخ داد. لطفاً دوباره تلاش کنید.
+                        </div>
+                    </div>
+                </form>
+            </div>
+        </section>
         <!-- فوتر -->         
         <footer class="footer"> 
             <div class="footer-content"> 
