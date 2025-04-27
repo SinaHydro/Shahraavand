@@ -1986,6 +1986,7 @@
 
     // ارسال فرم کانتکت            
     // ارسال فرم تماس به Google Forms
+    // ارسال فرم تماس به Google Forms
     document.getElementById('contact-form').addEventListener('submit', async function(e) {
         e.preventDefault();
         const form = e.target;
@@ -1993,28 +1994,54 @@
         const successMessage = document.getElementById('success-message');
         const errorMessage = document.getElementById('error-message');
 
-        // پنهان کردن پیام‌های قبلی
+        // پنهان کردن پیام‌های قبلی و ریست وضعیت فرم
         successMessage.classList.add('hidden');
         errorMessage.classList.add('hidden');
+        form.querySelectorAll('.error').forEach(el => el.classList.add('hidden'));
 
-        // جایگزین کردن YOUR_FORM_ID با شناسه واقعی Google Form
+        // URL واقعی فرم گوگل (باید جایگزین شود)
         const googleFormUrl = 'https://docs.google.com/forms/u/0/d/e/YOUR_FORM_ID/formResponse';
 
         try {
-            const response = await fetch(googleFormUrl, {
+            // اعتبارسنجی فیلدهای ضروری قبل از ارسال
+            let isValid = true;
+            form.querySelectorAll('[required]').forEach(input => {
+                if (!input.value.trim()) {
+                    isValid = false;
+                    input.classList.add('border-red-500');
+                    const errorEl = input.nextElementSibling;
+                    if (errorEl && errorEl.classList.contains('error')) {
+                        errorEl.classList.remove('hidden');
+                    }
+                }
+            });
+
+            if (!isValid) {
+                errorMessage.textContent = 'لطفاً تمام فیلدهای ضروری را پر کنید';
+                errorMessage.classList.remove('hidden');
+                setTimeout(() => errorMessage.classList.add('hidden'), 5000);
+                return;
+            }
+
+            // ارسال داده به فرم گوگل
+            await fetch(googleFormUrl, {
                 method: 'POST',
                 body: formData,
                 mode: 'no-cors'
             });
+
+            // نمایش پیام موفقیت و ریست فرم
             form.reset();
             successMessage.classList.remove('hidden');
             setTimeout(() => successMessage.classList.add('hidden'), 5000);
+
         } catch (error) {
             console.error('Error submitting form:', error);
+            errorMessage.textContent = 'خطایی در ارسال فرم رخ داد. لطفاً دوباره تلاش کنید';
             errorMessage.classList.remove('hidden');
             setTimeout(() => errorMessage.classList.add('hidden'), 5000);
         }
-    });
+    });            
     </script>         
     </body>     
 </html>
