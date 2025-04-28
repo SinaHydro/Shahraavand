@@ -276,91 +276,78 @@
                 height: 200px; 
                 border: 0; 
             } 
-            .contact-section { 
-                max-width: 900px; 
-                width: 90%; 
-                background: rgba(255, 255, 255, 0.95); 
-                border-radius: 20px; 
-                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1); 
-                padding: 40px; 
-                margin: 40px auto; 
-                display: flex; 
-                gap: 40px; 
-            } 
-            .contact-left, 
-            .contact-right { 
-                width: 50%; 
-            } 
-            .contact-left { 
-                display: flex; 
-                flex-direction: column; 
-                justify-content: center; 
-                align-items: center; 
-                text-align: center; 
-            } 
-            .contact-left i { 
-                font-size: 32px; 
-                color: #007aff; 
-                margin-bottom: 10px; 
-            } 
-            .contact-left h2 { 
-                font-size: 22px; 
-                font-weight: 700; 
-                color: #1a1a1a; 
-                margin-bottom: 20px; 
-            } 
-            .contact-left .contact-text { 
-                font-size: 16px; 
-                color: #6b6b6b; 
-                margin-bottom: 10px; 
-            } 
-            .contact-left .phone-number { 
-                font-size: 24px; 
-                color: #1a1a1a; 
-                margin-bottom: 10px; 
-            } 
-            .contact-left .email-text { 
-                font-size: 16px; 
-                color: #6b6b6b; 
-            } 
-
-            /* استایل‌های فرم تماس */
+            .contact-section {
+                max-width: 900px;
+                width: 90%;
+                background: rgba(255, 255, 255, 0.95);
+                border-radius: 20px;
+                box-shadow: 0 10px 30px rgba(0, 0, 0, 0.1);
+                padding: 40px;
+                margin: 40px auto;
+                display: flex;
+                flex-direction: column;
+                gap: 30px;
+            }
+            .contact-info {
+                text-align: center;
+            }
+            .contact-info i {
+                font-size: 32px;
+                color: #007aff;
+                margin-bottom: 10px;
+            }
+            .contact-info h2 {
+                font-size: 22px;
+                font-weight: 700;
+                color: #1a1a1a;
+                margin-bottom: 20px;
+            }
+            .contact-info .contact-text,
+            .contact-info .email-text {
+                font-size: 16px;
+                color: #6b6b6b;
+                margin-bottom: 10px;
+            }
+            .contact-info .phone-number {
+                font-size: 24px;
+                color: #1a1a1a;
+                margin-bottom: 10px;
+            }
             .contact-form {
                 display: flex;
                 flex-direction: column;
-                gap: 20px;
+                gap: 15px;
+                width: 100%;
             }
-
-            .form-row {
+            .contact-form .form-row {
                 display: flex;
                 gap: 15px;
+                flex-wrap: wrap;
             }
-
-            .form-group {
+            .contact-form .form-row input {
                 flex: 1;
-                display: flex;
-                flex-direction: column;
+                min-width: 0;
             }
-
+            .contact-form .message-address-row {
+                display: flex;
+                gap: 15px;
+                flex-wrap: wrap;
+            }
+            .contact-form .message-address-row textarea {
+                flex: 1;
+                min-width: 0;
+            }
             .contact-form input,
             .contact-form textarea {
                 width: 100%;
                 padding: 12px;
-                border: 1px solid #ddd;
+                border: 1px solid #e0e0e0;
                 border-radius: 5px;
                 font-size: 16px;
-                transition: border-color 0.3s;
             }
-
-            .contact-form input:focus,
-            .contact-form textarea:focus {
-                border-color: #007aff;
-                outline: none;
-            }
-
             .contact-form textarea {
                 height: 150px;
-                resize: vertical;
+                resize: none;
             }
 
             .error-message {
@@ -1039,18 +1026,17 @@
             <p class="location"><i class="fas fa-map-marker-alt"></i> آدرس: تبریز، ولیعصر جنوبی، کوچه نیلوفر، پلاک ۳۱، دفتر مهندسی شهرآوند</p> 
             <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d12620.542719541728!2d46.3499785153125!3d38.045961466444666!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0x0%3A0x0!2zMzjCsDAyJzQ1LjUiTiA0NsKwMjEnNDUuMSJF!5e0!3m2!1sfa!2s!4v1698765432100!5m2!1sfa!2s" width="800" height="200" style="border:0;" allowfullscreen="" loading="lazy" alt="نقشه دفتر مهندسی شهرآوند"></iframe>             
         </section>         
-        <!-- پنل تماس با ما -->         
-        <!-- پنل تماس با ما -->
+
         <!-- پنل تماس با ما -->
         <section class="contact-section" id="contact-section">
-            <div class="contact-left">
+            <div class="contact-info">
                 <i class="fas fa-phone"></i>
                 <h2>تماس با ما</h2>
                 <p class="contact-text">تماس با شماره زیر</p>
                 <p class="phone-number">0411-33243750</p>
                 <p class="email-text">یا با تکمیل فرم مقابل با ما در ارتباط باشید</p>
             </div>
-            <div class="contact-right">
+            <div class="contact-form">
                 <form class="contact-form" id="contact-form">
                     <!-- Row 1: Subject and Name -->
                     <div class="form-row">
@@ -1075,18 +1061,18 @@
                             <div class="error-message" id="mobile-error"></div>
                         </div>
                     </div>
-            
-                    <!-- Address -->
-                    <div class="form-group">
-                        <textarea name="entry.1065046570" id="address" placeholder="آدرس (اختیاری)"></textarea>
-                    </div>
-            
-                    <!-- Message -->
-                    <div class="form-group">
-                        <textarea name="entry.839337160" id="message" placeholder="متن پیام *" required></textarea>
-                        <div class="error-message" id="message-error"></div>
-                    </div>
-            
+                    
+                    <!-- Row 3: message and address -->
+                    <div class="form-row">
+                        <div class="form-group">
+                            <textarea name="entry.839337160" id="message" placeholder="متن پیام *" required></textarea>
+                            <div class="error-message" id="message-error"></div>
+                        </div>
+                        <div class="form-group">
+                            <textarea name="entry.1065046570" id="address" placeholder="آدرس (اختیاری)"></textarea>
+                        </div>
+                    </div>   
+          
                     <!-- Submit Button and Messages -->
                     <div class="form-actions">
                         <button type="submit" class="submit-button">ارسال پیام</button>
