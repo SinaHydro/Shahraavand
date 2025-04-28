@@ -989,7 +989,7 @@
             <!-- Row 2: Email and Mobile -->
             <div class="form-row">
                 <input type="email" name="entry.1045781291" id="email" placeholder="ایمیل *" required>
-                <input type="tel" name="entry.1166974658" id="mobile" placeholder="شماره موبایل * (مثال: ۰۹۱۲۳۴۵۶۷۸۹)" required pattern="09[0-9]{9}" title="شماره موبایل باید 10 رقم باشد و با 09 شروع شود">
+                <input type="tel" name="entry.1166974658" id="mobile" placeholder="شماره موبایل * (مثال: 09123456789)" required pattern="09[0-9]{9}" title="شماره موبایل باید 10 رقم باشد و با 09 شروع شود">
             </div>
             <!-- Row 3: Address and Message -->
             <div class="message-address-row">
@@ -2058,6 +2058,15 @@ document.getElementById('contact-form').addEventListener('submit', async functio
         }, 5000);
     }
 });
+    function toPersianDigits(str) {
+        const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return str.replace(/[0-9]/g, (digit) => persianDigits[digit]);
+    }
+
+    document.addEventListener('DOMContentLoaded', () => {
+        const numberElement = document.querySelector('.persian-number');
+        numberElement.textContent = toPersianDigits(numberElement.textContent);
+    });
     </script>         
     </body>     
 </html>
