@@ -2059,15 +2059,51 @@ document.getElementById('contact-form').addEventListener('submit', async functio
         }, 5000);
     }
 });
-    function toPersianDigits(str) {
+
+document.addEventListener('DOMContentLoaded', function() {
+    // تابع تبدیل اعداد انگلیسی به فارسی
+    function convertToPersianNumbers(input) {
         const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
-        return str.replace(/[0-9]/g, (digit) => persianDigits[digit]);
+        return input.toString().replace(/\d/g, (digit) => persianDigits[digit]);
     }
 
-    document.addEventListener('DOMContentLoaded', () => {
-        const numberElement = document.querySelector('.persian-number');
-        numberElement.textContent = toPersianDigits(numberElement.textContent);
-    });
+    // تبدیل تمام اعداد در متن‌های صفحه
+    function convertAllNumbersInTextNodes() {
+        const walker = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+
+        let node;
+        while (node = walker.nextNode()) {
+            if (node.nodeValue.trim() && /\d/.test(node.nodeValue)) {
+                node.nodeValue = convertToPersianNumbers(node.nodeValue);
+            }
+        }
+    }
+
+    // تبدیل اعداد در inputها و textareaها (برای فرم‌ها)
+    function convertInputNumbers() {
+        document.querySelectorAll('input, textarea').forEach(input => {
+            if (input.value && /\d/.test(input.value)) {
+                input.value = convertToPersianNumbers(input.value);
+            }
+            // برای تغییر اعداد هنگام تایپ کاربر
+            input.addEventListener('input', function(e) {
+                if (/\d/.test(e.target.value)) {
+                    e.target.value = convertToPersianNumbers(e.target.value.replace(/[۰-۹]/g, ''));
+                }
+            });
+        });
+    }
+
+    // اجرای توابع
+    convertAllNumbersInTextNodes();
+    convertInputNumbers();
+});
+     
     </script>         
     </body>     
 </html>
