@@ -907,6 +907,30 @@ document.addEventListener('DOMContentLoaded', function() {
     convertAllNumbersInTextNodes();
     convertInputNumbers();
 });
+
+// Hamburger Menu Toggle
+const hamburgerBtn = document.getElementById('hamburger-btn');
+const mobileMenu = document.getElementById('mobile-menu');
+const hamburgerIcon = hamburgerBtn.querySelector('.hamburger-icon');
+
+hamburgerBtn.addEventListener('click', () => {
+    const isOpen = mobileMenu.classList.contains('open');
+    mobileMenu.classList.toggle('open', !isOpen);
+    hamburgerIcon.classList.toggle('open', !isOpen);
+    hamburgerIcon.classList.toggle('fa-bars', isOpen);
+    hamburgerIcon.classList.toggle('fa-times', !isOpen);
+});
+
+// Close mobile menu when clicking a link
+mobileMenu.querySelectorAll('a').forEach(link => {
+    link.addEventListener('click', () => {
+        mobileMenu.classList.remove('open');
+        hamburgerIcon.classList.remove('open');
+        hamburgerIcon.classList.add('fa-bars');
+        hamburgerIcon.classList.remove('fa-times');
+    });
+});
+            
     </script>
 </body>
 </html>
