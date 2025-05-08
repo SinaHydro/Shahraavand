@@ -632,14 +632,14 @@
                                 <div>
                                     <h4 class="font-medium text-gray-800 mb-1">تلفن‌های تماس</h4>
                                     <p class="text-gray-600 mb-1">۰۴۱-۳۳۲۴۳۴۹۸</p>
-                                    <p class="text-gray-600">۰۹۱۴-۴۱۶ Delphi021۸</p>
+                                    <p class="text-gray-600">۰۹۱۴-۴۱۶-۰۲۱۸</p>
                                 </div>
                             </div>
                             <div class="flex items-start">
                                 <div class="bg-blue-100 text-blue-600 p-3 rounded-full mr-4" style="margin-left: 14px;"><i class="fa-envelope fas pt-1 px-1"></i></div>
                                 <div>
                                     <h4 class="font-medium text-gray-800 mb-1">پست الکترونیک</h4>
-                                    <p class="text-gray-600"><a href="/cdn-cgi/l/email-protection#254c4b434a65564d444d57444453444b410b4c57">[email&#160;protected]</a></p>
+                                    <p class="text-gray-600">support@shahraavand.ir</p>
                                 </div>
                             </div>
                             <div class="flex items-start">
@@ -776,7 +776,7 @@
                     <ul class="space-y-3 text-gray-400">
                         <li class="flex items-start"><i class="fa-map-marker-alt fas mt-1 mx-3 text-blue-500"></i><span>تبریز، ولیعصرجنوبی، خ نیلوفر، پلاک 31، شرکت مهندسین مشاور شهرآوند</span></li>
                         <li class="flex items-start"><i class="fa-phone-alt fas mt-1 mx-3 text-blue-500"></i><span>041-33243498</span></li>
-                        <li class="flex items-start"><i class="fa-envelope fas mt-1 mx-3 text-blue-500"></i><span><a href="/cdn-cgi/l/email-protection#325b5c545d72415a535a40535344535c561c5b40">[email&#160;protected]</a></span></li>
+                        <li class="flex items-start"><i class="fa-envelope fas mt-1 mx-3 text-blue-500"></i><span>support@shahraavand.ir</span></li>
                         <li class="flex items-start"><i class="fa-clock fas mt-1 mx-3 text-blue-500"></i><span>شنبه تا چهارشنبه: ۸:۰۰ تا ۱۷:۰۰<br>پنجشنبه: ۸:۰۰ تا ۱۳:۰۰</span></li>
                     </ul>
                 </div>
@@ -864,6 +864,49 @@
                 img.src = linkElement.getAttribute('data-src');
             }
         });
+document.addEventListener('DOMContentLoaded', function() {
+    // تابع تبدیل اعداد انگلیسی به فارسی
+    function convertToPersianNumbers(input) {
+        const persianDigits = ['۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹'];
+        return input.toString().replace(/\d/g, (digit) => persianDigits[digit]);
+    }
+
+    // تبدیل تمام اعداد در متن‌های صفحه
+    function convertAllNumbersInTextNodes() {
+        const walker = document.createTreeWalker(
+            document.body,
+            NodeFilter.SHOW_TEXT,
+            null,
+            false
+        );
+
+        let node;
+        while (node = walker.nextNode()) {
+            if (node.nodeValue.trim() && /\d/.test(node.nodeValue)) {
+                node.nodeValue = convertToPersianNumbers(node.nodeValue);
+            }
+        }
+    }
+
+    // تبدیل اعداد در inputها و textareaها (برای فرم‌ها)
+    function convertInputNumbers() {
+        document.querySelectorAll('input, textarea').forEach(input => {
+            if (input.value && /\d/.test(input.value)) {
+                input.value = convertToPersianNumbers(input.value);
+            }
+            // برای تغییر اعداد هنگام تایپ کاربر
+            input.addEventListener('input', function(e) {
+                if (/\d/.test(e.target.value)) {
+                    e.target.value = convertToPersianNumbers(e.target.value.replace(/[۰-۹]/g, ''));
+                }
+            });
+        });
+    }
+
+    // اجرای توابع
+    convertAllNumbersInTextNodes();
+    convertInputNumbers();
+});
     </script>
 </body>
 </html>
