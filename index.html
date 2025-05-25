@@ -101,6 +101,8 @@
         .hamburger-icon { transition: transform 0.3s ease; }
         .hamburger-icon.open { transform: rotate(45deg); }
         @media (min-width: 768px) { .mobile-menu { display: none !important; } }        
+        .hide-on-mobile { display: none; }
+        @media (min-width: 768px) { .hide-on-mobile { display: flex; /* یا display: block بسته به نیاز */ } }
     </style>
 </head>
 <body class="text-gray-800">
@@ -139,7 +141,7 @@
     </script>
     <!-- Fixed Header -->
     <header class="fixed top-0 left-0 right-0 bg-white shadow-md z-50">
-        <div class="bg-gradient-to-r flex from-blue-600 items-center m-3 p-5 rounded-2xl text-white to-blue-800 hidden md:block"> 
+        <div class="bg-gradient-to-r flex from-blue-600 items-center m-3 p-5 rounded-2xl text-white to-blue-800 hide-on-mobile"> 
             <h2 class="font-bold text-3xl">نظام تندیس</h2> 
             <p class="flex-1 mx-4 text-lg">جهت عضویت در سامانه ارجاع کار نظام تندیس (تدارک نیازمندی دقیق و یکپارچه ساختمان) برای مهندس و کارفرما از لینک مقابل اقدام کنید.</p> 
             <div class="flex space-x-4 space-x-reverse"> 
