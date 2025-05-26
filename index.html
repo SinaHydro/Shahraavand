@@ -942,7 +942,7 @@ document.addEventListener('DOMContentLoaded', function() {
             // برای تغییر اعداد هنگام تایپ کاربر
             input.addEventListener('input', function(e) {
                 if (/\d/.test(e.target.value)) {
-                    e.target.value = convertToPersianNumbers(e.target.value.replace(/[۰-۹]/g, ''));
+                    e.target.value = convertToPersianNumbers(e.target.value); 
                 }
             });
         });
