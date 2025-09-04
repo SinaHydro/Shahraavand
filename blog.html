@@ -368,67 +368,124 @@ function initDeadLoadCalc(){
 
 async function renderPost(slug) {
   try {
-    // درخواست به Google Apps Script با increment=true
-    const res = await jsonp(APPSCRIPT_URL + "?mode=posts&slug=" + encodeURIComponent(slug) + "&increment=true");
+    // درخواست به API همراه با increment=true
+    const res = await jsonp(
+      APPSCRIPT_URL +
+      "?mode=posts&slug=" + encodeURIComponent(slug) +
+      "&increment=true"
+    );
+
     if (!res.ok || !res.data || !res.data.length) {
       location.hash = "#list";
       return;
     }
+
     const p = res.data[0];
-  $("#view-list").style.display="none";
-  $("#view-post").style.display="block";
 
-  document.title = `${p.title} | بلاگ مهندسی ایران`;
-  const desc = p.meta_description || p.excerpt || "";
-  let meta = document.querySelector('meta[name="description"]');
-  if(!meta){ meta = document.createElement('meta'); meta.name="description"; document.head.appendChild(meta); }
-  meta.content = desc;
+    // تغییر نمایش
+    $("#view-list").style.display = "none";
+    $("#view-post").style.display = "block";
 
-  $("#post-title").textContent = p.title;
-  $("#post-date").textContent = fmtDate(p.date_iso||p.date);
-  $("#post-category").innerHTML = p.category ? `<a href="#category=${encodeURIComponent(p.category)}">${esc(p.category)}</a>` : "";
-  $("#post-author").textContent = p.author || "";
-  $("#author-name").textContent = p.author || "نویسنده مهمان";
-  $("#author-avatar").src = `https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(p.author||"ME")}`;
-  $("#post-views").textContent = p.views || 0;
+    // عنوان و توضیحات متا
+    document.title = `${p.title} | بلاگ مهندسی ایران`;
+    const desc = p.meta_description || p.excerpt || "";
+    let meta = document.querySelector('meta[name="description"]');
+    if (!meta) {
+      meta = document.createElement("meta");
+      meta.name = "description";
+      document.head.appendChild(meta);
+    }
+    meta.content = desc;
 
-  const coverWrap = $("#post-cover-w");
-  coverWrap.innerHTML = p.featured_image_url ? `<img class="card-cover" loading="lazy" src="${esc(p.featured_image_url)}" alt="${esc(p.title)}" style="height:auto">` : "";
+    // پر کردن عناصر
+    $("#post-title").textContent = p.title;
+    $("#post-date").textContent = fmtDate(p.date_iso || p.date);
+    $("#post-category").innerHTML = p.category
+      ? `<a href="#category=${encodeURIComponent(p.category)}">${esc(p.category)}</a>`
+      : "";
+    $("#post-author").textContent = p.author || "";
+    $("#author-name").textContent = p.author || "نویسنده مهمان";
+    $("#author-avatar").src =
+      `https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(p.author || "ME")}`;
+    $("#post-views").textContent = p.views || 0;
 
-  // محتوا (Markdown یا HTML)
-  const raw = p.content_markdown || p.content || "";
-  const html = expandTokens(marked.parse(raw));
-  $("#post-content").innerHTML = html;
+    // تصویر شاخص
+    const coverWrap = $("#post-cover-w");
+    coverWrap.innerHTML = p.featured_image_url
+      ? `<img class="card-cover" loading="lazy" src="${esc(p.featured_image_url)}" alt="${esc(p.title)}" style="height:auto">`
+      : "";
 
-  // تگ‌ها
-  $("#post-tags").innerHTML = (p.tags||[]).map(t=>`<a class="chip" href="#tag=${encodeURIComponent(t)}">${esc(t)}</a>`).join("");
+    // محتوا (Markdown یا HTML)
+    const raw = p.content_markdown || p.content || "";
+    const html = expandTokens(marked.parse(raw));
+    $("#post-content").innerHTML = html;
 
-  // پیوست‌ها
-  const at = p.attachments||[];
-  $("#attachments").innerHTML = at.length ? (`<h3 class="section-title">دانلودها</h3><ul>` + at.map(a=>`<li><a href="${a.url}" target="_blank" rel="noopener">${esc(a.name||a.url)}</a></li>`).join("") + `</ul>`) : "";
+    // تگ‌ها
+    $("#post-tags").innerHTML = (p.tags || [])
+      .map(
+        t =>
+          `<a class="chip" href="#tag=${encodeURIComponent(t)}">${esc(t)}</a>`
+      )
+      .join("");
 
-  // ویدیوها
-  const vids = p.videos||[];
-  $("#videos").innerHTML = vids.length ? (`<h3 class="section-title">ویدیوها</h3>` + vids.map(v=>`<div class="list-item"><a href="${v}" target="_blank" rel="noopener">${v}</a></div>`).join("")) : "";
+    // پیوست‌ها
+    const at = p.attachments || [];
+    $("#attachments").innerHTML = at.length
+      ? `<h3 class="section-title">دانلودها</h3><ul>` +
+        at
+          .map(
+            a =>
+              `<li><a href="${a.url}" target="_blank" rel="noopener">${esc(
+                a.name || a.url
+              )}</a></li>`
+          )
+          .join("") +
+        `</ul>`
+      : "";
 
-  // FAQ
-  const faq = p.faq||[];
-  $("#faq").innerHTML = faq.length ? (`<h3 class="section-title">پرسش‌های متداول</h3>` + faq.map(f=>`
-    <details class="card"><summary><strong>${esc(f.q||"")}</strong></summary>
-      <div class="prose">${f.a||""}</div>
-    </details>`).join("")) : "";
+    // ویدیوها
+    const vids = p.videos || [];
+    $("#videos").innerHTML = vids.length
+      ? `<h3 class="section-title">ویدیوها</h3>` +
+        vids
+          .map(
+            v =>
+              `<div class="list-item"><a href="${v}" target="_blank" rel="noopener">${v}</a></div>`
+          )
+          .join("")
+      : "";
 
-  // TOC
-  buildTOC();
+    // FAQ
+    const faq = p.faq || [];
+    $("#faq").innerHTML = faq.length
+      ? `<h3 class="section-title">پرسش‌های متداول</h3>` +
+        faq
+          .map(
+            f => `
+      <details class="card">
+        <summary><strong>${esc(f.q || "")}</strong></summary>
+        <div class="prose">${f.a || ""}</div>
+      </details>`
+          )
+          .join("")
+      : "";
 
-  // Related
-  renderRelated(p);
+    // فهرست مطالب
+    buildTOC();
 
-  // init calculators
-  initRebarCalc(); initDeadLoadCalc();
+    // پست‌های مرتبط
+    renderRelated(p);
 
-  highlightNav(); // هیچ تب فعالی نیست
-  window.scrollTo({top:0,behavior:"instant"});
+    // محاسبه‌گرها
+    initRebarCalc();
+    initDeadLoadCalc();
+
+    highlightNav(); // بدون تب فعال
+    window.scrollTo({ top: 0, behavior: "instant" });
+  } catch (err) {
+    console.error("خطا در بارگذاری پست:", err);
+    location.hash = "#list";
+  }
 }
 
 function buildTOC(){
