@@ -1,0 +1,345 @@
+<!doctype html>
+<html lang="fa" dir="rtl">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>وبلاگ شرکت مهندسین مشاور شهرآوند</title>
+  <meta name="description" content="مقالات تخصصی عمران، معماری، مکانیک، برق و نقشه‌برداری با دانلود و ویدیو." />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--bg:#fff;--fg:#111;--muted:#666;--line:#eee;--brand:#2563eb}
+    *{box-sizing:border-box}
+    body{margin:0;font-family:"Vazirmatn",system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg);color:var(--fg)}
+    a{color:var(--brand);text-decoration:none}
+    a:hover{text-decoration:underline}
+    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);z-index:10}
+    .container{max-width:1000px;margin:0 auto;padding:16px}
+    .row{display:flex;gap:12px;flex-wrap:wrap}
+    .btn{display:inline-block;border:1px solid var(--line);padding:8px 14px;border-radius:12px;background:#fafafa}
+    .btn.active{background:#e8f0ff;border-color:#cfe0ff}
+    .chip{display:inline-block;padding:6px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;margin:2px}
+    input,select{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+    .card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}
+    .post{border-bottom:1px solid var(--line);padding:12px 0}
+    .muted{color:var(--muted);font-size:13px}
+    .grid{display:grid;gap:16px}
+    .grid-2{grid-template-columns: repeat(2,minmax(0,1fr))}
+    @media (max-width:768px){.grid-2{grid-template-columns:1fr}}
+    .prose h1,.prose h2,.prose h3{margin-top:24px;margin-bottom:12px}
+    .prose p{line-height:1.9}
+    .prose img{max-width:100%;border-radius:12px;border:1px solid var(--line)}
+    .section-title{margin:24px 0 12px 0;font-weight:700}
+    footer{border-top:1px solid var(--line);margin-top:40px;padding:24px 0;color:var(--muted);font-size:13px}
+    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;background:#f5f5f5;border:1px solid #eee;border-bottom-width:2px;border-radius:8px;padding:1px 6px}
+    /* Alert / Callout styles for MDX-like blocks */
+    .callout{border-left:4px solid #f59e0b;background:#fff7ed;padding:12px;border-radius:8px}
+    .success{border-left-color:#22c55e;background:#f0fdf4}
+    .info{border-left-color:#3b82f6;background:#eff6ff}
+    .danger{border-left-color:#ef4444;background:#fef2f2}
+    /* Simple table */
+    table{width:100%;border-collapse:collapse;margin:12px 0}
+    th,td{border:1px solid var(--line);padding:8px;text-align:right}
+    th{background:#fafafa}
+  </style>
+</head>
+<body>
+  <header>
+    <div class="container row" style="align-items:center;justify-content:space-between">
+      <div class="row" style="align-items:center;gap:10px">
+        <strong>وبلاگ شرکت مهندسین مشاور شهرآوند</strong>
+        <span class="muted">عمران | معماری | مکانیک | برق | نقشه‌برداری</span>
+      </div>
+      <nav class="row">
+        <a class="btn" href="#list" data-nav="list">همه مطالب</a>
+        <a class="btn" href="#view=downloads" data-nav="downloads">مرکز دانلود</a>
+        <a class="btn" href="#view=newsletter" data-nav="newsletter">خبرنامه</a>
+      </nav>
+    </div>
+  </header>
+
+  <main class="container" id="app">
+    <!-- Filled by JS -->
+  </main>
+
+  <footer>
+    <div class="container">
+      <div>© <span id="year"></span> مهندسی ایران · <a href="#" id="rssLink" target="_blank">RSS</a> · <a href="#" id="siteMapLink" target="_blank">Sitemap</a></div>
+    </div>
+  </footer>
+
+  <script>
+    // ==== CONFIG ====
+    const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbyGYJF6TcFI9IordtadwsdayCa54VcWeFFvg4MXC5zWdaz_hlG4IR1D-EnhzF8UpcSmTg/exec"; 
+    const SITE_URL = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, "/");
+    // Optional: if you generated rss.xml and sitemap.xml in your main site
+    document.getElementById('rssLink').href = SITE_URL + "rss.xml";
+    document.getElementById('siteMapLink').href = SITE_URL + "sitemap.xml";
+    document.getElementById('year').textContent = new Date().getFullYear();
+
+    // ==== HELPERS ====
+    const $ = (sel, el=document) => el.querySelector(sel);
+    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
+    const qs = (obj) => Object.entries(obj).filter(([,v])=>v!=null && v!=="").map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join("&");
+    const api = async (params={}) => {
+      const url = APPSCRIPT_URL + "?" + qs(params);
+      const res = await fetch(url, { headers: { "Accept": "application/json" }});
+      if (!res.ok) throw new Error("API failed");
+      return res.json();
+    };
+
+    function setMeta(title, desc){
+      document.title = title ? title + " | وبلاگ شرکت مهندسین مشاور شهرآوند" : "وبلاگ شرکت مهندسین مشاور شهرآوند";
+      let m = document.querySelector('meta[name="description"]');
+      if (!m){ m = document.createElement('meta'); m.name = "description"; document.head.appendChild(m); }
+      if (desc) m.content = desc;
+    }
+
+    function sanitize(html=""){
+      // very light sanitize: strips script tags; assumes Apps Script provides safe HTML
+      return html.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "");
+    }
+
+    function badge(text){ return `<span class="chip">${text}</span>` }
+    function formatDate(iso){ try{ return new Date(iso).toLocaleDateString("fa-IR"); }catch(e){ return "" } }
+
+    // Inline calculators (rendered by tokens)
+    function RebarCalculator(){
+      return `
+        <div class="card" id="rebarCalc">
+          <h3>محاسبه وزن میلگرد</h3>
+          <div class="row">
+            <label>قطر (میلی‌متر) <input id="d" type="number" value="16"></label>
+            <label>طول (متر) <input id="L" type="number" value="12"></label>
+          </div>
+          <p class="muted">فرمول: 0.00617 × d² × L</p>
+          <div>وزن: <strong id="w">—</strong> کیلوگرم</div>
+        </div>`;
+    }
+    function initRebarCalc(){
+      const box = document.getElementById('rebarCalc'); if(!box) return;
+      const d = box.querySelector('#d'), L = box.querySelector('#L'), w = box.querySelector('#w');
+      function calc(){ const val = 0.00617 * (+d.value||0) * (+d.value||0) * (+L.value||0); w.textContent = val.toFixed(2); }
+      d.oninput = L.oninput = calc; calc();
+    }
+    function DeadLoadCalculator(){
+      return `
+        <div class="card" id="deadLoadCalc" style="margin-top:12px">
+          <h3>محاسبه بار مرده</h3>
+          <div class="row">
+            <label>مساحت (متر مربع) <input id="A" type="number" value="100"></label>
+            <label>ضخامت (سانتی‌متر) <input id="t" type="number" value="20"></label>
+            <label>چگالی (kN/m³) <input id="rho" type="number" value="25"></label>
+          </div>
+          <p class="muted">فرمول: (A × t × ρ)/1000</p>
+          <div>بار مرده: <strong id="q">—</strong> kN</div>
+        </div>`;
+    }
+    function initDeadLoadCalc(){
+      const box = document.getElementById('deadLoadCalc'); if(!box) return;
+      const A = box.querySelector('#A'), t = box.querySelector('#t'), rho = box.querySelector('#rho'), q = box.querySelector('#q');
+      function calc(){ const val = ((+A.value||0) * (+t.value||0) * (+rho.value||0))/1000; q.textContent = val.toFixed(2); }
+      A.oninput = t.oninput = rho.oninput = calc; calc();
+    }
+
+    // Render FAQ block
+    function renderFAQ(list=[]){
+      if (!list.length) return "";
+      const items = list.map(f=>`
+        <details class="card"><summary><strong>${f.q||""}</strong></summary>
+          <div class="prose">${sanitize(f.a||"")}</div>
+        </details>`).join("");
+      return `<h3 class="section-title">پرسش‌های متداول</h3>${items}`;
+    }
+
+    // Attachments list
+    function renderAttachments(list=[]){
+      if (!list.length) return "";
+      const items = list.map(a=>`<li><a href="${a.url}" target="_blank" rel="noopener">${a.name||a.url}</a></li>`).join("");
+      return `<h3 class="section-title">دانلودها</h3><ul>${items}</ul>`;
+    }
+
+    // Content token expansion
+    function expandTokens(html){
+      let out = html || "";
+      if (out.includes("<RebarCalculator/>")) out = out.replace(/<RebarCalculator\/>/g, RebarCalculator());
+      if (out.includes("<DeadLoadCalculator/>")) out = out.replace(/<DeadLoadCalculator\/>/g, DeadLoadCalculator());
+      return out;
+    }
+    function initTokenWidgets(){
+      initRebarCalc(); initDeadLoadCalc();
+    }
+
+    // ==== VIEWS ====
+    async function viewList(){
+      const app = document.getElementById('app');
+      setMeta("وبلاگ", "آخرین مقالات مهندسی ایران");
+      // get filters & posts
+      const [filters, postsRes] = await Promise.all([
+        api({ mode:"filters" }).catch(()=>({categories:[],tags:[]})),
+        api({ mode:"posts", limit: 100 })
+      ]);
+      const posts = postsRes.data || [];
+      const cats = filters.categories || Array.from(new Set(posts.map(p=>p.category).filter(Boolean)));
+      const tags = filters.tags || Array.from(new Set(posts.flatMap(p=>(p.tags||[]))));
+
+      app.innerHTML = `
+        <section class="card">
+          <div class="row" style="align-items:center;justify-content:space-between">
+            <h1 style="margin:0">همه مطالب</h1>
+            <input id="search" placeholder="جستجو در عنوان و متن..." />
+          </div>
+          <div class="row" style="margin-top:10px">
+            <select id="cat"><option value="">همه دسته‌ها</option>${cats.map(c=>`<option value="${c}">${c}</option>`).join("")}</select>
+            <select id="tag"><option value="">همه برچسب‌ها</option>${tags.map(t=>`<option value="${t}">${t}</option>`).join("")}</select>
+            <button class="btn" id="clear">پاک‌سازی فیلتر</button>
+          </div>
+        </section>
+
+        <section id="list" class="card" style="margin-top:12px"></section>
+      `;
+
+      const $list = document.getElementById('list');
+      const $search = document.getElementById('search');
+      const $cat = document.getElementById('cat');
+      const $tag = document.getElementById('tag');
+      const $clear = document.getElementById('clear');
+
+      function pass(p, q, c, t){
+        const inText = (p.title||"") + " " + (p.excerpt||"") + " " + (p.content||p.content_markdown||"");
+        const okQ = q ? inText.toLowerCase().includes(q.toLowerCase()) : true;
+        const okC = c ? (p.category === c) : true;
+        const okT = t ? ((p.tags||[]).includes(t) || (typeof p.tags==="string" && p.tags.split(",").map(s=>s.trim()).includes(t))) : true;
+        return okQ && okC && okT;
+      }
+
+      function draw(){
+        const q = $search.value.trim();
+        const c = $cat.value;
+        const t = $tag.value;
+        const rows = posts.filter(p=>pass(p,q,c,t));
+        $list.innerHTML = rows.map(p=>`
+          <article class="post">
+            <h3 style="margin:0 0 6px"><a href="#post=${encodeURIComponent(p.slug)}">${p.title}</a></h3>
+            <div class="muted">${formatDate(p.date_iso||p.date)} · ${p.category?badge(p.category):""} ${(p.tags||[]).map(badge).join(" ")}</div>
+            <p>${p.excerpt || (p.meta_description||"").slice(0,160)}</p>
+          </article>
+        `).join("") || `<p class="muted">نتیجه‌ای یافت نشد.</p>`;
+      }
+
+      [$search, $cat, $tag].forEach(el=>el.addEventListener('input', draw));
+      $clear.onclick = ()=>{ $search.value=""; $cat.value=""; $tag.value=""; draw(); };
+      draw();
+      highlightNav('list');
+    }
+
+    async function viewPost(slug){
+      const app = document.getElementById('app');
+      const res = await api({ slug });
+      const post = (res.data||[])[0];
+      if (!post){ app.innerHTML = `<div class="card">مطلب یافت نشد. <a href="#list">بازگشت</a></div>`; return; }
+
+      setMeta(post.title, post.meta_description || post.excerpt || "");
+      const htmlBody = expandTokens(sanitize(post.content || post.content_markdown || ""));
+      app.innerHTML = `
+        <article class="card prose">
+          <a class="muted" href="#list">← بازگشت</a>
+          <h1>${post.title}</h1>
+          <div class="muted">${formatDate(post.date_iso||post.date)} · ${post.author||""}</div>
+          ${post.featured_image_url ? `<p><img src="${post.featured_image_url}" alt="${post.title}"></p>` : ""}
+          <div>${htmlBody}</div>
+          ${renderFAQ(post.faq||post.faq_json||[])}
+          ${renderAttachments(post.attachments||post.attachments_json||[])}
+          ${Array.isArray(post.videos) && post.videos.length ? `
+            <h3 class="section-title">ویدیوها</h3>
+            <div class="grid grid-2">
+              ${post.videos.map(v=> `<div class="card"><a href="${v}" target="_blank" rel="noopener">${v}</a></div>`).join("")}
+            </div>` : ""}
+        </article>
+      `;
+      initTokenWidgets();
+      highlightNav(); // no tab selected
+    }
+
+    async function viewDownloads(){
+      const app = document.getElementById('app');
+      setMeta("مرکز دانلود", "دانلود پیوست‌های مقالات مهندسی");
+      const res = await api({ mode:"downloads" });
+      const rows = res.data || [];
+      app.innerHTML = `
+        <section class="card">
+          <h1>مرکز دانلود</h1>
+          <p class="muted">فایل‌های پیوست‌شده به مقالات.</p>
+          ${rows.length ? rows.map(p=>`
+            <div class="post">
+              <h3><a href="#post=${encodeURIComponent(p.slug)}">${p.title}</a></h3>
+              ${renderAttachments(p.attachments||[])}
+            </div>
+          `).join("") : `<p class="muted">فایلی موجود نیست.</p>`}
+        </section>
+      `;
+      highlightNav('downloads');
+    }
+
+    async function viewNewsletter(){
+      const app = document.getElementById('app');
+      setMeta("خبرنامه", "خلاصه آخرین مطالب برای ارسال ایمیل");
+      const res = await api({ mode:"newsletter", limit: 10 });
+      const rows = res.data || [];
+      app.innerHTML = `
+        <section class="card">
+          <h1>📩 خبرنامه</h1>
+          <p class="muted">خلاصه‌ای کوتاه از آخرین مطالب. برای ارسال ایمیل می‌توانید موارد زیر را کپی کنید.</p>
+          <div class="row" style="margin:10px 0">
+            <button id="copyDigest" class="btn">کپی HTML خبرنامه</button>
+          </div>
+          <div id="digestList">
+            ${rows.map(p=>`
+              <article class="post">
+                <h3><a href="#post=${encodeURIComponent(p.slug)}">${p.title}</a></h3>
+                <p>${p.excerpt||""}</p>
+                <a href="#post=${encodeURIComponent(p.slug)}">ادامه مطلب →</a>
+              </article>
+            `).join("")}
+          </div>
+        </section>
+      `;
+      $("#copyDigest").onclick = ()=>{
+        const html = $("#digestList").innerHTML;
+        navigator.clipboard.writeText(html).then(()=> alert("خلاصه خبرنامه کپی شد!"));
+      };
+      highlightNav('newsletter');
+    }
+
+    function highlightNav(which){
+      $$('a[data-nav]').forEach(a=>a.classList.remove('active'));
+      if (which){
+        const el = document.querySelector(`a[data-nav="${which}"]`);
+        if (el) el.classList.add('active');
+      }
+    }
+
+    // ==== ROUTER ====
+    async function router(){
+      const hash = location.hash.slice(1); // e.g., "post=slug" or "view=downloads"
+      const params = new URLSearchParams(hash);
+
+      if (params.has("post")){
+        const slug = params.get("post");
+        await viewPost(slug);
+      } else if (params.get("view")==="downloads"){
+        await viewDownloads();
+      } else if (params.get("view")==="newsletter"){
+        await viewNewsletter();
+      } else {
+        await viewList();
+      }
+      // scroll to top after navigation
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    window.addEventListener('hashchange', router);
+    router();
+  </script>
+</body>
+</html>
