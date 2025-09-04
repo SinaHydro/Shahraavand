@@ -1,345 +1,485 @@
 <!doctype html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1" />
-  <title>وبلاگ شرکت مهندسین مشاور شهرآوند</title>
-  <meta name="description" content="مقالات تخصصی عمران، معماری، مکانیک، برق و نقشه‌برداری با دانلود و ویدیو." />
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-  <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
-  <style>
-    :root{--bg:#fff;--fg:#111;--muted:#666;--line:#eee;--brand:#2563eb}
-    *{box-sizing:border-box}
-    body{margin:0;font-family:"Vazirmatn",system-ui,-apple-system,Segoe UI,Roboto,Arial; background:var(--bg);color:var(--fg)}
-    a{color:var(--brand);text-decoration:none}
-    a:hover{text-decoration:underline}
-    header{position:sticky;top:0;background:#fff;border-bottom:1px solid var(--line);z-index:10}
-    .container{max-width:1000px;margin:0 auto;padding:16px}
-    .row{display:flex;gap:12px;flex-wrap:wrap}
-    .btn{display:inline-block;border:1px solid var(--line);padding:8px 14px;border-radius:12px;background:#fafafa}
-    .btn.active{background:#e8f0ff;border-color:#cfe0ff}
-    .chip{display:inline-block;padding:6px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;margin:2px}
-    input,select{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
-    .card{border:1px solid var(--line);border-radius:14px;padding:16px;background:#fff}
-    .post{border-bottom:1px solid var(--line);padding:12px 0}
-    .muted{color:var(--muted);font-size:13px}
-    .grid{display:grid;gap:16px}
-    .grid-2{grid-template-columns: repeat(2,minmax(0,1fr))}
-    @media (max-width:768px){.grid-2{grid-template-columns:1fr}}
-    .prose h1,.prose h2,.prose h3{margin-top:24px;margin-bottom:12px}
-    .prose p{line-height:1.9}
-    .prose img{max-width:100%;border-radius:12px;border:1px solid var(--line)}
-    .section-title{margin:24px 0 12px 0;font-weight:700}
-    footer{border-top:1px solid var(--line);margin-top:40px;padding:24px 0;color:var(--muted);font-size:13px}
-    .kbd{font-family:ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;background:#f5f5f5;border:1px solid #eee;border-bottom-width:2px;border-radius:8px;padding:1px 6px}
-    /* Alert / Callout styles for MDX-like blocks */
-    .callout{border-left:4px solid #f59e0b;background:#fff7ed;padding:12px;border-radius:8px}
-    .success{border-left-color:#22c55e;background:#f0fdf4}
-    .info{border-left-color:#3b82f6;background:#eff6ff}
-    .danger{border-left-color:#ef4444;background:#fef2f2}
-    /* Simple table */
-    table{width:100%;border-collapse:collapse;margin:12px 0}
-    th,td{border:1px solid var(--line);padding:8px;text-align:right}
-    th{background:#fafafa}
-  </style>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width,initial-scale=1" />
+<title>بلاگ مهندسی ایران</title>
+<meta name="description" content="مقالات تخصصی عمران، معماری، مکانیک، برق و نقشه‌برداری" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#ffffff;--fg:#111827;--muted:#6b7280;--line:#e5e7eb;--brand:#2563eb;--card:#ffffff}
+*{box-sizing:border-box}
+html,body{margin:0;padding:0}
+body{font-family:"Vazirmatn",system-ui,-apple-system,Segoe UI,Roboto,Arial;background:var(--bg);color:var(--fg)}
+a{color:var(--brand);text-decoration:none}
+a:hover{text-decoration:underline}
+.container{max-width:1200px;margin:0 auto;padding:16px}
+header{position:sticky;top:0;background:var(--card);border-bottom:1px solid var(--line);z-index:100}
+.nav{display:flex;gap:12px;align-items:center;justify-content:space-between}
+.brand{display:flex;gap:10px;align-items:center}
+.brand strong{font-size:18px}
+.nav a.btn{display:inline-block;padding:8px 14px;border:1px solid var(--line);border-radius:12px;background:#f9fafb}
+.nav a.btn.active{background:#e8f0ff;border-color:#cfe0ff}
+.grid{display:grid;gap:16px}
+.grid-cols-3{grid-template-columns:2fr 1fr}
+.grid-cards{grid-template-columns:repeat(3,minmax(0,1fr))}
+@media (max-width:1000px){.grid-cols-3{grid-template-columns:1fr}}
+@media (max-width:900px){.grid-cards{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (max-width:620px){.grid-cards{grid-template-columns:1fr}}
+.card{border:1px solid var(--line);background:var(--card);border-radius:16px;padding:14px}
+.card h3{margin:8px 0}
+.meta{color:var(--muted);font-size:12px}
+img.card-cover{width:100%;height:180px;object-fit:cover;border-radius:12px;border:1px solid var(--line)}
+.controls{display:flex;gap:8px;align-items:center;flex-wrap:wrap}
+input,select{padding:8px 10px;border:1px solid var(--line);border-radius:10px;background:#fff}
+.chip{display:inline-block;padding:5px 10px;border:1px solid var(--line);border-radius:999px;font-size:12px;margin:2px;background:#f9fafb}
+.list-item{border-bottom:1px solid var(--line);padding:12px 0}
+footer{border-top:1px solid var(--line);margin-top:40px}
+footer .foot{display:flex;gap:8px;align-items:center;justify-content:space-between;color:var(--muted);font-size:13px}
+.prose h1,.prose h2,.prose h3{margin:18px 0 10px}
+.prose p{line-height:1.9}
+.prose img{max-width:100%;border-radius:12px;border:1px solid var(--line)}
+.section-title{margin:10px 0 8px;font-weight:700}
+.sidebar .widget{margin-bottom:16px}
+.widget h4{margin:0 0 8px}
+.toc{position:sticky;top:84px;border:1px solid var(--line);border-radius:12px;padding:12px;background:#f9fafb}
+.toc a{display:block;padding:4px 0;font-size:13px;color:#374151}
+.author{display:flex;gap:12px;align-items:flex-start}
+.author img{width:56px;height:56px;border-radius:50%;border:1px solid var(--line);object-fit:cover}
+.badge{display:inline-block;background:#eef2ff;color:#1e3a8a;border-radius:8px;padding:2px 8px;font-size:12px;margin-inline-start:6px}
+.dark-toggle{cursor:pointer;border:1px solid var(--line);padding:6px 10px;border-radius:10px;background:#f9fafb}
+:root.dark{--bg:#0b1220;--fg:#e5e7eb;--muted:#9ca3af;--line:#1f2937;--brand:#60a5fa;--card:#0f172a}
+:root.dark img.card-cover, :root.dark .prose img{border-color:#0b1020}
+hr{border:none;border-top:1px solid var(--line);margin:16px 0}
+</style>
 </head>
 <body>
-  <header>
-    <div class="container row" style="align-items:center;justify-content:space-between">
-      <div class="row" style="align-items:center;gap:10px">
-        <strong>وبلاگ شرکت مهندسین مشاور شهرآوند</strong>
-        <span class="muted">عمران | معماری | مکانیک | برق | نقشه‌برداری</span>
+<header>
+  <div class="container nav">
+    <div class="brand">
+      <!-- هدر سایت اصلی: اگر لوگو دارید اینجا بگذارید -->
+      <a href="/" class="btn">خانه</a>
+      <strong>بلاگ مهندسی ایران</strong>
+      <span class="meta">عمران | معماری | مکانیک | برق | نقشه‌برداری</span>
+    </div>
+    <nav class="nav">
+      <a class="btn" href="#list" data-nav="list">همه مطالب</a>
+      <a class="btn" href="#view=popular" data-nav="popular">پربازدیدها</a>
+      <button id="dark" class="dark-toggle" title="حالت تیره">🌓</button>
+    </nav>
+  </div>
+</header>
+
+<main class="container">
+  <!-- صفحه لیست + سایدبار -->
+  <section id="view-list" style="display:none">
+    <div class="grid grid-cols-3">
+      <div>
+        <div class="card">
+          <div class="controls">
+            <input id="q" placeholder="جستجو در عنوان/متن..." />
+            <select id="cat"><option value="">همه دسته‌ها</option></select>
+            <select id="tag"><option value="">همه برچسب‌ها</option></select>
+            <button id="clear" class="btn">پاک‌سازی</button>
+          </div>
+        </div>
+        <div style="height:12px"></div>
+        <div id="posts-grid" class="grid grid-cards"></div>
       </div>
-      <nav class="row">
-        <a class="btn" href="#list" data-nav="list">همه مطالب</a>
-        <a class="btn" href="#view=downloads" data-nav="downloads">مرکز دانلود</a>
-        <a class="btn" href="#view=newsletter" data-nav="newsletter">خبرنامه</a>
-      </nav>
+      <aside class="sidebar">
+        <div class="card widget">
+          <h4>آخرین مقالات</h4>
+          <div id="latest"></div>
+        </div>
+        <div class="card widget">
+          <h4>دسته‌بندی موضوعی</h4>
+          <div id="categories"></div>
+        </div>
+        <div class="card widget">
+          <h4>آرشیو زمانی</h4>
+          <div id="archives"></div>
+        </div>
+        <div class="card widget">
+          <h4>پربازدیدترین‌ها</h4>
+          <div id="popular"></div>
+        </div>
+        <div class="card widget">
+          <h4>پرکاربردترین تگ‌ها</h4>
+          <div id="top-tags"></div>
+        </div>
+      </aside>
     </div>
-  </header>
+  </section>
 
-  <main class="container" id="app">
-    <!-- Filled by JS -->
-  </main>
-
-  <footer>
-    <div class="container">
-      <div>© <span id="year"></span> مهندسی ایران · <a href="#" id="rssLink" target="_blank">RSS</a> · <a href="#" id="siteMapLink" target="_blank">Sitemap</a></div>
-    </div>
-  </footer>
-
-  <script>
-    // ==== CONFIG ====
-    const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbypLoLs3NKEheGsRCxbwQO6L1BeKe65RLJbj-g-RAEKZA5VSVhNwYaKtBQRLTrzFU6Q1g/exec"; 
-    const SITE_URL = window.location.origin + window.location.pathname.replace(/\/[^\/]*$/, "/");
-    // Optional: if you generated rss.xml and sitemap.xml in your main site
-    document.getElementById('rssLink').href = SITE_URL + "rss.xml";
-    document.getElementById('siteMapLink').href = SITE_URL + "sitemap.xml";
-    document.getElementById('year').textContent = new Date().getFullYear();
-
-    // ==== HELPERS ====
-    const $ = (sel, el=document) => el.querySelector(sel);
-    const $$ = (sel, el=document) => Array.from(el.querySelectorAll(sel));
-    const qs = (obj) => Object.entries(obj).filter(([,v])=>v!=null && v!=="").map(([k,v])=>`${encodeURIComponent(k)}=${encodeURIComponent(v)}`).join("&");
-    const api = async (params={}) => {
-      const url = APPSCRIPT_URL + "?" + qs(params);
-      const res = await fetch(url, { headers: { "Accept": "application/json" }});
-      if (!res.ok) throw new Error("API failed");
-      return res.json();
-    };
-
-    function setMeta(title, desc){
-      document.title = title ? title + " | وبلاگ شرکت مهندسین مشاور شهرآوند" : "وبلاگ شرکت مهندسین مشاور شهرآوند";
-      let m = document.querySelector('meta[name="description"]');
-      if (!m){ m = document.createElement('meta'); m.name = "description"; document.head.appendChild(m); }
-      if (desc) m.content = desc;
-    }
-
-    function sanitize(html=""){
-      // very light sanitize: strips script tags; assumes Apps Script provides safe HTML
-      return html.replace(/<script[\s\S]*?>[\s\S]*?<\/script>/gi, "");
-    }
-
-    function badge(text){ return `<span class="chip">${text}</span>` }
-    function formatDate(iso){ try{ return new Date(iso).toLocaleDateString("fa-IR"); }catch(e){ return "" } }
-
-    // Inline calculators (rendered by tokens)
-    function RebarCalculator(){
-      return `
-        <div class="card" id="rebarCalc">
-          <h3>محاسبه وزن میلگرد</h3>
-          <div class="row">
-            <label>قطر (میلی‌متر) <input id="d" type="number" value="16"></label>
-            <label>طول (متر) <input id="L" type="number" value="12"></label>
-          </div>
-          <p class="muted">فرمول: 0.00617 × d² × L</p>
-          <div>وزن: <strong id="w">—</strong> کیلوگرم</div>
-        </div>`;
-    }
-    function initRebarCalc(){
-      const box = document.getElementById('rebarCalc'); if(!box) return;
-      const d = box.querySelector('#d'), L = box.querySelector('#L'), w = box.querySelector('#w');
-      function calc(){ const val = 0.00617 * (+d.value||0) * (+d.value||0) * (+L.value||0); w.textContent = val.toFixed(2); }
-      d.oninput = L.oninput = calc; calc();
-    }
-    function DeadLoadCalculator(){
-      return `
-        <div class="card" id="deadLoadCalc" style="margin-top:12px">
-          <h3>محاسبه بار مرده</h3>
-          <div class="row">
-            <label>مساحت (متر مربع) <input id="A" type="number" value="100"></label>
-            <label>ضخامت (سانتی‌متر) <input id="t" type="number" value="20"></label>
-            <label>چگالی (kN/m³) <input id="rho" type="number" value="25"></label>
-          </div>
-          <p class="muted">فرمول: (A × t × ρ)/1000</p>
-          <div>بار مرده: <strong id="q">—</strong> kN</div>
-        </div>`;
-    }
-    function initDeadLoadCalc(){
-      const box = document.getElementById('deadLoadCalc'); if(!box) return;
-      const A = box.querySelector('#A'), t = box.querySelector('#t'), rho = box.querySelector('#rho'), q = box.querySelector('#q');
-      function calc(){ const val = ((+A.value||0) * (+t.value||0) * (+rho.value||0))/1000; q.textContent = val.toFixed(2); }
-      A.oninput = t.oninput = rho.oninput = calc; calc();
-    }
-
-    // Render FAQ block
-    function renderFAQ(list=[]){
-      if (!list.length) return "";
-      const items = list.map(f=>`
-        <details class="card"><summary><strong>${f.q||""}</strong></summary>
-          <div class="prose">${sanitize(f.a||"")}</div>
-        </details>`).join("");
-      return `<h3 class="section-title">پرسش‌های متداول</h3>${items}`;
-    }
-
-    // Attachments list
-    function renderAttachments(list=[]){
-      if (!list.length) return "";
-      const items = list.map(a=>`<li><a href="${a.url}" target="_blank" rel="noopener">${a.name||a.url}</a></li>`).join("");
-      return `<h3 class="section-title">دانلودها</h3><ul>${items}</ul>`;
-    }
-
-    // Content token expansion
-    function expandTokens(html){
-      let out = html || "";
-      if (out.includes("<RebarCalculator/>")) out = out.replace(/<RebarCalculator\/>/g, RebarCalculator());
-      if (out.includes("<DeadLoadCalculator/>")) out = out.replace(/<DeadLoadCalculator\/>/g, DeadLoadCalculator());
-      return out;
-    }
-    function initTokenWidgets(){
-      initRebarCalc(); initDeadLoadCalc();
-    }
-
-    // ==== VIEWS ====
-    async function viewList(){
-      const app = document.getElementById('app');
-      setMeta("وبلاگ", "آخرین مقالات مهندسی ایران");
-      // get filters & posts
-      const [filters, postsRes] = await Promise.all([
-        api({ mode:"filters" }).catch(()=>({categories:[],tags:[]})),
-        api({ mode:"posts", limit: 100 })
-      ]);
-      const posts = postsRes.data || [];
-      const cats = filters.categories || Array.from(new Set(posts.map(p=>p.category).filter(Boolean)));
-      const tags = filters.tags || Array.from(new Set(posts.flatMap(p=>(p.tags||[]))));
-
-      app.innerHTML = `
-        <section class="card">
-          <div class="row" style="align-items:center;justify-content:space-between">
-            <h1 style="margin:0">همه مطالب</h1>
-            <input id="search" placeholder="جستجو در عنوان و متن..." />
-          </div>
-          <div class="row" style="margin-top:10px">
-            <select id="cat"><option value="">همه دسته‌ها</option>${cats.map(c=>`<option value="${c}">${c}</option>`).join("")}</select>
-            <select id="tag"><option value="">همه برچسب‌ها</option>${tags.map(t=>`<option value="${t}">${t}</option>`).join("")}</select>
-            <button class="btn" id="clear">پاک‌سازی فیلتر</button>
-          </div>
-        </section>
-
-        <section id="list" class="card" style="margin-top:12px"></section>
-      `;
-
-      const $list = document.getElementById('list');
-      const $search = document.getElementById('search');
-      const $cat = document.getElementById('cat');
-      const $tag = document.getElementById('tag');
-      const $clear = document.getElementById('clear');
-
-      function pass(p, q, c, t){
-        const inText = (p.title||"") + " " + (p.excerpt||"") + " " + (p.content||p.content_markdown||"");
-        const okQ = q ? inText.toLowerCase().includes(q.toLowerCase()) : true;
-        const okC = c ? (p.category === c) : true;
-        const okT = t ? ((p.tags||[]).includes(t) || (typeof p.tags==="string" && p.tags.split(",").map(s=>s.trim()).includes(t))) : true;
-        return okQ && okC && okT;
-      }
-
-      function draw(){
-        const q = $search.value.trim();
-        const c = $cat.value;
-        const t = $tag.value;
-        const rows = posts.filter(p=>pass(p,q,c,t));
-        $list.innerHTML = rows.map(p=>`
-          <article class="post">
-            <h3 style="margin:0 0 6px"><a href="#post=${encodeURIComponent(p.slug)}">${p.title}</a></h3>
-            <div class="muted">${formatDate(p.date_iso||p.date)} · ${p.category?badge(p.category):""} ${(p.tags||[]).map(badge).join(" ")}</div>
-            <p>${p.excerpt || (p.meta_description||"").slice(0,160)}</p>
-          </article>
-        `).join("") || `<p class="muted">نتیجه‌ای یافت نشد.</p>`;
-      }
-
-      [$search, $cat, $tag].forEach(el=>el.addEventListener('input', draw));
-      $clear.onclick = ()=>{ $search.value=""; $cat.value=""; $tag.value=""; draw(); };
-      draw();
-      highlightNav('list');
-    }
-
-    async function viewPost(slug){
-      const app = document.getElementById('app');
-      const res = await api({ slug });
-      const post = (res.data||[])[0];
-      if (!post){ app.innerHTML = `<div class="card">مطلب یافت نشد. <a href="#list">بازگشت</a></div>`; return; }
-
-      setMeta(post.title, post.meta_description || post.excerpt || "");
-      const htmlBody = expandTokens(sanitize(post.content || post.content_markdown || ""));
-      app.innerHTML = `
-        <article class="card prose">
-          <a class="muted" href="#list">← بازگشت</a>
-          <h1>${post.title}</h1>
-          <div class="muted">${formatDate(post.date_iso||post.date)} · ${post.author||""}</div>
-          ${post.featured_image_url ? `<p><img src="${post.featured_image_url}" alt="${post.title}"></p>` : ""}
-          <div>${htmlBody}</div>
-          ${renderFAQ(post.faq||post.faq_json||[])}
-          ${renderAttachments(post.attachments||post.attachments_json||[])}
-          ${Array.isArray(post.videos) && post.videos.length ? `
-            <h3 class="section-title">ویدیوها</h3>
-            <div class="grid grid-2">
-              ${post.videos.map(v=> `<div class="card"><a href="${v}" target="_blank" rel="noopener">${v}</a></div>`).join("")}
-            </div>` : ""}
-        </article>
-      `;
-      initTokenWidgets();
-      highlightNav(); // no tab selected
-    }
-
-    async function viewDownloads(){
-      const app = document.getElementById('app');
-      setMeta("مرکز دانلود", "دانلود پیوست‌های مقالات مهندسی");
-      const res = await api({ mode:"downloads" });
-      const rows = res.data || [];
-      app.innerHTML = `
-        <section class="card">
-          <h1>مرکز دانلود</h1>
-          <p class="muted">فایل‌های پیوست‌شده به مقالات.</p>
-          ${rows.length ? rows.map(p=>`
-            <div class="post">
-              <h3><a href="#post=${encodeURIComponent(p.slug)}">${p.title}</a></h3>
-              ${renderAttachments(p.attachments||[])}
+  <!-- صفحه جزئیات پست -->
+  <section id="view-post" style="display:none">
+    <a class="meta" href="#list">← بازگشت به لیست</a>
+    <article class="grid" style="grid-template-columns: 2fr 1fr; gap: 16px">
+      <div>
+        <div class="card prose" id="post-box">
+          <h1 id="post-title"></h1>
+          <div class="meta"><span id="post-date"></span> · <span id="post-category"></span> · <span id="post-author"></span></div>
+          <p id="post-cover-w"></p>
+          <div id="post-content"></div>
+          <div id="post-tags" style="margin-top:12px"></div>
+          <hr>
+          <section id="author-box" class="author">
+            <img id="author-avatar" src="https://api.dicebear.com/8.x/initials/svg?seed=ME" alt="نویسنده">
+            <div>
+              <strong id="author-name"></strong>
+              <p class="meta" id="author-bio">این مطلب توسط نویسنده در بلاگ مهندسی ایران منتشر شده است.</p>
             </div>
-          `).join("") : `<p class="muted">فایلی موجود نیست.</p>`}
-        </section>
-      `;
-      highlightNav('downloads');
-    }
+          </section>
+          <hr>
+          <section id="attachments"></section>
+          <section id="videos"></section>
+          <section id="faq"></section>
+        </div>
+        <div style="height:12px"></div>
+        <div class="card" id="related"></div>
+      </div>
+      <aside>
+        <div class="toc" id="toc"><strong>فهرست مطالب</strong><div id="toc-body"></div></div>
+      </aside>
+    </article>
+  </section>
 
-    async function viewNewsletter(){
-      const app = document.getElementById('app');
-      setMeta("خبرنامه", "خلاصه آخرین مطالب برای ارسال ایمیل");
-      const res = await api({ mode:"newsletter", limit: 10 });
-      const rows = res.data || [];
-      app.innerHTML = `
-        <section class="card">
-          <h1>📩 خبرنامه</h1>
-          <p class="muted">خلاصه‌ای کوتاه از آخرین مطالب. برای ارسال ایمیل می‌توانید موارد زیر را کپی کنید.</p>
-          <div class="row" style="margin:10px 0">
-            <button id="copyDigest" class="btn">کپی HTML خبرنامه</button>
-          </div>
-          <div id="digestList">
-            ${rows.map(p=>`
-              <article class="post">
-                <h3><a href="#post=${encodeURIComponent(p.slug)}">${p.title}</a></h3>
-                <p>${p.excerpt||""}</p>
-                <a href="#post=${encodeURIComponent(p.slug)}">ادامه مطلب →</a>
-              </article>
-            `).join("")}
-          </div>
-        </section>
-      `;
-      $("#copyDigest").onclick = ()=>{
-        const html = $("#digestList").innerHTML;
-        navigator.clipboard.writeText(html).then(()=> alert("خلاصه خبرنامه کپی شد!"));
-      };
-      highlightNav('newsletter');
-    }
+</main>
 
-    function highlightNav(which){
-      $$('a[data-nav]').forEach(a=>a.classList.remove('active'));
-      if (which){
-        const el = document.querySelector(`a[data-nav="${which}"]`);
-        if (el) el.classList.add('active');
-      }
-    }
+<footer>
+  <div class="container foot">
+    <div>© <span id="year"></span> بلاگ مهندسی ایران</div>
+    <div class="meta">
+      <a href="/rss.xml">RSS</a> ·
+      <a href="/sitemap.xml">Sitemap</a> ·
+      <a href="/contact.html">تماس</a>
+    </div>
+  </div>
+</footer>
 
-    // ==== ROUTER ====
-    async function router(){
-      const hash = location.hash.slice(1); // e.g., "post=slug" or "view=downloads"
-      const params = new URLSearchParams(hash);
+<!-- Markdown parser -->
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script>
+/* ====== CONFIG ====== */
+const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbypLoLs3NKEheGsRCxbwQO6L1BeKe65RLJbj-g-RAEKZA5VSVhNwYaKtBQRLTrzFU6Q1g/exec"; // <-- اینجا URL وب‌اپ اسکریپت‌تان را بگذارید
 
-      if (params.has("post")){
-        const slug = params.get("post");
-        await viewPost(slug);
-      } else if (params.get("view")==="downloads"){
-        await viewDownloads();
-      } else if (params.get("view")==="newsletter"){
-        await viewNewsletter();
-      } else {
-        await viewList();
-      }
-      // scroll to top after navigation
-      window.scrollTo({ top: 0, behavior: "instant" });
-    }
+/* ====== STATE ====== */
+let ALL_POSTS = [];   // کل پست‌ها (Published)
+let FILTERS = { categories: [], tags: [] };
 
-    window.addEventListener('hashchange', router);
-    router();
-  </script>
+/* ====== UTILS ====== */
+const $ = (s,el=document)=>el.querySelector(s);
+const $$ = (s,el=document)=>Array.from(el.querySelectorAll(s));
+const fmtDate = (iso)=>{ try{ return new Date(iso).toLocaleDateString("fa-IR"); }catch(e){ return "" } };
+const esc = (s)=> (s||"").replace(/[&<>"']/g, m=>({ "&":"&amp;","<":"&lt;",">":"&gt;","\"":"&quot;","'":"&#39;" }[m]) );
+const slugify = s => (s||"").toString().trim().replace(/\s+/g,'-');
+function chip(x){ return `<span class="chip">${esc(x)}</span>`; }
+function badge(x){ return `<span class="badge">${esc(x)}</span>`; }
+function unique(arr){ return [...new Set(arr)]; }
+function getTopTags(posts, n=12){
+  const map = {};
+  posts.forEach(p => (p.tags||[]).forEach(t => map[t]=(map[t]||0)+1));
+  return Object.entries(map).sort((a,b)=>b[1]-a[1]).slice(0,n).map(([t])=>t);
+}
+
+/* ====== JSONP fetch ====== */
+function jsonp(url){
+  return new Promise((resolve,reject)=>{
+    const cb = "cb_" + Math.random().toString(36).slice(2);
+    window[cb] = (data)=>{ resolve(data); try{ delete window[cb]; }catch{} script.remove(); };
+    const script = document.createElement("script");
+    script.src = url + (url.includes("?") ? "&" : "?") + "callback=" + cb;
+    script.onerror = ()=>{ reject(new Error("JSONP failed")); try{ delete window[cb]; }catch{} script.remove(); };
+    document.body.appendChild(script);
+  });
+}
+
+/* ====== API ====== */
+async function loadAll(){
+  const [postsRes, filtersRes] = await Promise.all([
+    jsonp(APPSCRIPT_URL + "?mode=posts&limit=500"),
+    jsonp(APPSCRIPT_URL + "?mode=filters")
+  ]);
+  if(!postsRes.ok) throw new Error("Posts failed");
+  ALL_POSTS = postsRes.data || [];
+  // نرمال‌سازی پایه
+  ALL_POSTS.forEach(p=>{
+    p.tags = Array.isArray(p.tags) ? p.tags : (typeof p.tags==="string" ? p.tags.split(",").map(s=>s.trim()).filter(Boolean) : []);
+    p.views = Number(p.views||0);
+  });
+  FILTERS = { 
+    categories: filtersRes.categories || unique(ALL_POSTS.map(p=>p.category).filter(Boolean)),
+    tags: filtersRes.tags || getTopTags(ALL_POSTS, 200)
+  };
+}
+
+/* ====== RENDER: LIST ====== */
+function renderList(){
+  $("#view-post").style.display="none";
+  $("#view-list").style.display="block";
+  // فیلترها
+  const $cat = $("#cat"), $tag = $("#tag"), $q = $("#q"), $clear = $("#clear");
+  $cat.innerHTML = `<option value="">همه دسته‌ها</option>` + FILTERS.categories.map(c=>`<option value="${esc(c)}">${esc(c)}</option>`).join("");
+  $tag.innerHTML = `<option value="">همه برچسب‌ها</option>` + FILTERS.tags.map(t=>`<option value="${esc(t)}">${esc(t)}</option>`).join("");
+
+  function pass(p){
+    const q = ($q.value||"").toLowerCase();
+    const okQ = q ? ((p.title||"").toLowerCase().includes(q) || (p.content_markdown||p.content||"").toLowerCase().includes(q)) : true;
+    const okC = $cat.value ? p.category === $cat.value : true;
+    const okT = $tag.value ? (p.tags||[]).includes($tag.value) : true;
+    return okQ && okC && okT;
+  }
+
+  function draw(){
+    const grid = $("#posts-grid");
+    const list = ALL_POSTS.filter(pass).sort((a,b)=> new Date(b.date_iso||b.date) - new Date(a.date_iso||a.date));
+    grid.innerHTML = list.map(p=> cardPost(p)).join("") || `<div class="meta">موردی یافت نشد.</div>`;
+    // Sidebar widgets
+    renderLatest();
+    renderCategories();
+    renderArchives();
+    renderPopular();
+    renderTopTags();
+    highlightNav("list");
+    window.scrollTo({top:0,behavior:"instant"});
+  }
+
+  [$q,$cat,$tag].forEach(el=>el.oninput=draw);
+  $clear.onclick = ()=>{ $q.value=""; $cat.value=""; $tag.value=""; draw(); };
+
+  // اگر از هَش با فیلتر وارد شدیم
+  const params = new URLSearchParams(location.hash.slice(1));
+  if(params.get("category")) $cat.value = params.get("category");
+  if(params.get("tag")) $tag.value = params.get("tag");
+  if(params.get("ym")) {
+    // فیلتر آرشیو: فقط تاریخ همان ماه
+    const ym = params.get("ym"); // YYYY-MM
+    const grid = $("#posts-grid");
+    const list = ALL_POSTS.filter(p=>{
+      const d = (p.date_iso||p.date||"").slice(0,7);
+      return d === ym;
+    }).sort((a,b)=> new Date(b.date_iso||b.date) - new Date(a.date_iso||a.date));
+    grid.innerHTML = list.map(p=> cardPost(p)).join("") || `<div class="meta">موردی یافت نشد.</div>`;
+  } else {
+    draw();
+  }
+}
+
+/* ====== RENDER HELPERS ====== */
+function cardPost(p){
+  const cover = p.featured_image_url ? `<img class="card-cover" loading="lazy" src="${esc(p.featured_image_url)}" alt="${esc(p.title)}">` : "";
+  const date = fmtDate(p.date_iso||p.date);
+  return `
+    <article class="card">
+      ${cover}
+      <h3><a href="#post=${encodeURIComponent(p.slug)}">${esc(p.title)}</a></h3>
+      <div class="meta">${date} · ${p.category?badge(p.category):""}</div>
+      <p>${esc(p.excerpt || (p.meta_description||"").slice(0,160))}</p>
+      <div>${(p.tags||[]).slice(0,4).map(t=>`<a class="chip" href="#tag=${encodeURIComponent(t)}">${esc(t)}</a>`).join("")}</div>
+    </article>
+  `;
+}
+function renderLatest(n=5){
+  const box = $("#latest");
+  const list = [...ALL_POSTS].sort((a,b)=> new Date(b.date_iso||b.date) - new Date(a.date_iso||a.date)).slice(0,n);
+  box.innerHTML = list.map(p=>`<div class="list-item"><a href="#post=${encodeURIComponent(p.slug)}">${esc(p.title)}</a><div class="meta">${fmtDate(p.date_iso||p.date)}</div></div>`).join("");
+}
+function renderCategories(){
+  const box = $("#categories");
+  const byCat = {};
+  ALL_POSTS.forEach(p=>{ if(!p.category) return; byCat[p.category]=(byCat[p.category]||0)+1; });
+  const cats = Object.entries(byCat).sort((a,b)=>b[1]-a[1]);
+  box.innerHTML = cats.map(([c,n])=>`<div class="list-item"><a href="#category=${encodeURIComponent(c)}">${esc(c)}</a> <span class="meta">(${n})</span></div>`).join("") || `<div class="meta">دسته‌ای ثبت نشده</div>`;
+}
+function renderArchives(){
+  const box = $("#archives");
+  const map = {};
+  ALL_POSTS.forEach(p=>{
+    const ym = (p.date_iso||p.date||"").slice(0,7);
+    if(!ym) return; map[ym]=(map[ym]||0)+1;
+  });
+  const rows = Object.entries(map).sort((a,b)=>b[0].localeCompare(a[0]));
+  box.innerHTML = rows.map(([ym,n])=>{
+    const [y,m]=ym.split("-");
+    return `<div class="list-item"><a href="#ym=${ym}">${y}/${m}</a> <span class="meta">(${n})</span></div>`;
+  }).join("") || `<div class="meta">آرشیوی موجود نیست</div>`;
+}
+function renderPopular(n=5){
+  const box = $("#popular");
+  const list = [...ALL_POSTS].sort((a,b)=> (b.views||0) - (a.views||0)).slice(0,n);
+  box.innerHTML = list.map(p=>`<div class="list-item"><a href="#post=${encodeURIComponent(p.slug)}">${esc(p.title)}</a> <span class="meta">(${p.views||0} بازدید)</span></div>`).join("") || `<div class="meta">داده بازدید موجود نیست</div>`;
+}
+function renderTopTags(){
+  const box = $("#top-tags");
+  const top = getTopTags(ALL_POSTS, 20);
+  box.innerHTML = top.map(t=>`<a class="chip" href="#tag=${encodeURIComponent(t)}">${esc(t)}</a>`).join("") || `<div class="meta">تگی موجود نیست</div>`;
+}
+
+/* ====== RENDER: SINGLE POST ====== */
+function expandTokens(html){
+  let out = html || "";
+  if(out.includes("<RebarCalculator/>")) out = out.replace(/<RebarCalculator\/>/g, RebarCalculator());
+  if(out.includes("<DeadLoadCalculator/>")) out = out.replace(/<DeadLoadCalculator\/>/g, DeadLoadCalculator());
+  return out;
+}
+function RebarCalculator(){
+  return `
+  <div class="card" id="rebarCalc">
+    <h3>محاسبه وزن میلگرد</h3>
+    <div class="controls">
+      <label>قطر (میلی‌متر) <input id="d" type="number" value="16"></label>
+      <label>طول (متر) <input id="L" type="number" value="12"></label>
+    </div>
+    <p class="meta">فرمول: 0.00617 × d² × L</p>
+    <div>وزن: <strong id="w">—</strong> کیلوگرم</div>
+  </div>`;
+}
+function initRebarCalc(){
+  const box = $("#rebarCalc"); if(!box) return;
+  const d=box.querySelector("#d"), L=box.querySelector("#L"), w=box.querySelector("#w");
+  function calc(){ const val=0.00617*(+d.value||0)*(+d.value||0)*(+L.value||0); w.textContent=val.toFixed(2); }
+  d.oninput=L.oninput=calc; calc();
+}
+function DeadLoadCalculator(){
+  return `
+  <div class="card" id="deadLoadCalc">
+    <h3>محاسبه بار مرده</h3>
+    <div class="controls">
+      <label>مساحت (م²) <input id="A" type="number" value="100"></label>
+      <label>ضخامت (cm) <input id="t" type="number" value="20"></label>
+      <label>چگالی (kN/m³) <input id="rho" type="number" value="25"></label>
+    </div>
+    <p class="meta">فرمول: (A × t × ρ)/1000</p>
+    <div>بار مرده: <strong id="q">—</strong> kN</div>
+  </div>`;
+}
+function initDeadLoadCalc(){
+  const box=$("#deadLoadCalc"); if(!box) return;
+  const A=box.querySelector("#A"), t=box.querySelector("#t"), rho=box.querySelector("#rho"), q=box.querySelector("#q");
+  function calc(){ const val=((+A.value||0)*(+t.value||0)*(+rho.value||0))/1000; q.textContent=val.toFixed(2); }
+  A.oninput=t.oninput=rho.oninput=calc; calc();
+}
+
+function renderPost(slug){
+  const p = ALL_POSTS.find(x=> String(x.slug)===String(slug));
+  if(!p){ location.hash="#list"; return; }
+  $("#view-list").style.display="none";
+  $("#view-post").style.display="block";
+
+  document.title = `${p.title} | بلاگ مهندسی ایران`;
+  const desc = p.meta_description || p.excerpt || "";
+  let meta = document.querySelector('meta[name="description"]');
+  if(!meta){ meta = document.createElement('meta'); meta.name="description"; document.head.appendChild(meta); }
+  meta.content = desc;
+
+  $("#post-title").textContent = p.title;
+  $("#post-date").textContent = fmtDate(p.date_iso||p.date);
+  $("#post-category").innerHTML = p.category ? `<a href="#category=${encodeURIComponent(p.category)}">${esc(p.category)}</a>` : "";
+  $("#post-author").textContent = p.author || "";
+  $("#author-name").textContent = p.author || "نویسنده مهمان";
+  $("#author-avatar").src = `https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(p.author||"ME")}`;
+
+  const coverWrap = $("#post-cover-w");
+  coverWrap.innerHTML = p.featured_image_url ? `<img class="card-cover" loading="lazy" src="${esc(p.featured_image_url)}" alt="${esc(p.title)}" style="height:auto">` : "";
+
+  // محتوا (Markdown یا HTML)
+  const raw = p.content_markdown || p.content || "";
+  const html = expandTokens(marked.parse(raw));
+  $("#post-content").innerHTML = html;
+
+  // تگ‌ها
+  $("#post-tags").innerHTML = (p.tags||[]).map(t=>`<a class="chip" href="#tag=${encodeURIComponent(t)}">${esc(t)}</a>`).join("");
+
+  // پیوست‌ها
+  const at = p.attachments||[];
+  $("#attachments").innerHTML = at.length ? (`<h3 class="section-title">دانلودها</h3><ul>` + at.map(a=>`<li><a href="${a.url}" target="_blank" rel="noopener">${esc(a.name||a.url)}</a></li>`).join("") + `</ul>`) : "";
+
+  // ویدیوها
+  const vids = p.videos||[];
+  $("#videos").innerHTML = vids.length ? (`<h3 class="section-title">ویدیوها</h3>` + vids.map(v=>`<div class="list-item"><a href="${v}" target="_blank" rel="noopener">${v}</a></div>`).join("")) : "";
+
+  // FAQ
+  const faq = p.faq||[];
+  $("#faq").innerHTML = faq.length ? (`<h3 class="section-title">پرسش‌های متداول</h3>` + faq.map(f=>`
+    <details class="card"><summary><strong>${esc(f.q||"")}</strong></summary>
+      <div class="prose">${f.a||""}</div>
+    </details>`).join("")) : "";
+
+  // TOC
+  buildTOC();
+
+  // Related
+  renderRelated(p);
+
+  // init calculators
+  initRebarCalc(); initDeadLoadCalc();
+
+  highlightNav(); // هیچ تب فعالی نیست
+  window.scrollTo({top:0,behavior:"instant"});
+}
+
+function buildTOC(){
+  const zone = $("#post-content");
+  const anchors = [];
+  $$("h2, h3", zone).forEach((h,i)=>{
+    const id = h.id || (h.textContent ? slugify(h.textContent) : ("sec-"+i));
+    h.id = id;
+    anchors.push({ id, text: h.textContent, level: h.tagName.toLowerCase() });
+  });
+  $("#toc-body").innerHTML = anchors.map(a=>`<a href="#${a.id}" style="margin-${a.level==="h3"?"right":"right"}:${a.level==="h3"?"12px":"0"}">${esc(a.text)}</a>`).join("");
+}
+
+function renderRelated(p){
+  const base = (p.tags||[]).length ? ALL_POSTS.filter(x=> x.slug!==p.slug && (x.tags||[]).some(t=>p.tags.includes(t))) : ALL_POSTS.filter(x=>x.slug!==p.slug && x.category===p.category);
+  const picked = base.slice(0,4);
+  $("#related").innerHTML = picked.length ? (`<h3 class="section-title">پیشنهاد سایر پست‌ها</h3><div class="grid grid-cards">` + picked.map(cardPost).join("") + `</div>`) : "";
+}
+
+/* ====== ROUTER ====== */
+function highlightNav(which){
+  $$('a[data-nav]').forEach(a=>a.classList.remove('active'));
+  if(which){ const el = document.querySelector(`a[data-nav="${which}"]`); if(el) el.classList.add('active'); }
+}
+async function router(){
+  const hash = location.hash.slice(1);
+  const params = new URLSearchParams(hash);
+  if(!ALL_POSTS.length){ try{ await loadAll(); }catch(e){ console.error(e); alert("خطا در دریافت داده‌ها از API"); return; } }
+
+  if(params.has("post")){
+    renderPost(params.get("post"));
+  } else if(params.has("category") || params.has("tag") || params.has("ym")){
+    renderList();
+  } else if(params.get("view")==="popular"){
+    $("#view-post").style.display="none"; $("#view-list").style.display="block";
+    highlightNav("popular");
+    // فقط پربازدیدها را نشان بده
+    const grid = $("#posts-grid");
+    const list = [...ALL_POSTS].sort((a,b)=> (b.views||0)-(a.views||0)).slice(0,12);
+    grid.innerHTML = list.map(cardPost).join("");
+    renderLatest(); renderCategories(); renderArchives(); renderPopular(); renderTopTags();
+    window.scrollTo({top:0,behavior:"instant"});
+  } else {
+    renderList();
+  }
+}
+
+/* ====== DARK MODE ====== */
+function initDark(){
+  const root = document.documentElement;
+  const saved = localStorage.getItem("theme");
+  if(saved==="dark") root.classList.add("dark");
+  $("#dark").onclick = ()=>{
+    root.classList.toggle("dark");
+    localStorage.setItem("theme", root.classList.contains("dark") ? "dark" : "light");
+  };
+}
+
+/* ====== INIT ====== */
+document.getElementById("year").textContent = new Date().getFullYear();
+window.addEventListener("hashchange", router);
+initDark();
+router();
+</script>
 </body>
 </html>
