@@ -119,7 +119,12 @@ hr{border:none;border-top:1px solid var(--line);margin:16px 0}
       <div>
         <div class="card prose" id="post-box">
           <h1 id="post-title"></h1>
-          <div class="meta"><span id="post-date"></span> · <span id="post-category"></span> · <span id="post-author"></span></div>
+          <div class="meta">
+            <span id="post-date"></span> · 
+            <span id="post-category"></span> · 
+            <span id="post-author"></span> · 
+            👁 <span id="post-views"></span> بازدید
+          </div>
           <p id="post-cover-w"></p>
           <div id="post-content"></div>
           <div id="post-tags" style="margin-top:12px"></div>
@@ -162,7 +167,7 @@ hr{border:none;border-top:1px solid var(--line);margin:16px 0}
 <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 <script>
 /* ====== CONFIG ====== */
-const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbypLoLs3NKEheGsRCxbwQO6L1BeKe65RLJbj-g-RAEKZA5VSVhNwYaKtBQRLTrzFU6Q1g/exec"; // <-- اینجا URL وب‌اپ اسکریپت‌تان را بگذارید
+const APPSCRIPT_URL = "https://script.google.com/macros/s/AKfycbxrWTN68dO87U1yjYqvZpwNARjWBpz-fBbLc_Wl2kDNcrXEKAMynJPzq86XO0_zAwj3Kw/exec"; // <-- اینجا URL وب‌اپ اسکریپت‌تان را بگذارید
 
 /* ====== STATE ====== */
 let ALL_POSTS = [];   // کل پست‌ها (Published)
@@ -361,9 +366,15 @@ function initDeadLoadCalc(){
   A.oninput=t.oninput=rho.oninput=calc; calc();
 }
 
-function renderPost(slug){
-  const p = ALL_POSTS.find(x=> String(x.slug)===String(slug));
-  if(!p){ location.hash="#list"; return; }
+async function renderPost(slug) {
+  try {
+    // درخواست به Google Apps Script با increment=true
+    const res = await jsonp(APPSCRIPT_URL + "?mode=posts&slug=" + encodeURIComponent(slug) + "&increment=true");
+    if (!res.ok || !res.data || !res.data.length) {
+      location.hash = "#list";
+      return;
+    }
+    const p = res.data[0];
   $("#view-list").style.display="none";
   $("#view-post").style.display="block";
 
@@ -379,6 +390,7 @@ function renderPost(slug){
   $("#post-author").textContent = p.author || "";
   $("#author-name").textContent = p.author || "نویسنده مهمان";
   $("#author-avatar").src = `https://api.dicebear.com/8.x/initials/svg?seed=${encodeURIComponent(p.author||"ME")}`;
+  $("#post-views").textContent = p.views || 0;
 
   const coverWrap = $("#post-cover-w");
   coverWrap.innerHTML = p.featured_image_url ? `<img class="card-cover" loading="lazy" src="${esc(p.featured_image_url)}" alt="${esc(p.title)}" style="height:auto">` : "";
