@@ -1,0 +1,73 @@
+<header class="site-header">
+  <div class="h-inner wrap">
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div class="bt">
+        <div class="t">بلاگ تخصصی ساختمان</div>
+        <div class="s">شرکت مهندسین مشاور شهرآوند</div>
+      </div>
+    </div>
+    <nav class="nav" aria-label="میانبرها">
+      <a class="btn" href="<?= ScriptApp.getService().getUrl() ?>"><i class="fa-solid fa-house"></i>خانه</a>
+      <button class="btn"><i class="fa-solid fa-book"></i>کتابخانه</button>
+      <button class="btn"><i class="fa-solid fa-magnifying-glass"></i>جستجو</button>
+      <a class="btn primary" href="#"><i class="fa-solid fa-diagram-project"></i>نظام تندیس</a>
+    </nav>
+    <label class="search">
+      <i class="fa-solid fa-magnifying-glass"></i>
+      <input id="q" type="search" placeholder="جستجو..." />
+    </label>
+  </div>
+</header>
+<div class="progress"><div class="bar" id="bar"></div></div>
+
+<footer class="footer">
+  <div class="f-inner wrap">
+    <div class="f-col">
+      <h4>درباره ما</h4>
+      <ul class="f-list">
+        <li><a href="#">شرکت مهندسین مشاور شهرآوند</a></li>
+        <li><a href="#">تاریخچه شرکت</a></li>
+        <li><a href="#">چشم‌انداز و مأموریت</a></li>
+        <li><a href="#">تیم ما</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>خدمات</h4>
+      <ul class="f-list">
+        <li><a href="#">مشاوره فنی</a></li>
+        <li><a href="#">طراحی و اجرا</a></li>
+        <li><a href="#">نظارت بر پروژه‌ها</a></li>
+        <li><a href="#">آموزش تخصصی</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>پروژه‌ها</h4>
+      <ul class="f-list">
+        <li><a href="#">پروژه‌های در حال اجرا</a></li>
+        <li><a href="#">پروژه‌های تکمیل شده</a></li>
+        <li><a href="#">نمونه کارها</a></li>
+        <li><a href="#">گالری تصاویر</a></li>
+      </ul>
+    </div>
+    <div class="f-col">
+      <h4>تماس با ما</h4>
+      <ul class="f-list">
+        <li><a href="#">اطلاعات تماس</a></li>
+        <li><a href="#">دفتر مرکزی</a></li>
+        <li><a href="#">شعبات</a></li>
+        <li><a href="#">فرم تماس</a></li>
+      </ul>
+    </div>
+  </div>
+  <div class="fb">کلیه حقوق این وب‌سایت متعلق به شرکت مهندسین مشاور شهرآوند است.</div>
+</footer>
+
+<script>
+  // Progress bar
+  window.addEventListener('scroll', ()=>{
+    const s = document.documentElement.scrollTop || document.body.scrollTop;
+    const h = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+    document.getElementById('bar').style.width = (h ? (s/h)*100 : 0) + '%';
+  });
+</script>
