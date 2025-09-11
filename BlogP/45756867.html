@@ -1,0 +1,1764 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نظام تندیس - تدارک نیازمندی دقیق و یکپارچه ساختمان</title>
+    
+    <!-- Google Fonts: Wazir -->
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;500;700&display=swap" rel="stylesheet">
+    
+    <!-- Font Awesome for icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    
+    <style>
+        :root {
+            --primary-color: #1a73e8;
+            --secondary-color: #34a853;
+            --accent-color: #ea4335;
+            --light-color: #f8f9fa;
+            --dark-color: #202124;
+            --text-color: #5f6368;
+            --border-color: #dadce0;
+            --shadow: 0 1px 2px 0 rgba(60,64,67,0.3), 0 2px 6px 2px rgba(60,64,67,0.15);
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Noto Sans Arabic', sans-serif;
+            background-color: #fff;
+            color: var(--text-color);
+            line-height: 1.6;
+            direction: rtl;
+        }
+        
+        /* Header Styles */
+        .header {
+            background-color: #fff;
+            box-shadow: 0 1px 6px rgba(32,33,36,.28);
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+        
+        .header-content {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 20px;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+        
+        .logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .logo img {
+            height: 50px;
+            margin-left: 10px;
+        }
+        
+        .logo-text h1 {
+            font-size: 24px;
+            color: var(--dark-color);
+            font-weight: 700;
+        }
+        
+        .logo-text p {
+            font-size: 14px;
+            color: var(--text-color);
+        }
+        
+        .header-nav {
+            display: flex;
+            align-items: center;
+        }
+        
+        .header-nav a {
+            color: var(--text-color);
+            text-decoration: none;
+            margin-right: 20px;
+            font-weight: 500;
+            transition: color 0.3s;
+        }
+        
+        .header-nav a:hover {
+            color: var(--primary-color);
+        }
+        
+        /* Reading Progress Bar */
+        .progress-container {
+            width: 100%;
+            height: 4px;
+            background-color: #f1f1f1;
+            position: sticky;
+            top: 81px;
+            z-index: 999;
+        }
+        
+        .progress-bar {
+            height: 4px;
+            background-color: var(--primary-color);
+            width: 0;
+            transition: width 0.3s;
+        }
+        
+        /* Featured Image with Overlay */
+        .featured-image {
+            position: relative;
+            width: 100%;
+            height: 500px;
+            overflow: hidden;
+            margin-bottom: 30px;
+        }
+        
+        .featured-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .featured-overlay {
+            position: absolute;
+            bottom: 0;
+            left: 0;
+            right: 0;
+            background: linear-gradient(to top, rgba(0,0,0,0.8), transparent);
+            padding: 40px;
+            color: white;
+        }
+        
+        .featured-overlay h2 {
+            font-size: 36px;
+            margin-bottom: 10px;
+            font-weight: 700;
+        }
+        
+        .featured-overlay .subtitle {
+            font-size: 20px;
+            margin-bottom: 20px;
+            font-weight: 500;
+        }
+        
+        .article-meta {
+            display: flex;
+            align-items: center;
+            font-size: 14px;
+            margin-top: 15px;
+        }
+        
+        .article-meta .author {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        .article-meta .author img {
+            width: 30px;
+            height: 30px;
+            border-radius: 50%;
+            margin-left: 8px;
+        }
+        
+        .article-meta .reading-time, .article-meta .date {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+        }
+        
+        .article-meta i {
+            margin-left: 5px;
+        }
+        
+        /* Main Content Layout */
+        .main-container {
+            display: flex;
+            max-width: 1400px;
+            margin: 0 auto;
+            padding: 0 20px;
+        }
+        
+        .content-area {
+            flex: 1;
+            margin-left: 30px;
+        }
+        
+        .sidebar {
+            width: 300px;
+            position: sticky;
+            top: 100px;
+            height: fit-content;
+        }
+        
+        /* Table of Contents */
+        .toc-container {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .toc-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        .toc-list {
+            list-style: none;
+        }
+        
+        .toc-item {
+            margin-bottom: 12px;
+            cursor: pointer;
+            transition: transform 0.2s;
+            display: flex;
+            align-items: center;
+        }
+        
+        .toc-item:hover {
+            transform: translateX(-5px);
+        }
+        
+        .toc-item.active {
+            color: var(--primary-color);
+            font-weight: 500;
+        }
+        
+        .toc-thumbnail {
+            width: 50px;
+            height: 30px;
+            border-radius: 4px;
+            margin-left: 10px;
+            object-fit: cover;
+            border: 1px solid var(--border-color);
+        }
+        
+        /* Tags */
+        .tags-container {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-bottom: 20px;
+        }
+        
+        .tags-title {
+            font-size: 18px;
+            font-weight: 700;
+            margin-bottom: 15px;
+            color: var(--dark-color);
+            border-bottom: 1px solid var(--border-color);
+            padding-bottom: 10px;
+        }
+        
+        .tag {
+            display: inline-block;
+            background-color: #e8f0fe;
+            color: var(--primary-color);
+            padding: 5px 10px;
+            border-radius: 20px;
+            font-size: 14px;
+            margin: 0 5px 10px 0;
+            transition: background-color 0.3s;
+        }
+        
+        .tag:hover {
+            background-color: #d2e3fc;
+        }
+        
+        /* Fixed Ad Banner */
+        .ad-banner {
+            background-color: var(--light-color);
+            border-radius: 8px;
+            padding: 15px;
+            margin-top: 20px;
+            text-align: center;
+            position: sticky;
+            top: 500px;
+        }
+        
+        .ad-banner img {
+            width: 100%;
+            border-radius: 4px;
+        }
+        
+        /* Slide Styles */
+        .slide-container {
+            margin-bottom: 40px;
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+        }
+        
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .slide-author {
+            display: flex;
+            align-items: center;
+        }
+        
+        .slide-author img {
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+        
+        .slide-author-info h4 {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .slide-author-info p {
+            font-size: 12px;
+            color: var(--text-color);
+        }
+        
+        .slide-logo {
+            display: flex;
+            align-items: center;
+        }
+        
+        .slide-logo img {
+            height: 30px;
+            margin-left: 8px;
+        }
+        
+        .slide-logo span {
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .slide-frame {
+            position: relative;
+            width: 100%;
+            padding-bottom: 56.25%; /* 16:9 Aspect Ratio */
+            background-color: #000;
+            overflow: hidden;
+        }
+        
+        .slide-content {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .slide-content img, .slide-content video, .slide-content iframe {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        
+        .slide-navigation {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 0 20px;
+        }
+        
+        .slide-nav-btn {
+            background-color: rgba(255, 255, 255, 0.5);
+            color: var(--dark-color);
+            border: none;
+            width: 40px;
+            height: 40px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+        
+        .slide-nav-btn:hover {
+            background-color: rgba(255, 255, 255, 0.8);
+        }
+        
+        .slide-indicators {
+            position: absolute;
+            bottom: 15px;
+            left: 0;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .slide-indicator {
+            width: 8px;
+            height: 8px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.5);
+            cursor: pointer;
+        }
+        
+        .slide-indicator.active {
+            background-color: #fff;
+        }
+        
+        /* Slide Interactions */
+        .slide-interactions {
+            display: flex;
+            padding: 15px;
+            border-bottom: 1px solid var(--border-color);
+        }
+        
+        .interaction-btn {
+            display: flex;
+            align-items: center;
+            margin-left: 20px;
+            color: var(--text-color);
+            cursor: pointer;
+            transition: color 0.3s;
+        }
+        
+        .interaction-btn:hover {
+            color: var(--primary-color);
+        }
+        
+        .interaction-btn i {
+            font-size: 24px;
+            margin-left: 5px;
+        }
+        
+        .interaction-btn.liked {
+            color: var(--accent-color);
+        }
+        
+        .interaction-btn.saved {
+            color: var(--secondary-color);
+        }
+        
+        /* Slide Caption */
+        .slide-caption {
+            padding: 15px;
+        }
+        
+        .caption-text {
+            font-size: 15px;
+            line-height: 1.5;
+            color: var(--dark-color);
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+            overflow: hidden;
+        }
+        
+        .caption-text.expanded {
+            display: block;
+        }
+        
+        .more-btn {
+            color: var(--primary-color);
+            background: none;
+            border: none;
+            font-size: 14px;
+            cursor: pointer;
+            padding: 5px 0;
+            margin-top: 5px;
+            font-weight: 500;
+        }
+        
+        .slide-date {
+            font-size: 12px;
+            color: var(--text-color);
+            margin-top: 10px;
+        }
+        
+        /* Comments Section */
+        .comments-section {
+            padding: 15px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .comments-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        
+        .comments-title {
+            font-size: 16px;
+            font-weight: 600;
+            color: var(--dark-color);
+        }
+        
+        .comment {
+            display: flex;
+            margin-bottom: 15px;
+        }
+        
+        .comment img {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            margin-left: 10px;
+        }
+        
+        .comment-content {
+            flex: 1;
+        }
+        
+        .comment-author {
+            font-weight: 600;
+            font-size: 14px;
+            color: var(--dark-color);
+        }
+        
+        .comment-text {
+            font-size: 14px;
+            color: var(--text-color);
+            margin-top: 3px;
+        }
+        
+        .comment-actions {
+            display: flex;
+            margin-top: 5px;
+            font-size: 12px;
+            color: var(--text-color);
+        }
+        
+        .comment-action {
+            margin-left: 15px;
+            cursor: pointer;
+        }
+        
+        /* Environmental Ad */
+        .environmental-ad {
+            background-color: #e8f5e9;
+            border-radius: 8px;
+            padding: 20px;
+            margin: 40px 0;
+            text-align: center;
+        }
+        
+        .environmental-ad h3 {
+            color: var(--secondary-color);
+            margin-bottom: 10px;
+        }
+        
+        .environmental-ad p {
+            color: var(--text-color);
+            margin-bottom: 15px;
+        }
+        
+        .environmental-ad img {
+            max-width: 100%;
+            border-radius: 4px;
+        }
+        
+        /* Suggested Posts */
+        .suggested-posts {
+            margin-top: 60px;
+            padding-top: 30px;
+            border-top: 1px solid var(--border-color);
+        }
+        
+        .suggested-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: var(--dark-color);
+            margin-bottom: 20px;
+            text-align: center;
+        }
+        
+        .suggested-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 20px;
+        }
+        
+        .suggested-card {
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 1px 3px rgba(0,0,0,0.12), 0 1px 2px rgba(0,0,0,0.24);
+            transition: transform 0.3s, box-shadow 0.3s;
+            cursor: pointer;
+        }
+        
+        .suggested-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 10px 20px rgba(0,0,0,0.19), 0 6px 6px rgba(0,0,0,0.23);
+        }
+        
+        .suggested-image {
+            width: 100%;
+            height: 180px;
+            object-fit: cover;
+        }
+        
+        .suggested-content {
+            padding: 15px;
+        }
+        
+        .suggested-content h3 {
+            font-size: 18px;
+            font-weight: 600;
+            color: var(--dark-color);
+            margin-bottom: 10px;
+        }
+        
+        .suggested-content p {
+            font-size: 14px;
+            color: var(--text-color);
+            margin-bottom: 10px;
+        }
+        
+        .suggested-meta {
+            display: flex;
+            justify-content: space-between;
+            font-size: 12px;
+            color: var(--text-color);
+        }
+        
+        /* Footer */
+        .footer {
+            background-color: var(--dark-color);
+            color: #fff;
+            padding: 40px 20px;
+            margin-top: 60px;
+        }
+        
+        .footer-content {
+            max-width: 1400px;
+            margin: 0 auto;
+            display: grid;
+            grid-template-columns: repeat(4, 1fr);
+            gap: 30px;
+        }
+        
+        .footer-section h3 {
+            font-size: 18px;
+            margin-bottom: 15px;
+            font-weight: 600;
+        }
+        
+        .footer-section ul {
+            list-style: none;
+        }
+        
+        .footer-section ul li {
+            margin-bottom: 10px;
+        }
+        
+        .footer-section ul li a {
+            color: #e0e0e0;
+            text-decoration: none;
+            transition: color 0.3s;
+        }
+        
+        .footer-section ul li a:hover {
+            color: #fff;
+        }
+        
+        .footer-bottom {
+            text-align: center;
+            margin-top: 30px;
+            padding-top: 20px;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            font-size: 14px;
+            color: #e0e0e0;
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 1024px) {
+            .suggested-grid {
+                grid-template-columns: repeat(2, 1fr);
+            }
+            
+            .footer-content {
+                grid-template-columns: repeat(2, 1fr);
+            }
+        }
+        
+        @media (max-width: 768px) {
+            .main-container {
+                flex-direction: column;
+            }
+            
+            .content-area {
+                margin-left: 0;
+            }
+            
+            .sidebar {
+                width: 100%;
+                position: static;
+                margin-top: 30px;
+            }
+            
+            .ad-banner {
+                position: static;
+            }
+            
+            .suggested-grid {
+                grid-template-columns: 1fr;
+            }
+            
+            .footer-content {
+                grid-template-columns: 1fr;
+            }
+            
+            .featured-overlay h2 {
+                font-size: 28px;
+            }
+            
+            .featured-overlay .subtitle {
+                font-size: 16px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Header -->
+    <header class="header">
+        <div class="header-content">
+            <div class="logo">
+                <img src="https://picsum.photos/seed/tandis-logo/100/100.jpg" alt="نظام تندیس">
+                <div class="logo-text">
+                    <h1>نظام تندیس</h1>
+                    <p>تدارک نیازمندی دقیق و یکپارچه ساختمان</p>
+                </div>
+            </div>
+            <nav class="header-nav">
+                <a href="#">صفحه اصلی</a>
+                <a href="#">خدمات</a>
+                <a href="#">پروژه‌ها</a>
+                <a href="#">درباره ما</a>
+                <a href="#">تماس با ما</a>
+            </nav>
+        </div>
+    </header>
+    
+    <!-- Reading Progress Bar -->
+    <div class="progress-container">
+        <div class="progress-bar" id="progress-bar"></div>
+    </div>
+    
+    <!-- Featured Image with Overlay -->
+    <div class="featured-image">
+        <img src="https://picsum.photos/seed/construction-building/1400/500.jpg" alt="ساختمان">
+        <div class="featured-overlay">
+            <h2>پلتفرم ارتباط هوشمند مهندسان، کارفرمایان و پیمانکاران</h2>
+            <p class="subtitle">راهکار نوین در مدیریت و اجرای پروژه‌های ساختمانی</p>
+            <div class="article-meta">
+                <div class="author">
+                    <img src="https://picsum.photos/seed/author1/60/60.jpg" alt="نویسنده">
+                    <span>احمد رضایی</span>
+                </div>
+                <div class="reading-time">
+                    <i class="far fa-clock"></i>
+                    <span>۱۵ دقیقه</span>
+                </div>
+                <div class="date">
+                    <i class="far fa-calendar"></i>
+                    <span>۱۴۰۲/۰۳/۱۵</span>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Main Container -->
+    <div class="main-container">
+        <!-- Content Area -->
+        <div class="content-area">
+            <!-- Slide 1 -->
+            <div class="slide-container" id="slide-1">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author1/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>احمد رضایی</h4>
+                            <p>مهندس عمران</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <img src="https://picsum.photos/seed/slide1/800/450.jpg" alt="اسلاید ۱">
+                    </div>
+                    <div class="slide-navigation">
+                        <button class="slide-nav-btn"><i class="fas fa-chevron-right"></i></button>
+                        <button class="slide-nav-btn"><i class="fas fa-chevron-left"></i></button>
+                    </div>
+                    <div class="slide-indicators">
+                        <div class="slide-indicator active"></div>
+                        <div class="slide-indicator"></div>
+                        <div class="slide-indicator"></div>
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۲۴۵</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۱۸</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        مقدمه‌ای بر نظام تندیس: پلتفرمی نوین برای مدیریت یکپارچه پروژه‌های ساختمانی. این سیستم با هدف ایجاد ارتباط هوشمند بین مهندسان، کارفرمایان و پیمانکاران طراحی شده است تا فرآیندهای اجرایی پروژه‌ها را تسهیل بخشد. در این اسلاید، به بررسی چالش‌های موجود در صنعت ساختمان و راهکارهای ارائه شده توسط نظام تندیس می‌پردازیم.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۱۰
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۱۸)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                    
+                    <div class="comment">
+                        <img src="https://picsum.photos/seed/user1/72/72.jpg" alt="کاربر">
+                        <div class="comment-content">
+                            <div class="comment-author">مریم احمدی</div>
+                            <div class="comment-text">عالی بود! به نظر من این سیستم می‌تونه تفاوت بزرگی در پروژه‌های ساختمانی ایجاد کنه.</div>
+                            <div class="comment-actions">
+                                <span class="comment-action"><i class="far fa-heart"></i> ۱۲</span>
+                                <span class="comment-action">پاسخ</span>
+                                <span class="comment-action">۲ روز پیش</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="comment">
+                        <img src="https://picsum.photos/seed/user2/72/72.jpg" alt="کاربر">
+                        <div class="comment-content">
+                            <div class="comment-author">رضا کریمی</div>
+                            <div class="comment-text">آیا این سیستم برای پروژه‌های بزرگ هم مناسب هست؟</div>
+                            <div class="comment-actions">
+                                <span class="comment-action"><i class="far fa-heart"></i> ۵</span>
+                                <span class="comment-action">پاسخ</span>
+                                <span class="comment-action">۱ روز پیش</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 2 -->
+            <div class="slide-container" id="slide-2">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author2/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>سارا محمدی</h4>
+                            <p>معمار</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۱۸۹</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۲۴</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        در این ویدیو، نحوه عملکرد سیستم تندیس در مدیریت نیازمندی‌های پروژه‌های ساختمانی را به صورت عملی مشاهده می‌کنید. این سیستم با استفاده از فناوری‌های نوین، امکان ایجاد ارتباط بی‌واسطه بین تمامی ذینفعان پروژه را فراهم می‌کند و به شفاف‌سازی فرآیندها کمک شایانی می‌نماید.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۱۲
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۲۴)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                    
+                    <div class="comment">
+                        <img src="https://picsum.photos/seed/user3/72/72.jpg" alt="کاربر">
+                        <div class="comment-content">
+                            <div class="comment-author">علی اکبری</div>
+                            <div class="comment-text">ویدیو بسیار آموزشی بود. ممنون از توضیحات کامل شما.</div>
+                            <div class="comment-actions">
+                                <span class="comment-action"><i class="far fa-heart"></i> ۸</span>
+                                <span class="comment-action">پاسخ</span>
+                                <span class="comment-action">۳ ساعت پیش</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 3 -->
+            <div class="slide-container" id="slide-3">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author3/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>محمد حسینی</h4>
+                            <p>مدیر پروژه</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <div style="width: 100%; height: 100%; background-color: #f1f1f1; display: flex; flex-direction: column; align-items: center; justify-content: center; padding: 20px;">
+                            <h2 style="color: #333; margin-bottom: 20px;">داشبورد مدیریت پروژه</h2>
+                            <div style="display: flex; width: 100%; justify-content: space-between; margin-bottom: 20px;">
+                                <div style="background-color: white; width: 30%; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    <h3 style="color: #1a73e8; margin-bottom: 10px;">وضعیت پروژه</h3>
+                                    <p>در حال اجرا: ۶۵٪</p>
+                                    <div style="width: 100%; height: 10px; background-color: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                        <div style="width: 65%; height: 100%; background-color: #1a73e8; border-radius: 5px;"></div>
+                                    </div>
+                                </div>
+                                <div style="background-color: white; width: 30%; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    <h3 style="color: #34a853; margin-bottom: 10px;">بودجه</h3>
+                                    <p>مصرف شده: ۴۲٪</p>
+                                    <div style="width: 100%; height: 10px; background-color: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                        <div style="width: 42%; height: 100%; background-color: #34a853; border-radius: 5px;"></div>
+                                    </div>
+                                </div>
+                                <div style="background-color: white; width: 30%; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    <h3 style="color: #ea4335; margin-bottom: 10px;">زمان</h3>
+                                    <p>گذشته: ۵۵٪</p>
+                                    <div style="width: 100%; height: 10px; background-color: #e0e0e0; border-radius: 5px; margin-top: 10px;">
+                                        <div style="width: 55%; height: 100%; background-color: #ea4335; border-radius: 5px;"></div>
+                                    </div>
+                                </div>
+                            </div>
+                            <div style="background-color: white; width: 100%; padding: 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                <h3 style="color: #333; margin-bottom: 10px;">آخرین فعالیت‌ها</h3>
+                                <ul style="list-style: none; padding: 0;">
+                                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">تأیید نقشه‌های فاز دوم توسط کارفرما</li>
+                                    <li style="padding: 8px 0; border-bottom: 1px solid #eee;">تحویل مصالح اسکلت ساختمان</li>
+                                    <li style="padding: 8px 0;">برگزاری جلسه هماهنگی با پیمانکاران</li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۱۵۶</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۱۴</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        داشبورد مدیریتی نظام تندیس امکان نظارت لحظه‌ای بر تمامی جنبه‌های پروژه را فراهم می‌کند. در این نمونه، مشاهده می‌کنید که چگونه می‌توان وضعیت پیشرفت، بودجه و زمان‌بندی پروژه را به صورت یکپارچه مدیریت نمود. این قابلیت به مدیران پروژه کمک می‌کند تا تصمیمات بهینه‌تری اتخاذ کنند.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۱۳
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۱۴)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Environmental Ad -->
+            <div class="environmental-ad">
+                <h3>حفظ محیط زیست، مسئولیت ما</h3>
+                <p>نظام تندیس با بهره‌گیری از روش‌های نوین ساختمانی، به کاهش مصرف انرژی و حفظ محیط زیست متعهد است.</p>
+                <img src="https://picsum.photos/seed/environmental-ad/800/300.jpg" alt="حفظ محیط زیست">
+            </div>
+            
+            <!-- Slide 4 -->
+            <div class="slide-container" id="slide-4">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author4/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>زهرا رضایی</h4>
+                            <p>مهندس برق</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <img src="https://picsum.photos/seed/slide4a/800/450.jpg" alt="اسلاید ۴">
+                    </div>
+                    <div class="slide-navigation">
+                        <button class="slide-nav-btn"><i class="fas fa-chevron-right"></i></button>
+                        <button class="slide-nav-btn"><i class="fas fa-chevron-left"></i></button>
+                    </div>
+                    <div class="slide-indicators">
+                        <div class="slide-indicator active"></div>
+                        <div class="slide-indicator"></div>
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۲۰۳</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۲۱</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        سیستم‌های برقی هوشمند در ساختمان‌های مدرن: با پیشرفت فناوری، سیستم‌های برقی ساختمان‌ها نیز به سمت هوشمندسازی حرکت کرده‌اند. در این اسلاید، به بررسی انواع سیستم‌های برقی هوشمند و نحوه یکپارچه‌سازی آن‌ها در پلتفرم تندیس می‌پردازیم. این سیستم‌ها نه تنها راحتی ساکنین را افزایش می‌دهند، بلکه در مصرف انرژی نیز صرفه‌جویی قابل توجهی ایجاد می‌کنند.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۱۴
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۲۱)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 5 -->
+            <div class="slide-container" id="slide-5">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author5/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>حمید قاسمی</h4>
+                            <p>مهندس مکانیک</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <img src="https://picsum.photos/seed/slide5/800/450.jpg" alt="اسلاید ۵">
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۱۷۸</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۱۶</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        سیستم‌های تهویه مطبوع و سرمایشی در ساختمان‌های امروزی: انتخاب و نصب صحیح سیستم‌های تهویه مطبوع، یکی از چالش‌های اصلی در پروژه‌های ساختمانی است. در این اسلاید، به بررسی انواع سیستم‌های تهویه مطبوع، معایب و مزایای هر کدام و نحوه انتخاب بهترین گزینه بر اساس نیازهای پروژه می‌پردازیم.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۱۵
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۱۶)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 6 -->
+            <div class="slide-container" id="slide-6">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author6/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>فاطمه اکبری</h4>
+                            <p>مهندس معمار</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۲۲۱</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۲۹</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        طراحی داخلی مدرن با استفاده از مصالح بومی: در این ویدیو، به بررسی نحوه استفاده از مصالح بومی در طراحی داخلی مدرن می‌پردازیم. این رویکرد نه تنها به حفظ هویت فرهنگی ساختمان کمک می‌کند، بلکه از نظر اقتصادی نیز بسیار مقرون به صرفه است. سیستم تندیس امکان اتصال طراحان داخلی با تأمین‌کنندگان مصالح بومی را فراهم می‌کند.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۱۶
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۲۹)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Environmental Ad -->
+            <div class="environmental-ad">
+                <h3>ساختمان‌های سبز، آینده‌ای روشن</h3>
+                <p>با استفاده از تکنولوژی‌های نوین در ساختمان‌سازی، می‌توانیم تأثیرات مخرب بر محیط زیست را کاهش دهیم.</p>
+                <img src="https://picsum.photos/seed/green-building/800/300.jpg" alt="ساختمان سبز">
+            </div>
+            
+            <!-- Slide 7 -->
+            <div class="slide-container" id="slide-7">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author7/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>مهدی رضایی</h4>
+                            <p>مهندس سازه</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <img src="https://picsum.photos/seed/slide7a/800/450.jpg" alt="اسلاید ۷">
+                    </div>
+                    <div class="slide-navigation">
+                        <button class="slide-nav-btn"><i class="fas fa-chevron-right"></i></button>
+                        <button class="slide-nav-btn"><i class="fas fa-chevron-left"></i></button>
+                    </div>
+                    <div class="slide-indicators">
+                        <div class="slide-indicator active"></div>
+                        <div class="slide-indicator"></div>
+                        <div class="slide-indicator"></div>
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۱۹۸</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۲۲</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        سیستم‌های سازه‌ای نوین در ساختمان‌های بلندمرتبه: با افزایش روزافزون جمعیت شهری و محدودیت فضاهای شهری، ساخت ساختمان‌های بلندمرتبه به یکی از راهکارهای اصلی در شهرهای بزرگ تبدیل شده است. در این اسلاید، به بررسی سیستم‌های سازه‌ای نوین مانند سیستم‌های لوله‌ای، لوله‌ای در لوله‌ای و سیستم‌های diagrid می‌پردازیم که امکان ساخت ساختمان‌های بلندتر و ایمن‌تر را فراهم می‌کنند.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۱۷
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۲۲)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 8 -->
+            <div class="slide-container" id="slide-8">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author8/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>سیده مریم موسوی</h4>
+                            <p>مهندس شهرسازی</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <div style="width: 100%; height: 100%; background-color: #f8f9fa; display: flex; flex-direction: column; padding: 20px;">
+                            <h2 style="color: #333; margin-bottom: 20px; text-align: center;">نقشه شهری هوشمند</h2>
+                            <div style="flex: 1; background-color: white; border-radius: 8px; padding: 15px; box-shadow: 0 2px 5px rgba(0,0,0,0.1); position: relative;">
+                                <img src="https://picsum.photos/seed/city-map/760/400.jpg" alt="نقشه شهری" style="width: 100%; height: 100%; object-fit: cover; border-radius: 4px;">
+                                <div style="position: absolute; top: 20px; right: 20px; background-color: rgba(255,255,255,0.9); padding: 10px 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #333;">منطقه تجاری</h3>
+                                    <p style="margin: 0; font-size: 14px; color: #666;">مساحت: ۱۲۰ هکتار</p>
+                                </div>
+                                <div style="position: absolute; bottom: 20px; left: 20px; background-color: rgba(255,255,255,0.9); padding: 10px 15px; border-radius: 8px; box-shadow: 0 2px 5px rgba(0,0,0,0.1);">
+                                    <h3 style="margin: 0 0 5px 0; font-size: 16px; color: #333;">منطقه مسکونی</h3>
+                                    <p style="margin: 0; font-size: 14px; color: #666;">ظرفیت: ۵۰,۰۰۰ نفر</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۱۶۷</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۱۹</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        نقشه‌های شهری هوشمند و تأثیر آن بر توسعه پایدار: با استفاده از فناوری‌های نوین، می‌توان نقشه‌های شهری هوشمندی ایجاد کرد که به مدیریت بهتر منابع و توسعه پایدار شهرها کمک می‌کند. در این اسلاید، نمونه‌ای از نقشه شهری هوشمند را مشاهده می‌کنید که امکان برنامه‌ریزی دقیق‌تر برای مناطق مختلف شهری را فراهم می‌کند.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۱۸
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۱۹)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 9 -->
+            <div class="slide-container" id="slide-9">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author9/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>علی‌اصغر حسینی</h4>
+                            <p>مهندس محیط زیست</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <img src="https://picsum.photos/seed/slide9/800/450.jpg" alt="اسلاید ۹">
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۲۱۲</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۲۶</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        مدیریت پسماند در پروژه‌های ساختمانی: یکی از چالش‌های اصلی در پروژه‌های ساختمانی، مدیریت پسماند است. با استفاده از روش‌های نوین مدیریت پسماند، می‌توان تأثیرات مخرب زیست‌محیطی پروژه‌ها را به حداقل رساند. در این اسلاید، به بررسی روش‌های نوین مدیریت پسماند و نحوه پیاده‌سازی آن‌ها در پلتفرم تندیس می‌پردازیم.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۱۹
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۲۶)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Slide 10 -->
+            <div class="slide-container" id="slide-10">
+                <div class="slide-header">
+                    <div class="slide-author">
+                        <img src="https://picsum.photos/seed/author10/80/80.jpg" alt="نویسنده">
+                        <div class="slide-author-info">
+                            <h4>مرتضی کریمی</h4>
+                            <p>مدیر فنی</p>
+                        </div>
+                    </div>
+                    <div class="slide-logo">
+                        <img src="https://picsum.photos/seed/tandis-logo/60/60.jpg" alt="نظام تندیس">
+                        <span>نظام تندیس</span>
+                    </div>
+                </div>
+                
+                <div class="slide-frame">
+                    <div class="slide-content">
+                        <iframe width="100%" height="100%" src="https://www.youtube.com/embed/dQw4w9WgXcQ" frameborder="0" allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+                    </div>
+                </div>
+                
+                <div class="slide-interactions">
+                    <div class="interaction-btn" onclick="toggleLike(this)">
+                        <i class="far fa-heart"></i>
+                        <span>۲۳۴</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-comment"></i>
+                        <span>۳۲</span>
+                    </div>
+                    <div class="interaction-btn">
+                        <i class="far fa-share-square"></i>
+                        <span>اشتراک‌گذاری</span>
+                    </div>
+                    <div class="interaction-btn" onclick="toggleSave(this)">
+                        <i class="far fa-bookmark"></i>
+                        <span>ذخیره</span>
+                    </div>
+                </div>
+                
+                <div class="slide-caption">
+                    <div class="caption-text">
+                        آینده صنعت ساختمان با استفاده از فناوری‌های نوین: در این ویدیو، به بررسی آینده صنعت ساختمان و تأثیر فناوری‌های نوین مانند هوش مصنوعی، اینترنت اشیا و بلاکچین بر این صنعت می‌پردازیم. پلتفرم تندیس با بهره‌گیری از این فناوری‌ها، امکان ایجاد تحولی بزرگ در صنعت ساختمان را فراهم کرده است.
+                    </div>
+                    <button class="more-btn" onclick="toggleCaption(this)">بیشتر</button>
+                    <div class="slide-date">
+                        <i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۲۰
+                    </div>
+                </div>
+                
+                <div class="comments-section">
+                    <div class="comments-header">
+                        <div class="comments-title">نظرات (۳۲)</div>
+                        <button class="more-btn">نظر خود را بنویسید</button>
+                    </div>
+                </div>
+            </div>
+            
+            <!-- Suggested Posts -->
+            <div class="suggested-posts">
+                <h2 class="suggested-title">مطالب پیشنهادی</h2>
+                <div class="suggested-grid">
+                    <div class="suggested-card">
+                        <img src="https://picsum.photos/seed/suggested1/400/300.jpg" alt="مطلب پیشنهادی ۱" class="suggested-image">
+                        <div class="suggested-content">
+                            <h3>مدیریت پروژه‌های بزرگ با استفاده از سیستم تندیس</h3>
+                            <p>نحوه استفاده از پلتفرم تندیس در مدیریت پروژه‌های بزرگ ساختمانی و چالش‌های پیش رو</p>
+                            <div class="suggested-meta">
+                                <span><i class="far fa-user"></i> سعید اکبری</span>
+                                <span><i class="far fa-calendar"></i> ۱۴۰۲/۰۳/۰۵</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="suggested-card">
+                        <img src="https://picsum.photos/seed/suggested2/400/300.jpg" alt="مطلب پیشنهادی ۲" class="suggested-image">
+                        <div class="suggested-content">
+                            <h3>تکنولوژی BIM و ارتباط آن با نظام تندیس</h3>
+                            <p>نقش مدل‌سازی اطلاعات ساختمان (BIM) در بهبود فرآیندهای کاری و یکپارچه‌سازی با پلتفرم تندیس</p>
+                            <div class="suggested-meta">
+                                <span><i class="far fa-user"></i> فاطمه محمدی</span>
+                                <span><i class="far fa-calendar"></i> ۱۴۰۲/۰۲/۲۸</span>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="suggested-card">
+                        <img src="https://picsum.photos/seed/suggested3/400/300.jpg" alt="مطلب پیشنهادی ۳" class="suggested-image">
+                        <div class="suggested-content">
+                            <h3>بهینه‌سازی مصرف انرژی در ساختمان‌های هوشمند</h3>
+                            <p>راهکارهای نوین برای کاهش مصرف انرژی در ساختمان‌ها با استفاده از سیستم‌های هوشمند</p>
+                            <div class="suggested-meta">
+                                <span><i class="far fa-user"></i> رضا قاسمی</span>
+                                <span><i class="far fa-calendar"></i> ۱۴۰۲/۰۲/۲۰</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <!-- Sidebar -->
+        <div class="sidebar">
+            <!-- Table of Contents -->
+            <div class="toc-container">
+                <h3 class="toc-title">فهرست مطالب</h3>
+                <ul class="toc-list">
+                    <li class="toc-item active" onclick="scrollToSlide('slide-1', this)">
+                        <img src="https://picsum.photos/seed/toc1/100/60.jpg" alt="اسلاید ۱" class="toc-thumbnail">
+                        <span>مقدمه‌ای بر نظام تندیس</span>
+                    </li>
+                    <li class="toc-item" onclick="scrollToSlide('slide-2', this)">
+                        <img src="https://picsum.photos/seed/toc2/100/60.jpg" alt="اسلاید ۲" class="toc-thumbnail">
+                        <span>نحوه عملکرد سیستم</span>
+                    </li>
+                    <li class="toc-item" onclick="scrollToSlide('slide-3', this)">
+                        <img src="https://picsum.photos/seed/toc3/100/60.jpg" alt="اسلاید ۳" class="toc-thumbnail">
+                        <span>داشبورد مدیریت پروژه</span>
+                    </li>
+                    <li class="toc-item" onclick="scrollToSlide('slide-4', this)">
+                        <img src="https://picsum.photos/seed/toc4/100/60.jpg" alt="اسلاید ۴" class="toc-thumbnail">
+                        <span>سیستم‌های برقی هوشمند</span>
+                    </li>
+                    <li class="toc-item" onclick="scrollToSlide('slide-5', this)">
+                        <img src="https://picsum.photos/seed/toc5/100/60.jpg" alt="اسلاید ۵" class="toc-thumbnail">
+                        <span>سیستم‌های تهویه مطبوع</span>
+                    </li>
+                    <li class="toc-item" onclick="scrollToSlide('slide-6', this)">
+                        <img src="https://picsum.photos/seed/toc6/100/60.jpg" alt="اسلاید ۶" class="toc-thumbnail">
+                        <span>طراحی داخلی مدرن</span>
+                    </li>
+                    <li class="toc-item" onclick="scrollToSlide('slide-7', this)">
+                        <img src="https://picsum.photos/seed/toc7/100/60.jpg" alt="اسلاید ۷" class="toc-thumbnail">
+                        <span>سیستم‌های سازه‌ای نوین</span>
+                    </li>
+                    <li class="toc-item" onclick="scrollToSlide('slide-8', this)">
+                        <img src="https://picsum.photos/seed/toc8/100/60.jpg" alt="اسلاید ۸" class="toc-thumbnail">
+                        <span>نقشه شهری هوشمند</span>
+                    </li>
+                    <li class="toc-item" onclick="scrollToSlide('slide-9', this)">
+                        <img src="https://picsum.photos/seed/toc9/100/60.jpg" alt="اسلاید ۹" class="toc-thumbnail">
+                        <span>مدیریت پسماند</span>
+                    </li>
+                    <li class="toc-item" onclick="scrollToSlide('slide-10', this)">
+                        <img src="https://picsum.photos/seed/toc10/100/60.jpg" alt="اسلاید ۱۰" class="toc-thumbnail">
+                        <span>آینده صنعت ساختمان</span>
+                    </li>
+                </ul>
+            </div>
+            
+            <!-- Tags -->
+            <div class="tags-container">
+                <h3 class="tags-title">برچسب‌ها</h3>
+                <div>
+                    <span class="tag">مهندسی عمران</span>
+                    <span class="tag">مدیریت پروژه</span>
+                    <span class="tag">ساختمان هوشمند</span>
+                    <span class="tag">معماری</span>
+                    <span class="tag">برق ساختمان</span>
+                    <span class="tag">مکانیک</span>
+                    <span class="tag">شهرسازی</span>
+                    <span class="tag">محیط زیست</span>
+                    <span class="tag">فناوری‌های نوین</span>
+                    <span class="tag">BIM</span>
+                </div>
+            </div>
+            
+            <!-- Fixed Ad Banner -->
+            <div class="ad-banner">
+                <img src="https://picsum.photos/seed/ad-banner/300/600.jpg" alt="تبلیغات">
+            </div>
+        </div>
+    </div>
+    
+    <!-- Footer -->
+    <footer class="footer">
+        <div class="footer-content">
+            <div class="footer-section">
+                <h3>درباره ما</h3>
+                <ul>
+                    <li><a href="#">شرکت مهندسین مشاور شهرآوند</a></li>
+                    <li><a href="#">تاریخچه شرکت</a></li>
+                    <li><a href="#">چشم‌انداز و مأموریت</a></li>
+                    <li><a href="#">تیم ما</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>خدمات</h3>
+                <ul>
+                    <li><a href="#">مشاوره فنی</a></li>
+                    <li><a href="#">طراحی و اجرا</a></li>
+                    <li><a href="#">نظارت بر پروژه‌ها</a></li>
+                    <li><a href="#">آموزش تخصصی</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>پروژه‌ها</h3>
+                <ul>
+                    <li><a href="#">پروژه‌های در حال اجرا</a></li>
+                    <li><a href="#">پروژه‌های تکمیل شده</a></li>
+                    <li><a href="#">نمونه کارها</a></li>
+                    <li><a href="#">گالری تصاویر</a></li>
+                </ul>
+            </div>
+            <div class="footer-section">
+                <h3>تماس با ما</h3>
+                <ul>
+                    <li><a href="#">اطلاعات تماس</a></li>
+                    <li><a href="#">دفتر مرکزی</a></li>
+                    <li><a href="#">شعبات</a></li>
+                    <li><a href="#">فرم تماس</a></li>
+                </ul>
+            </div>
+        </div>
+        <div class="footer-bottom">
+            <p>کلیه حقوق مادی و معنوی این سایت متعلق به شرکت مهندسین مشاور شهرآوند می‌باشد.</p>
+            <p>طراحی و توسعه توسط تیم فنی نظام تندیس - ۱۴۰۲</p>
+        </div>
+    </footer>
+    
+    <script>
+        // Reading Progress Bar
+        window.addEventListener('scroll', () => {
+            const winScroll = document.body.scrollTop || document.documentElement.scrollTop;
+            const height = document.documentElement.scrollHeight - document.documentElement.clientHeight;
+            const scrolled = (winScroll / height) * 100;
+            document.getElementById('progress-bar').style.width = scrolled + '%';
+            
+            // Update active TOC item based on scroll position
+            updateActiveTocItem();
+        });
+        
+        // Toggle Like Button
+        function toggleLike(button) {
+            button.classList.toggle('liked');
+            const icon = button.querySelector('i');
+            if (button.classList.contains('liked')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+                const count = parseInt(button.querySelector('span').textContent);
+                button.querySelector('span').textContent = count + 1;
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+                const count = parseInt(button.querySelector('span').textContent);
+                button.querySelector('span').textContent = count - 1;
+            }
+        }
+        
+        // Toggle Save Button
+        function toggleSave(button) {
+            button.classList.toggle('saved');
+            const icon = button.querySelector('i');
+            if (button.classList.contains('saved')) {
+                icon.classList.remove('far');
+                icon.classList.add('fas');
+            } else {
+                icon.classList.remove('fas');
+                icon.classList.add('far');
+            }
+        }
+        
+        // Toggle Caption
+        function toggleCaption(button) {
+            const caption = button.previousElementSibling;
+            caption.classList.toggle('expanded');
+            if (caption.classList.contains('expanded')) {
+                button.textContent = 'کمتر';
+            } else {
+                button.textContent = 'بیشتر';
+            }
+        }
+        
+        // Scroll to Slide
+        function scrollToSlide(slideId, tocItem) {
+            document.getElementById(slideId).scrollIntoView({ behavior: 'smooth' });
+            
+            // Update active TOC item
+            document.querySelectorAll('.toc-item').forEach(item => {
+                item.classList.remove('active');
+            });
+            tocItem.classList.add('active');
+        }
+        
+        // Update Active TOC Item based on scroll position
+        function updateActiveTocItem() {
+            const slides = document.querySelectorAll('.slide-container');
+            const tocItems = document.querySelectorAll('.toc-item');
+            
+            let currentSlide = '';
+            slides.forEach((slide, index) => {
+                const rect = slide.getBoundingClientRect();
+                if (rect.top <= 100 && rect.bottom >= 100) {
+                    currentSlide = slide.id;
+                }
+            });
+            
+            if (currentSlide) {
+                tocItems.forEach(item => {
+                    item.classList.remove('active');
+                    if (item.getAttribute('onclick').includes(currentSlide)) {
+                        item.classList.add('active');
+                    }
+                });
+            }
+        }
+        
+        // Initialize active TOC item
+        document.addEventListener('DOMContentLoaded', () => {
+            updateActiveTocItem();
+        });
+    </script>
+</body>
+</html>
