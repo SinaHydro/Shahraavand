@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+  <head>
+    <?!= include('Bhead.html'); ?>
+  </head>
+  <body>
+    <?!= include('Bui.html'); ?>
+
+    <main class="wrap" style="padding:20px 0 30px">
+      <section class="hero">
+        <h1 style="color:#202124;font-weight:800;font-size:22px">آخرین مطالب</h1>
+        <div id="filters" class="filters"></div>
+      </section>
+
+      <section>
+        <div id="grid" class="grid"></div>
+        <div id="empty" class="empty" style="display:none">موردی یافت نشد.</div>
+      </section>
+
+      <section id="pager" style="display:flex;gap:8px;justify-content:center;align-items:center;margin-top:10px">
+        <button id="prev" class="chip">قبلی</button>
+        <span id="pp" class="chip" style="cursor:default"></span>
+        <button id="next" class="chip">بعدی</button>
+      </section>
+    </main>
+
+    <script>
+      const state = { category:'', page:1, pageSize:12, total:0, cats:[] };
+
+      function renderFilters() {
+        const box = document.getElementById('filters');
+        box.innerHTML = '';
+        const all = document.createElement('button');
+        all.className = 'chip ' + (state.category ? '' : 'active');
+        all.textContent = 'همه';
+        all.onclick = ()=>{ state.category=''; state.page=1; load(); };
+        box.appendChild(all);
+        state.cats.forEach(c=>{
+          const b = document.createElement('button');
+          b.className = 'chip ' + (state.category===c ? 'active':'');
+          b.textContent = c;
+          b.onclick = ()=>{ state.category=c; state.page=1; load(); };
+          box.appendChild(b);
+        });
+      }
+
+      function renderGrid(items) {
+        const grid = document.getElementById('grid');
+        const empty = document.getElementById('empty');
+        grid.innerHTML = '';
+        if (!items.length) {
+          empty.style.display = 'block';
+          return;
+        }
+        empty.style.display = 'none';
+        items.forEach(p=>{
+          const a = document.createElement('article');
+          a.className = 'card';
+          a.onclick = ()=> {
+            const url = new URL(window.location.href);
+            url.search = '?view=post&id='+encodeURIComponent(p.postId);
+            window.location.href = url.toString();
+          };
+          a.innerHTML = `
+            <img class="thumb" src="${p.heroImage || ''}" alt="" />
+            <div class="body">
+              <h3 class="title">${p.title || ''}</h3>
+              <p class="subtitle">${p.subtitle || ''}</p>
+              <div class="meta">
+                <span><i class="fa-regular fa-clock"></i>${p.readingTime||''}</span>
+                <span><i class="fa-regular fa-calendar"></i>${p.publishedAt||''}</span>
+                <span><i class="fa-regular fa-eye"></i>${p.clicks||0}</span>
+              </div>
+            </div>
+          `;
+          grid.appendChild(a);
+        });
+      }
+
+      function renderPager() {
+        const pages = Math.max(1, Math.ceil(state.total / state.pageSize));
+        document.getElementById('pp').textContent = state.page + ' / ' + pages;
+        const prev = document.getElementById('prev');
+        const next = document.getElementById('next');
+        prev.disabled = state.page<=1;
+        next.disabled = state.page>=pages;
+        prev.onclick = ()=>{ if (state.page>1){ state.page--; load(); } };
+        next.onclick = ()=>{ if (state.page<pages){ state.page++; load(); } };
+        document.getElementById('pager').style.display = pages>1 ? 'flex':'none';
+      }
+
+      function load() {
+        google.script.run
+          .withSuccessHandler(res=>{
+            state.total = res.total;
+            renderGrid(res.items || []);
+            renderPager();
+          })
+          .withFailureHandler(err=> console.error(err))
+          .listPosts({category: state.category, page: state.page, pageSize: state.pageSize});
+      }
+
+      function init() {
+        google.script.run
+          .withSuccessHandler(cats=>{
+            state.cats = cats || [];
+            renderFilters();
+            load();
+          })
+          .withFailureHandler(err=> console.error(err))
+          .getCategories();
+      }
+
+      document.addEventListener('DOMContentLoaded', init);
+    </script>
+  </body>
+</html>
