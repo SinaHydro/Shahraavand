@@ -1,117 +1,156 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
-  <head>
-    <?!= include('Bhead.html'); ?>
-  </head>
-  <body>
-    <?!= include('Bui.html'); ?>
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <title>بلاگ تخصصی ساختمان</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
+  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;800&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css"/>
+  <style>
+    body{font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:#5f6368;margin:0}
+    .wrap{max-width:1280px;margin:0 auto;padding:0 20px}
+    header{position:sticky;top:0;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.1);z-index:10}
+    .h{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
+    .brand{display:flex;align-items:center;gap:10px}
+    .logo{width:42px;height:42px;border-radius:8px;background:#eee}
+    .t{font-weight:800;color:#202124}
+    nav{display:flex;gap:8px}
+    .btn{border:1px solid #e0e3e7;background:#f8f9fa;border-radius:999px;padding:6px 10px;cursor:pointer}
+    .btn.primary{background:#1a73e8;color:#fff;border-color:#1a73e8}
+    .filters{display:flex;gap:8px;flex-wrap:wrap;margin:14px 0}
+    .chip{border:1px solid #e0e3e7;background:#fff;border-radius:999px;padding:6px 10px;cursor:pointer}
+    .chip.active{background:#eaf1fe;color:#1a73e8;border-color:#d2e3fc}
+    .grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin:16px 0 30px}
+    .card{border:1px solid #e0e3e7;border-radius:12px;overflow:hidden;cursor:pointer;transition:.2s}
+    .card:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,.12)}
+    .thumb{width:100%;height:180px;background:#eee;object-fit:cover}
+    .body{padding:12px}
+    .title{font-weight:800;color:#202124}
+    .subtitle{font-size:13px;margin-top:4px}
+    .meta{display:flex;gap:12px;color:#9aa0a6;font-size:12px;margin-top:8px}
+    .empty{text-align:center;color:#9aa0a6;padding:24px}
+    .pager{display:flex;gap:8px;justify-content:center;margin:10px 0 30px}
+    @media (max-width:980px){.grid{grid-template-columns:repeat(2,1fr)}}
+    @media (max-width:640px){.grid{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="wrap h">
+    <div class="brand"><div class="logo"></div><div class="t">بلاگ تخصصی ساختمان</div></div>
+    <nav>
+      <a class="btn" href="./">خانه</a>
+      <a class="btn" href="#">کتابخانه</a>
+      <a class="btn" href="#">جستجو</a>
+      <a class="btn primary" href="#">نظام تندیس</a>
+    </nav>
+  </div>
+</header>
 
-    <main class="wrap" style="padding:20px 0 30px">
-      <section class="hero">
-        <h1 style="color:#202124;font-weight:800;font-size:22px">آخرین مطالب</h1>
-        <div id="filters" class="filters"></div>
-      </section>
+<main class="wrap">
+  <h1 style="margin:16px 0 4px;color:#202124">آخرین مطالب</h1>
+  <div id="filters" class="filters"></div>
 
-      <section>
-        <div id="grid" class="grid"></div>
-        <div id="empty" class="empty" style="display:none">موردی یافت نشد.</div>
-      </section>
+  <section>
+    <div id="grid" class="grid"></div>
+    <div id="empty" class="empty" style="display:none">موردی یافت نشد.</div>
+  </section>
 
-      <section id="pager" style="display:flex;gap:8px;justify-content:center;align-items:center;margin-top:10px">
-        <button id="prev" class="chip">قبلی</button>
-        <span id="pp" class="chip" style="cursor:default"></span>
-        <button id="next" class="chip">بعدی</button>
-      </section>
-    </main>
+  <div class="pager">
+    <button id="prev" class="chip">قبلی</button>
+    <span id="pp" class="chip" style="cursor:default"></span>
+    <button id="next" class="chip">بعدی</button>
+  </div>
+</main>
 
-    <script>
-      const state = { category:'', page:1, pageSize:12, total:0, cats:[] };
+<script>
+  // تنظیمات API
+  const BASE_API_URL = 'PUT_YOUR_WEBAPP_URL_HERE'; // URL دیپلوی وب‌اپ
+  const API_KEY = 'PUT_YOUR_API_KEY_HERE';
+  const ORIGIN = window.location.origin; // برای CORS
 
-      function renderFilters() {
-        const box = document.getElementById('filters');
-        box.innerHTML = '';
-        const all = document.createElement('button');
-        all.className = 'chip ' + (state.category ? '' : 'active');
-        all.textContent = 'همه';
-        all.onclick = ()=>{ state.category=''; state.page=1; load(); };
-        box.appendChild(all);
-        state.cats.forEach(c=>{
-          const b = document.createElement('button');
-          b.className = 'chip ' + (state.category===c ? 'active':'');
-          b.textContent = c;
-          b.onclick = ()=>{ state.category=c; state.page=1; load(); };
-          box.appendChild(b);
-        });
-      }
+  const state = { category:'', page:1, pageSize:12, total:0, cats:[] };
 
-      function renderGrid(items) {
-        const grid = document.getElementById('grid');
-        const empty = document.getElementById('empty');
-        grid.innerHTML = '';
-        if (!items.length) {
-          empty.style.display = 'block';
-          return;
-        }
-        empty.style.display = 'none';
-        items.forEach(p=>{
-          const a = document.createElement('article');
-          a.className = 'card';
-          a.onclick = ()=> {
-            const url = new URL(window.location.href);
-            url.search = '?view=post&id='+encodeURIComponent(p.postId);
-            window.location.href = url.toString();
-          };
-          a.innerHTML = `
-            <img class="thumb" src="${p.heroImage || ''}" alt="" />
-            <div class="body">
-              <h3 class="title">${p.title || ''}</h3>
-              <p class="subtitle">${p.subtitle || ''}</p>
-              <div class="meta">
-                <span><i class="fa-regular fa-clock"></i>${p.readingTime||''}</span>
-                <span><i class="fa-regular fa-calendar"></i>${p.publishedAt||''}</span>
-                <span><i class="fa-regular fa-eye"></i>${p.clicks||0}</span>
-              </div>
-            </div>
-          `;
-          grid.appendChild(a);
-        });
-      }
+  async function api(action, params={}){
+    const url = new URL(BASE_API_URL);
+    url.searchParams.set('action', action);
+    url.searchParams.set('key', API_KEY);
+    url.searchParams.set('origin', ORIGIN);
+    Object.entries(params).forEach(([k,v])=> url.searchParams.set(k, v));
+    const res = await fetch(url.toString(), { method: 'GET', mode: 'cors' });
+    return res.json();
+  }
 
-      function renderPager() {
-        const pages = Math.max(1, Math.ceil(state.total / state.pageSize));
-        document.getElementById('pp').textContent = state.page + ' / ' + pages;
-        const prev = document.getElementById('prev');
-        const next = document.getElementById('next');
-        prev.disabled = state.page<=1;
-        next.disabled = state.page>=pages;
-        prev.onclick = ()=>{ if (state.page>1){ state.page--; load(); } };
-        next.onclick = ()=>{ if (state.page<pages){ state.page++; load(); } };
-        document.getElementById('pager').style.display = pages>1 ? 'flex':'none';
-      }
+  function renderFilters(){
+    const box = document.getElementById('filters');
+    box.innerHTML = '';
+    const all = document.createElement('button');
+    all.className = 'chip '+(state.category ? '' : 'active');
+    all.textContent = 'همه';
+    all.onclick = ()=>{ state.category=''; state.page=1; load(); };
+    box.appendChild(all);
+    state.cats.forEach(c=>{
+      const b = document.createElement('button');
+      b.className = 'chip '+(state.category===c?'active':'');
+      b.textContent = c;
+      b.onclick = ()=>{ state.category=c; state.page=1; load(); };
+      box.appendChild(b);
+    });
+  }
 
-      function load() {
-        google.script.run
-          .withSuccessHandler(res=>{
-            state.total = res.total;
-            renderGrid(res.items || []);
-            renderPager();
-          })
-          .withFailureHandler(err=> console.error(err))
-          .listPosts({category: state.category, page: state.page, pageSize: state.pageSize});
-      }
+  function renderGrid(items){
+    const grid = document.getElementById('grid');
+    const empty = document.getElementById('empty');
+    grid.innerHTML = '';
+    if (!items.length){ empty.style.display='block'; return; }
+    empty.style.display='none';
+    items.forEach(p=>{
+      const card = document.createElement('article');
+      card.className = 'card';
+      card.onclick = ()=> window.location.href = `./post.html?id=${encodeURIComponent(p.postId)}`;
+      card.innerHTML = `
+        <img class="thumb" src="${p.heroImage||''}" alt="">
+        <div class="body">
+          <div class="title">${p.title||''}</div>
+          <div class="subtitle">${p.subtitle||''}</div>
+          <div class="meta">
+            <span><i class="fa-regular fa-clock"></i> ${p.readingTime||''}</span>
+            <span><i class="fa-regular fa-calendar"></i> ${p.publishedAt||''}</span>
+            <span><i class="fa-regular fa-eye"></i> ${p.clicks||0}</span>
+          </div>
+        </div>
+      `;
+      grid.appendChild(card);
+    });
+  }
 
-      function init() {
-        google.script.run
-          .withSuccessHandler(cats=>{
-            state.cats = cats || [];
-            renderFilters();
-            load();
-          })
-          .withFailureHandler(err=> console.error(err))
-          .getCategories();
-      }
+  function renderPager(){
+    const pages = Math.max(1, Math.ceil(state.total / state.pageSize));
+    document.getElementById('pp').textContent = `${state.page} / ${pages}`;
+    const prev = document.getElementById('prev');
+    const next = document.getElementById('next');
+    prev.disabled = state.page<=1;
+    next.disabled = state.page>=pages;
+    prev.onclick = ()=>{ if(state.page>1){ state.page--; load(); } };
+    next.onclick = ()=>{ if(state.page<pages){ state.page++; load(); } };
+  }
 
-      document.addEventListener('DOMContentLoaded', init);
-    </script>
-  </body>
+  async function load(){
+    const res = await api('listPosts', { category: state.category, page: state.page, pageSize: state.pageSize });
+    state.total = res.total || 0;
+    renderGrid(res.items || []);
+    renderPager();
+  }
+
+  async function init(){
+    state.cats = await api('categories');
+    renderFilters();
+    load();
+  }
+
+  document.addEventListener('DOMContentLoaded', init);
+</script>
+</body>
 </html>
