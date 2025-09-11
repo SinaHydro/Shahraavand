@@ -3,134 +3,221 @@
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>نمایش پست</title>
+  <title>نمایش پست | بلاگ تخصصی ساختمان</title>
   <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" />
   <style>
-    body{font-family:'Tahoma',sans-serif;direction:rtl;margin:0;padding:0;background:#f9f9f9;color:#333}
-    header{background:#fff;padding:12px 20px;box-shadow:0 1px 6px rgba(0,0,0,.1);display:flex;justify-content:space-between;align-items:center}
-    .logo{font-weight:bold;font-size:18px;color:#1a73e8}
-    main{padding:20px}
-    .hero img{width:100%;height:340px;object-fit:cover;border-radius:12px}
-    .hero h1{margin-top:12px;color:#1a73e8}
-    .hero p{margin-top:6px;font-size:14px;color:#555}
-    .meta{margin-top:8px;font-size:13px;color:#666;display:flex;gap:12px}
-    .tags{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
-    .tags span{background:#eaf1fe;color:#1a73e8;padding:6px 10px;border-radius:999px;font-size:12px}
-    .slide{margin-top:20px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.06)}
-    .slide iframe{width:100%;height:360px;border:0}
-    .author{padding:10px;display:flex;align-items:center;gap:10px}
-    .author img{width:40px;height:40px;border-radius:50%;object-fit:cover}
-    .author-info{display:flex;flex-direction:column}
-    .author-info strong{color:#1a73e8}
-    .slide-meta{padding:10px;font-size:13px;color:#666;display:flex;gap:14px;border-top:1px solid #eee}
-    .suggested{margin-top:40px}
-    .suggested h2{font-size:18px;color:#1a73e8;margin-bottom:12px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.06);cursor:pointer;transition:.2s}
-    .card:hover{transform:translateY(-4px)}
-    .card img{width:100%;height:140px;object-fit:cover}
-    .card h3{margin:10px;font-size:15px;color:#1a73e8}
-    .card p{margin:0 10px 10px;font-size:12px;color:#666}
+    :root{--primary:#1a73e8;--dark:#202124;--text:#5f6368;--muted:#9aa0a6;--border:#e0e3e7;--radius:12px}
+    *{box-sizing:border-box}
+    body{font-family:'Tahoma',sans-serif;direction:rtl;margin:0;background:#f7f8fa;color:var(--text)}
+    header{background:#fff;padding:12px 20px;box-shadow:0 1px 6px rgba(0,0,0,.08);display:flex;justify-content:space-between;align-items:center}
+    header .brand{display:flex;align-items:center;gap:10px}
+    header .logo{width:42px;height:42px;border-radius:8px;background:#e9eef6}
+    header .title{font-weight:800;color:var(--dark)}
+    header nav a{color:var(--text);text-decoration:none;border:1px solid var(--border);padding:6px 10px;border-radius:8px}
+    main{max-width:1280px;margin:0 auto;padding:18px 20px}
+    .hero{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#fff}
+    .hero img{width:100%;height:340px;object-fit:cover}
+    .hero .b{padding:12px}
+    .hero h1{margin:0 0 6px;color:var(--dark)}
+    .hero p{margin:0 0 6px}
+    .meta{display:flex;gap:14px;color:var(--muted);font-size:12px}
+    .layout{display:grid;grid-template-columns:1fr 320px;gap:16px;margin-top:16px}
+    .slide{border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;background:#fff}
+    .s-head{display:flex;align-items:center;justify-content:space-between;padding:10px 12px;border-bottom:1px solid var(--border)}
+    .author{display:flex;align-items:center;gap:10px}
+    .ava{width:40px;height:40px;border-radius:50%;background:#eee;object-fit:cover}
+    .s-order{font-size:12px;color:var(--muted)}
+    .frame{position:relative;width:100%;background:#000}
+    /* چون محتوای هر اسلاید یک HTML کامل است، از iframe استفاده می‌شود. ارتفاع ثابت امن برای کراس-اوریجین */
+    .frame iframe{display:block;width:100%;height:720px;border:0;background:#fff}
+    .s-stats{display:flex;gap:14px;color:var(--muted);font-size:12px;padding:10px 12px;border-top:1px solid var(--border)}
+    aside .card{border:1px solid var(--border);border-radius:var(--radius);background:#fff;overflow:hidden}
+    .card-h{padding:10px 12px;border-bottom:1px solid var(--border);font-weight:800;color:var(--dark)}
+    .card-b{padding:10px 12px}
+    .tags{display:flex;flex-wrap:wrap;gap:8px}
+    .tag{background:#eaf1fe;color:var(--primary);border:1px solid #d2e3fc;border-radius:999px;padding:6px 10px;font-size:12px}
+    .sugg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
+    .post-card{border:1px solid var(--border);border-radius:10px;overflow:hidden;cursor:pointer;transition:.2s;background:#fff}
+    .post-card:hover{transform:translateY(-3px);box-shadow:0 10px 20px rgba(0,0,0,.1)}
+    .post-card img{width:100%;height:140px;object-fit:cover}
+    .post-card .b{padding:10px}
+    .post-card .t{font-weight:800;color:var(--dark);font-size:14px}
+    .post-card .m{color:var(--muted);font-size:12px;margin-top:6px}
+    @media (max-width:980px){.layout{grid-template-columns:1fr}.sugg{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
   <header>
-    <div class="logo">🏗️ بلاگ تخصصی ساختمان</div>
-    <nav><a href="index.html">خانه</a></nav>
+    <div class="brand">
+      <div class="logo" aria-hidden="true"></div>
+      <div class="title">بلاگ تخصصی ساختمان</div>
+    </div>
+    <nav><a href="index.html"><i class="fa-solid fa-house"></i> خانه</a></nav>
   </header>
 
   <main>
-    <section class="hero" id="hero"></section>
-    <section class="tags" id="tags"></section>
-    <section id="slides"></section>
-    <section class="suggested">
-      <h2>مطالب اخیر این دسته</h2>
-      <div class="grid" id="suggested"></div>
+    <section id="hero" class="hero" style="display:none">
+      <img id="heroImg" alt="">
+      <div class="b">
+        <h1 id="pt"></h1>
+        <p id="ps"></p>
+        <div class="meta">
+          <span><i class="fa-regular fa-clock"></i> <span id="rt"></span></span>
+          <span><i class="fa-regular fa-calendar"></i> <span id="da"></span></span>
+          <span><i class="fa-solid fa-tag"></i> <span id="cat"></span></span>
+        </div>
+      </div>
+    </section>
+
+    <section class="layout">
+      <div id="slides"></div>
+
+      <aside>
+        <div class="card">
+          <div class="card-h">برچسب‌ها</div>
+          <div id="tags" class="card-b tags"></div>
+        </div>
+        <div class="card" style="margin-top:12px">
+          <div class="card-h">مطالب اخیر این دسته</div>
+          <div class="card-b"><div id="sugg" class="sugg"></div></div>
+        </div>
+      </aside>
     </section>
   </main>
 
   <script>
+    // تنظیمات API (وب‌اپ Apps Script)
     const BASE_API = 'https://script.google.com/macros/s/AKfycbyitOhkJFmTCuRC7VzEBxjAh1owFKkrOanh23JsA8hI7Up4UZY5WK3P6cLO8dmYmIw3/exec';
     const ORIGIN = window.location.origin;
-    const params = new URLSearchParams(window.location.search);
-    const postId = params.get('id');
+
+    // هر اسلاید یک فایل HTML کامل (<!DOCTYPE html> ... </html>) در GitHub است.
+    // برای نمایش ایمن از iframe استفاده می‌کنیم و لینک را نرمال‌سازی می‌کنیم.
+    function normalizeSlideUrl(u){
+      if(!u) return '';
+      try{
+        const url = new URL(u);
+
+        // اگر لینک به GitHub "blob" باشد، آن را به raw.githubusercontent.com تبدیل کن
+        // مثال: https://github.com/user/repo/blob/branch/path/file.html
+        if(url.hostname === 'github.com'){
+          const parts = url.pathname.split('/').filter(Boolean);
+          const iBlob = parts.indexOf('blob');
+          if(iBlob > 1){
+            const user = parts[0];
+            const repo = parts[1];
+            const branch = parts[iBlob+1];
+            const rest = parts.slice(iBlob+2).join('/');
+            return `https://raw.githubusercontent.com/${user}/${repo}/${branch}/${rest}`;
+          }
+        }
+
+        // اگر از GitHub Pages استفاده شده (user.github.io) همان را برگردان
+        // raw.githubusercontent.com معمولا text/html را درست می‌فرستد، مناسب iframe است.
+        return u;
+      }catch(e){
+        return u;
+      }
+    }
 
     async function callAPI(action, params = {}) {
       const url = new URL(BASE_API);
       url.searchParams.set('action', action);
       url.searchParams.set('origin', ORIGIN);
       Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-      const res = await fetch(url); return res.json();
+      const res = await fetch(url.toString(), { method:'GET', mode:'cors' });
+      if(!res.ok) throw new Error('API error');
+      return res.json();
     }
 
-    function renderHero(post) {
+    function renderHero(p){
       const hero = document.getElementById('hero');
-      hero.innerHTML = `
-        <img src="${post.heroImage}" alt="">
-        <h1>${post.title}</h1>
-        <p>${post.subtitle}</p>
-        <div class="meta">
-          <span>🕒 ${post.readingTime}</span>
-          <span>📅 ${post.publishedAt}</span>
-          <span>🏷️ ${post.category}</span>
-        </div>
-      `;
+      hero.style.display = 'block';
+      document.getElementById('heroImg').src = p.heroImage || '';
+      document.getElementById('pt').textContent = p.title || '';
+      document.getElementById('ps').textContent = p.subtitle || '';
+      document.getElementById('rt').textContent = p.readingTime || '';
+      document.getElementById('da').textContent = p.publishedAt || '';
+      document.getElementById('cat').textContent = p.category || '';
     }
 
-    function renderTags(tags) {
+    function renderTags(tags){
       const box = document.getElementById('tags'); box.innerHTML = '';
-      tags.forEach(t => {
-        const tag = document.createElement('span');
-        tag.textContent = t;
-        box.appendChild(tag);
+      (tags||[]).forEach(t=>{
+        const s = document.createElement('span');
+        s.className = 'tag'; s.textContent = t;
+        box.appendChild(s);
       });
     }
 
-    function renderSlides(slides) {
+    function renderSlides(slides){
       const box = document.getElementById('slides'); box.innerHTML = '';
-      slides.forEach(s => {
-        const slide = document.createElement('div');
-        slide.className = 'slide';
-        slide.innerHTML = `
-          <div class="author">
-            <img src="${s.author.avatar}" alt="">
-            <div class="author-info">
-              <strong>${s.author.name}</strong>
-              <span>${s.publishedAt}</span>
+      (slides||[]).forEach(s=>{
+        const url = normalizeSlideUrl(s.contentUrl);
+        const art = document.createElement('article');
+        art.className = 'slide';
+        art.innerHTML = `
+          <div class="s-head">
+            <div class="author">
+              <img class="ava" src="${s.author.avatar||''}" alt="">
+              <div>
+                <div style="font-weight:800;color:var(--dark)">${s.author.name||''}</div>
+                <div style="font-size:12px;color:var(--muted)">${s.publishedAt||''}</div>
+              </div>
             </div>
+            <div class="s-order">اسلاید #${s.order||0}</div>
           </div>
-          <iframe src="${s.contentUrl}" loading="lazy" referrerpolicy="no-referrer"></iframe>
-          <div class="slide-meta">
-            ❤️ ${s.likesCount} 💬 ${s.commentsCount} 🔖 ${s.savesCount} 🔁 ${s.shares}
+
+          <div class="frame">
+            <iframe
+              src="${url}"
+              loading="lazy"
+              referrerpolicy="no-referrer"
+              sandbox="allow-scripts allow-forms allow-pointer-lock allow-popups allow-popups-to-escape-sandbox allow-top-navigation-by-user-activation">
+            </iframe>
+          </div>
+
+          <div class="s-stats">
+            <span><i class="fa-regular fa-heart"></i> ${s.likesCount||0}</span>
+            <span><i class="fa-regular fa-comment"></i> ${s.commentsCount||0}</span>
+            <span><i class="fa-regular fa-bookmark"></i> ${s.savesCount||0}</span>
+            <span><i class="fa-regular fa-share-from-square"></i> ${s.shares||0}</span>
           </div>
         `;
-        box.appendChild(slide);
+        box.appendChild(art);
       });
     }
 
-    function renderSuggested(items) {
-      const grid = document.getElementById('suggested'); grid.innerHTML = '';
-      items.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.onclick = () => window.location.href = `post.html?id=${p.postId}`;
+    function renderSuggested(list){
+      const grid = document.getElementById('sugg'); grid.innerHTML = '';
+      (list||[]).forEach(p=>{
+        const card = document.createElement('article');
+        card.className = 'post-card';
+        card.onclick = ()=> window.location.href = `post.html?id=${encodeURIComponent(p.postId)}`;
         card.innerHTML = `
-          <img src="${p.heroImage}" alt="">
-          <h3>${p.title}</h3>
-          <p>${p.publishedAt}</p>
+          <img src="${p.heroImage||''}" alt="">
+          <div class="b">
+            <div class="t">${p.title||''}</div>
+            <div class="m"><i class="fa-regular fa-calendar"></i> ${p.publishedAt||''}</div>
+          </div>
         `;
         grid.appendChild(card);
       });
     }
 
-    async function init() {
-      if (!postId) return window.location.href = 'index.html';
-      const post = await callAPI('getPost', { id: postId });
+    async function init(){
+      const params = new URLSearchParams(window.location.search);
+      const id = params.get('id') || '';
+      if(!id){ window.location.href = 'index.html'; return; }
+
+      // دریافت پست و اسلایدهایش
+      const post = await callAPI('getPost', { id });
       renderHero(post);
       renderTags(post.tags);
       renderSlides(post.slides);
-      const suggested = await callAPI('recentByCategory', { category: post.category, exclude: post.postId, limit: 6 });
-      renderSuggested(suggested);
+
+      // پیشنهادهای اخیر از همان دسته
+      const recent = await callAPI('recentByCategory', { category: post.category, exclude: post.postId, limit: 6 });
+      renderSuggested(recent);
     }
 
     document.addEventListener('DOMContentLoaded', init);
