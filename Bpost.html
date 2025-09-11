@@ -1,169 +1,139 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="utf-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1"/>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
   <title>نمایش پست</title>
-  <link rel="preconnect" href="https://fonts.googleapis.com"/>
-  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin/>
-  <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+Arabic:wght@400;600;800&display=swap" rel="stylesheet"/>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" />
   <style>
-    body{font-family:'Noto Sans Arabic',sans-serif;direction:rtl;color:#5f6368;margin:0}
-    .wrap{max-width:1280px;margin:0 auto;padding:0 20px}
-    header{position:sticky;top:0;background:#fff;box-shadow:0 1px 6px rgba(0,0,0,.1);z-index:10}
-    .h{display:flex;align-items:center;justify-content:space-between;padding:12px 0}
-    .brand{display:flex;align-items:center;gap:10px}
-    .logo{width:42px;height:42px;border-radius:8px;background:#eee}
-    .t{font-weight:800;color:#202124}
-    .hero{border:1px solid #e0e3e7;border-radius:12px;overflow:hidden;margin-top:16px}
-    .hero img{width:100%;height:340px;object-fit:cover;background:#eee}
-    .hero .b{padding:12px}
-    .title{font-weight:800;color:#202124;font-size:22px}
-    .sub{margin-top:4px}
-    .meta{display:flex;gap:12px;color:#9aa0a6;font-size:12px;margin-top:8px}
-    .layout{display:grid;grid-template-columns:1fr 320px;gap:16px;margin:16px 0}
-    .slide{border:1px solid #e0e3e7;border-radius:12px;overflow:hidden}
-    .s-head{display:flex;align-items:center;justify-content:space-between;padding:10px;border-bottom:1px solid #e0e3e7}
-    .author{display:flex;align-items:center;gap:8px}
-    .ava{width:40px;height:40px;border-radius:50%;background:#eee;object-fit:cover}
-    .frame{position:relative;width:100%;padding-bottom:56.25%;background:#000}
-    .frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
-    .s-meta{display:flex;gap:12px;color:#9aa0a6;font-size:12px;padding:10px;border-top:1px solid #e0e3e7}
-    .card{border:1px solid #e0e3e7;border-radius:12px;background:#fff}
-    .card-h{padding:10px;border-bottom:1px solid #e0e3e7;font-weight:800;color:#202124}
-    .card-b{padding:10px}
-    .tags{display:flex;flex-wrap:wrap;gap:8px}
-    .tag{background:#e8f0fe;color:#1a73e8;border:1px solid #d2e3fc;border-radius:999px;padding:6px 10px;font-size:12px}
-    .sugg{display:grid;grid-template-columns:repeat(3,1fr);gap:12px}
-    .post-card{border:1px solid #e0e3e7;border-radius:12px;overflow:hidden;cursor:pointer}
-    .post-card img{width:100%;height:140px;object-fit:cover;background:#eee}
-    .post-card .b{padding:10px}
-    @media (max-width:980px){.layout{grid-template-columns:1fr}.sugg{grid-template-columns:1fr}}
+    body{font-family:'Tahoma',sans-serif;direction:rtl;margin:0;padding:0;background:#f9f9f9;color:#333}
+    header{background:#fff;padding:12px 20px;box-shadow:0 1px 6px rgba(0,0,0,.1);display:flex;justify-content:space-between;align-items:center}
+    .logo{font-weight:bold;font-size:18px;color:#1a73e8}
+    main{padding:20px}
+    .hero img{width:100%;height:340px;object-fit:cover;border-radius:12px}
+    .hero h1{margin-top:12px;color:#1a73e8}
+    .hero p{margin-top:6px;font-size:14px;color:#555}
+    .meta{margin-top:8px;font-size:13px;color:#666;display:flex;gap:12px}
+    .tags{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
+    .tags span{background:#eaf1fe;color:#1a73e8;padding:6px 10px;border-radius:999px;font-size:12px}
+    .slide{margin-top:20px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.06)}
+    .slide iframe{width:100%;height:360px;border:0}
+    .author{padding:10px;display:flex;align-items:center;gap:10px}
+    .author img{width:40px;height:40px;border-radius:50%;object-fit:cover}
+    .author-info{display:flex;flex-direction:column}
+    .author-info strong{color:#1a73e8}
+    .slide-meta{padding:10px;font-size:13px;color:#666;display:flex;gap:14px;border-top:1px solid #eee}
+    .suggested{margin-top:40px}
+    .suggested h2{font-size:18px;color:#1a73e8;margin-bottom:12px}
+    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
+    .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.06);cursor:pointer;transition:.2s}
+    .card:hover{transform:translateY(-4px)}
+    .card img{width:100%;height:140px;object-fit:cover}
+    .card h3{margin:10px;font-size:15px;color:#1a73e8}
+    .card p{margin:0 10px 10px;font-size:12px;color:#666}
   </style>
 </head>
 <body>
-<header>
-  <div class="wrap h">
-    <div class="brand"><div class="logo"></div><div class="t">بلاگ تخصصی ساختمان</div></div>
-    <nav>
-      <a class="btn" href="./">خانه</a>
-    </nav>
-  </div>
-</header>
+  <header>
+    <div class="logo">🏗️ بلاگ تخصصی ساختمان</div>
+    <nav><a href="index.html">خانه</a></nav>
+  </header>
 
-<main class="wrap">
-  <section id="hero" class="hero" style="display:none">
-    <img id="heroImg" alt="">
-    <div class="b">
-      <div id="pt" class="title"></div>
-      <div id="ps" class="sub"></div>
-      <div class="meta">
-        <span><i class="fa-regular fa-clock"></i> <span id="rt"></span></span>
-        <span><i class="fa-regular fa-calendar"></i> <span id="da"></span></span>
-        <span><i class="fa-solid fa-tag"></i> <span id="cat"></span></span>
-      </div>
-    </div>
-  </section>
+  <main>
+    <section class="hero" id="hero"></section>
+    <section class="tags" id="tags"></section>
+    <section id="slides"></section>
+    <section class="suggested">
+      <h2>مطالب اخیر این دسته</h2>
+      <div class="grid" id="suggested"></div>
+    </section>
+  </main>
 
-  <section class="layout">
-    <div id="slides"></div>
-    <aside>
-      <div class="card">
-        <div class="card-h">برچسب‌ها</div>
-        <div id="tags" class="card-b tags"></div>
-      </div>
-      <div class="card" style="margin-top:12px">
-        <div class="card-h">مطالب اخیر این دسته</div>
-        <div class="card-b"><div id="sugg" class="sugg"></div></div>
-      </div>
-    </aside>
-  </section>
-</main>
+  <script>
+    const BASE_API = 'https://script.google.com/macros/s/AKfycbyitOhkJFmTCuRC7VzEBxjAh1owFKkrOanh23JsA8hI7Up4UZY5WK3P6cLO8dmYmIw3/exec';
+    const ORIGIN = window.location.origin;
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get('id');
 
-<script>
-  // تنظیمات API
-  const BASE_API_URL = 'PUT_YOUR_WEBAPP_URL_HERE';
-  const API_KEY = 'PUT_YOUR_API_KEY_HERE';
-  const ORIGIN = window.location.origin;
+    async function callAPI(action, params = {}) {
+      const url = new URL(BASE_API);
+      url.searchParams.set('action', action);
+      url.searchParams.set('origin', ORIGIN);
+      Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
+      const res = await fetch(url); return res.json();
+    }
 
-  async function api(action, params={}){
-    const url = new URL(BASE_API_URL);
-    url.searchParams.set('action', action);
-    url.searchParams.set('key', API_KEY);
-    url.searchParams.set('origin', ORIGIN);
-    Object.entries(params).forEach(([k,v])=> url.searchParams.set(k, v));
-    const res = await fetch(url.toString(), { method:'GET', mode:'cors' });
-    return res.json();
-  }
-
-  function renderPost(p){
-    document.getElementById('hero').style.display = 'block';
-    document.getElementById('heroImg').src = p.heroImage || '';
-    document.getElementById('pt').textContent = p.title || '';
-    document.getElementById('ps').textContent = p.subtitle || '';
-    document.getElementById('rt').textContent = p.readingTime || '';
-    document.getElementById('da').textContent = p.publishedAt || '';
-    document.getElementById('cat').textContent = p.category || '';
-
-    const tg = document.getElementById('tags'); tg.innerHTML='';
-    (p.tags||[]).forEach(t=>{
-      const s=document.createElement('span'); s.className='tag'; s.textContent=t; tg.appendChild(s);
-    });
-
-    const box = document.getElementById('slides'); box.innerHTML='';
-    (p.slides||[]).forEach(s=>{
-      const el = document.createElement('article');
-      el.className='slide';
-      el.innerHTML = `
-        <div class="s-head">
-          <div class="author">
-            <img class="ava" src="${s.author.avatar||''}" alt="">
-            <div>
-              <div style="font-weight:800;color:#202124">${s.author.name||''}</div>
-              <div style="font-size:12px;color:#9aa0a6">${s.publishedAt||''}</div>
-            </div>
-          </div>
-          <div style="font-size:12px;color:#9aa0a6">اسلاید #${s.order||0}</div>
-        </div>
-        <div class="frame"><iframe src="${s.contentUrl||''}" loading="lazy" referrerpolicy="no-referrer"></iframe></div>
-        <div class="s-meta">
-          <span><i class="fa-regular fa-heart"></i> ${s.likesCount||0}</span>
-          <span><i class="fa-regular fa-comment"></i> ${s.commentsCount||0}</span>
-          <span><i class="fa-regular fa-bookmark"></i> ${s.savesCount||0}</span>
-          <span><i class="fa-regular fa-share-from-square"></i> ${s.shares||0}</span>
+    function renderHero(post) {
+      const hero = document.getElementById('hero');
+      hero.innerHTML = `
+        <img src="${post.heroImage}" alt="">
+        <h1>${post.title}</h1>
+        <p>${post.subtitle}</p>
+        <div class="meta">
+          <span>🕒 ${post.readingTime}</span>
+          <span>📅 ${post.publishedAt}</span>
+          <span>🏷️ ${post.category}</span>
         </div>
       `;
-      box.appendChild(el);
-    });
+    }
 
-    // recent
-    api('recentByCategory', { category: p.category, exclude: p.postId, limit: 6 })
-      .then(list=>{
-        const grid = document.getElementById('sugg'); grid.innerHTML='';
-        (list||[]).forEach(r=>{
-          const c = document.createElement('article');
-          c.className='post-card';
-          c.onclick = ()=> window.location.href = `./post.html?id=${encodeURIComponent(r.postId)}`;
-          c.innerHTML = `
-            <img src="${r.heroImage||''}" alt="">
-            <div class="b">
-              <div style="font-weight:800;color:#202124">${r.title||''}</div>
-              <div class="meta"><i class="fa-regular fa-calendar"></i> ${r.publishedAt||''}</div>
-            </div>
-          `;
-          grid.appendChild(c);
-        });
+    function renderTags(tags) {
+      const box = document.getElementById('tags'); box.innerHTML = '';
+      tags.forEach(t => {
+        const tag = document.createElement('span');
+        tag.textContent = t;
+        box.appendChild(tag);
       });
-  }
+    }
 
-  function init(){
-    const params = new URLSearchParams(window.location.search);
-    const id = params.get('id') || '';
-    if (!id){ window.location.href = './'; return; }
-    api('getPost', { id }).then(renderPost).catch(()=> window.location.href='./');
-  }
-  document.addEventListener('DOMContentLoaded', init);
-</script>
+    function renderSlides(slides) {
+      const box = document.getElementById('slides'); box.innerHTML = '';
+      slides.forEach(s => {
+        const slide = document.createElement('div');
+        slide.className = 'slide';
+        slide.innerHTML = `
+          <div class="author">
+            <img src="${s.author.avatar}" alt="">
+            <div class="author-info">
+              <strong>${s.author.name}</strong>
+              <span>${s.publishedAt}</span>
+            </div>
+          </div>
+          <iframe src="${s.contentUrl}" loading="lazy" referrerpolicy="no-referrer"></iframe>
+          <div class="slide-meta">
+            ❤️ ${s.likesCount} 💬 ${s.commentsCount} 🔖 ${s.savesCount} 🔁 ${s.shares}
+          </div>
+        `;
+        box.appendChild(slide);
+      });
+    }
+
+    function renderSuggested(items) {
+      const grid = document.getElementById('suggested'); grid.innerHTML = '';
+      items.forEach(p => {
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.onclick = () => window.location.href = `post.html?id=${p.postId}`;
+        card.innerHTML = `
+          <img src="${p.heroImage}" alt="">
+          <h3>${p.title}</h3>
+          <p>${p.publishedAt}</p>
+        `;
+        grid.appendChild(card);
+      });
+    }
+
+    async function init() {
+      if (!postId) return window.location.href = 'index.html';
+      const post = await callAPI('getPost', { id: postId });
+      renderHero(post);
+      renderTags(post.tags);
+      renderSlides(post.slides);
+      const suggested = await callAPI('recentByCategory', { category: post.category, exclude: post.postId, limit: 6 });
+      renderSuggested(suggested);
+    }
+
+    document.addEventListener('DOMContentLoaded', init);
+  </script>
 </body>
 </html>
