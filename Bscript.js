@@ -2,7 +2,7 @@
 // CONFIGURATION 
 // =================================================================
 // !!! این آدرس را با آدرس Web App خود جایگزین کنید
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyOHF5T2NVaPqE-2U_zVfF6-T3NlDRe7JMSxVm3lIWFjr-7bnOozHNLRA_2n1JYOjfx/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybD1ok0qXeREn0kK-slPznt-IRkBTdR_k38t23xa9z21L96vqCIT1Gmxt6by8QvfQV/exec';
 
 // آدرس پایه برای لینک‌دهی به پست‌ها (اگر روی دامنه اصلی است، خالی بگذارید)
 // مثال: 'https://shahraavand.ir/BlogP/' یا فقط '/BlogP/'
@@ -17,6 +17,16 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     if (document.getElementById('post-content')) {
         initPostPage();
+    }
+    
+    // راه‌اندازی آیکون‌های فدر
+    if (typeof feather !== 'undefined') {
+        feather.replace();
+    }
+    
+    // راه‌اندازی انیمیشن‌های AOS
+    if (typeof AOS !== 'undefined') {
+        AOS.init();
     }
 });
 
@@ -44,47 +54,121 @@ async function fetchData(action, params = '') {
 async function initIndexPage() {
     const postsContainer = document.getElementById('posts-container');
     const categoriesContainer = document.getElementById('categories-container');
-    const posts = await fetchData('getPosts');
+    const footerCategories = document.getElementById('footer-categories');
+    const loadMoreBtn = document.getElementById('load-more-btn');
+    const sortSelect = document.getElementById('sort-select');
+    
+    let posts = await fetchData('getPosts');
+    let displayedPosts = 6; // تعداد پست‌هایی که در ابتدا نمایش داده می‌شوند
+    let currentSort = 'newest';
 
     if (posts && Array.isArray(posts)) {
-        postsContainer.innerHTML = ''; // پاک کردن لودر
-        const categories = new Set();
+        // مرتب‌سازی پست‌ها بر اساس گزینه انتخاب شده
+        function sortPosts(posts, sortType) {
+            const sortedPosts = [...posts];
+            switch(sortType) {
+                case 'popular':
+                    return sortedPosts.sort((a, b) => (b.clicks || 0) - (a.clicks || 0));
+                case 'liked':
+                    return sortedPosts.sort((a, b) => {
+                        const aLikes = JSON.parse(a.likes || '[]').length;
+                        const bLikes = JSON.parse(b.likes || '[]').length;
+                        return bLikes - aLikes;
+                    });
+                case 'newest':
+                default:
+                    return sortedPosts.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+            }
+        }
+        
+        // نمایش پست‌ها
+        function displayPosts(postsToDisplay, append = false) {
+            if (!append) {
+                postsContainer.innerHTML = ''; // پاک کردن محتوای قبلی
+            }
+            
+            postsToDisplay.forEach(post => {
+                const tagsHtml = (post.tags || '').split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('');
+                const postLink = `${POST_BASE_URL}Bpost.html?id=${post.postId}`;
+                const likesCount = JSON.parse(post.likes || '[]').length;
 
-        posts.forEach(post => {
-            const tagsHtml = (post.tags || '').split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('');
-            const postLink = `${POST_BASE_URL}Bpost.html?id=${post.postId}`;
-
-            const postCard = `
-            <div class="post-card">
-                <a href="${postLink}" onclick="handlePostClick('${post.postId}'); return false;">
-                    <img src="${post.imageUrl}" alt="${post.title}" class="post-card-image">
-                </a>
-                <div class="post-card-content">
-                    <div class="post-card-author">
-                        <img src="${post.authorImageUrl}" alt="${post.authorName}">
-                        <span>${post.authorName}</span>
-                    </div>
+                const postCard = `
+                <article class="post-card" data-aos="fade-up">
                     <a href="${postLink}" onclick="handlePostClick('${post.postId}'); return false;">
-                        <h3>${post.title}</h3>
-                        <p>${post.description || ''}</p>
+                        <img src="${post.imageUrl}" alt="${post.title}" class="post-card-image">
                     </a>
-                    <div class="post-card-tags">${tagsHtml}</div>
-                    <div class="post-card-footer">
-                        <div class="stat"><i class="fas fa-clock"></i>${post.readTime} دقیقه</div>
-                        <div class="stat"><i class="fas fa-heart"></i>${JSON.parse(post.likes || '[]').length}</div>
-                        <div class="stat"><i class="fas fa-eye"></i>${post.clicks || 0}</div>
+                    <div class="post-card-content">
+                        <div class="post-card-author">
+                            <img src="${post.authorImageUrl}" alt="${post.authorName}">
+                            <span>${post.authorName}</span>
+                        </div>
+                        <a href="${postLink}" onclick="handlePostClick('${post.postId}'); return false;">
+                            <h3>${post.title}</h3>
+                            <p>${post.description || ''}</p>
+                        </a>
+                        <div class="post-card-tags">${tagsHtml}</div>
+                        <div class="post-card-footer">
+                            <div class="stat"><i class="fas fa-clock"></i>${post.readTime} دقیقه</div>
+                            <div class="stat"><i class="fas fa-heart"></i>${likesCount}</div>
+                            <div class="stat"><i class="fas fa-eye"></i>${post.clicks || 0}</div>
+                        </div>
                     </div>
-                </div>
-            </div>`;
-            postsContainer.innerHTML += postCard;
+                </article>`;
+                
+                if (append) {
+                    postsContainer.innerHTML += postCard;
+                } else {
+                    postsContainer.innerHTML = postCard;
+                }
+            });
+            
+            // نمایش یا مخفی کردن دکمه "نمایش مطالب بیشتر"
+            if (postsContainer.children.length >= posts.length) {
+                loadMoreBtn.style.display = 'none';
+            } else {
+                loadMoreBtn.style.display = 'block';
+            }
+            
+            // راه‌اندازی مجدد انیمیشن‌ها
+            if (typeof AOS !== 'undefined') {
+                AOS.refresh();
+            }
+        }
+        
+        // نمایش دسته‌بندی‌ها
+        function displayCategories() {
+            const categories = new Set();
+            
+            posts.forEach(post => {
+                if (post.category) categories.add(post.category.trim());
+            });
 
-            if (post.category) categories.add(post.category.trim());
+            categoriesContainer.innerHTML = '';
+            footerCategories.innerHTML = '';
+            
+            categories.forEach(cat => {
+                categoriesContainer.innerHTML += `<span class="category-chip">${cat}</span>`;
+                footerCategories.innerHTML += `<li><a href="#">${cat}</a></li>`;
+            });
+        }
+        
+        // نمایش اولیه پست‌ها و دسته‌بندی‌ها
+        displayCategories();
+        displayPosts(sortPosts(posts, currentSort).slice(0, displayedPosts));
+        
+        // رویداد کلیک برای دکمه "نمایش مطالب بیشتر"
+        loadMoreBtn.addEventListener('click', () => {
+            displayedPosts += 6;
+            displayPosts(sortPosts(posts, currentSort).slice(0, displayedPosts), true);
         });
-
-        categories.forEach(cat => {
-            categoriesContainer.innerHTML += `<span class="category-chip">${cat}</span>`;
+        
+        // رویداد تغییر برای مرتب‌سازی
+        sortSelect.addEventListener('change', (e) => {
+            currentSort = e.target.value;
+            displayedPosts = 6;
+            displayPosts(sortPosts(posts, currentSort).slice(0, displayedPosts));
         });
-
+        
     } else {
         postsContainer.innerHTML = `<p>متاسفانه مشکلی در بارگذاری مطالب پیش آمده است.</p>`;
     }
@@ -122,6 +206,7 @@ async function initPostPage() {
         setupHero(firstSlide);
         renderSlides(slides);
         setupSidebar(slides, firstSlide);
+        setupAuthorInfo(firstSlide);
         loadSuggestedPosts(firstSlide.category, postId);
         setupInteractiveFeatures();
     } else {
@@ -144,7 +229,43 @@ function setupHero(postData) {
 function renderSlides(slides) {
     const contentContainer = document.getElementById('post-content');
     contentContainer.innerHTML = ''; // Clear loader
+    
     slides.forEach((slide, index) => {
+        // تعیین نوع محتوا (تصویر، ویدیو یا وب پیج)
+        let slideContent = '';
+        
+        if (slide.contentUrl.includes('youtube.com') || slide.contentUrl.includes('youtu.be')) {
+            // محتوای ویدیو یوتیوب
+            const videoId = slide.contentUrl.includes('youtu.be') 
+                ? slide.contentUrl.split('/').pop() 
+                : new URLSearchParams(slide.contentUrl.split('?')[1]).get('v');
+                
+            slideContent = `
+                <div class="slide-content">
+                    <iframe 
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed/${videoId}" 
+                        title="YouTube video player" 
+                        frameborder="0" 
+                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                        allowfullscreen>
+                    </iframe>
+                </div>`;
+        } else if (slide.contentUrl.includes('.jpg') || slide.contentUrl.includes('.jpeg') || slide.contentUrl.includes('.png') || slide.contentUrl.includes('.webp')) {
+            // محتوای گالری تصاویر
+            slideContent = `
+                <div class="slide-gallery">
+                    <!-- تصاویر گالری در اینجا قرار می‌گیرند -->
+                </div>`;
+        } else {
+            // محتوای وب پیج
+            slideContent = `
+                <div class="slide-content">
+                    <iframe src="${slide.contentUrl}" loading="lazy" title="محتوای اسلاید" seamless></iframe>
+                </div>`;
+        }
+        
         const slideHtml = `
             <div class="slide-container" id="slide-${slide.slideId}">
                 <div class="slide-header">
@@ -156,17 +277,15 @@ function renderSlides(slides) {
                         <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="نظام تندیس">
                     </div>
                 </div>
-                <div class="slide-content">
-                    <iframe src="${slide.contentUrl}" loading="lazy" title="محتوای اسلاید" seamless onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px';"></iframe>
-                </div>
+                ${slideContent}
                 <div class="slide-actions">
                     <div class="main-actions">
-                        <i class="far fa-heart" data-action="like"></i>
-                        <i class="far fa-comment" data-action="comment"></i>
-                        <i class="far fa-paper-plane" data-action="share"></i>
+                        <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
+                        <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
+                        <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
                     </div>
                     <div class="save-action">
-                        <i class="far fa-bookmark" data-action="save"></i>
+                        <i class="far fa-bookmark" data-action="save" data-slide-id="${slide.slideId}"></i>
                     </div>
                 </div>
                 <div class="slide-caption">
@@ -175,12 +294,15 @@ function renderSlides(slides) {
                     <div class="slide-date">${new Date(slide.publishDate).toLocaleDateString('fa-IR')}</div>
                 </div>
             </div>`;
+            
         contentContainer.innerHTML += slideHtml;
 
         // Add ad banner after every 3 slides
         if ((index + 1) % 3 === 0 && index < slides.length - 1) {
              contentContainer.innerHTML += `
                 <div class="environmental-ad">
+                    <h3>محیط زیست ما، مسئولیت ما</h3>
+                    <p>با استفاده از مصالح پایدار و روش‌های سازگار با محیط زیست، به آینده زمین احترام بگذاریم.</p>
                     <img src="https://picsum.photos/seed/env${index}/800/200" alt="تبلیغ محیط زیستی">
                 </div>`;
         }
@@ -198,6 +320,50 @@ function renderSlides(slides) {
             });
         }
     });
+    
+    // Add event listeners for action buttons
+    document.querySelectorAll('.slide-actions i').forEach(icon => {
+        icon.addEventListener('click', function() {
+            const action = this.getAttribute('data-action');
+            const slideId = this.getAttribute('data-slide-id');
+            
+            switch(action) {
+                case 'like':
+                    this.classList.toggle('fas');
+                    this.classList.toggle('far');
+                    this.classList.toggle('liked');
+                    // ارسال درخواست به سرور برای ثبت لایک
+                    sendActionToServer('toggleLike', { slideId });
+                    break;
+                case 'save':
+                    this.classList.toggle('fas');
+                    this.classList.toggle('far');
+                    this.classList.toggle('saved');
+                    // ارسال درخواست به سرور برای ثبت ذخیره
+                    sendActionToServer('toggleSave', { slideId });
+                    break;
+                case 'share':
+                    // اشتراک گذاری اسلاید
+                    const url = window.location.href;
+                    if (navigator.share) {
+                        navigator.share({
+                            title: document.title,
+                            url: url
+                        });
+                    } else {
+                        // کپی کردن لینک به کلیپ بورد
+                        navigator.clipboard.writeText(url).then(() => {
+                            alert('لینک با موفقیت کپی شد!');
+                        });
+                    }
+                    break;
+                case 'comment':
+                    // نمایش بخش نظرات
+                    alert('بخش نظرات به زودی اضافه خواهد شد!');
+                    break;
+            }
+        });
+    });
 }
 
 function setupSidebar(slides, postData) {
@@ -207,17 +373,30 @@ function setupSidebar(slides, postData) {
     tagsContainer.innerHTML = '';
 
     slides.forEach((slide, index) => {
+        const thumbnail = slide.imageUrl || postData.imageUrl;
         tocContainer.innerHTML += `
             <a href="#slide-${slide.slideId}" data-slide-id="slide-${slide.slideId}">
-                <img src="${slide.imageUrl || postData.imageUrl}" alt="Slide ${index + 1}">
+                <img src="${thumbnail}" alt="Slide ${index + 1}">
                 <span>${slide.title || `اسلاید ${index + 1}`}</span>
             </a>`;
     });
+    
     if (postData.tags) {
         postData.tags.split(',').forEach(tag => {
             tagsContainer.innerHTML += `<span class="tag">${tag.trim()}</span>`;
         });
     }
+}
+
+function setupAuthorInfo(postData) {
+    const authorInfo = document.getElementById('author-info');
+    authorInfo.innerHTML = `
+        <img src="${postData.authorImageUrl}" alt="${postData.authorName}">
+        <div>
+            <h4>${postData.authorName}</h4>
+            <p>نویسنده تخصصی در حوزه ساختمان</p>
+        </div>
+    `;
 }
 
 async function loadSuggestedPosts(currentCategory, currentPostId) {
@@ -229,15 +408,26 @@ async function loadSuggestedPosts(currentCategory, currentPostId) {
         if (suggested.length > 0) {
             suggested.forEach(post => {
                  container.innerHTML += `
-                    <div class="post-card">
-                       <a href="${POST_BASE_URL}${post.postId}.html">
+                    <article class="post-card" data-aos="fade-up">
+                       <a href="${POST_BASE_URL}Bpost.html?id=${post.postId}" onclick="handlePostClick('${post.postId}'); return false;">
                            <img src="${post.imageUrl}" alt="${post.title}" class="post-card-image">
-                           <div class="post-card-content"><h3>${post.title}</h3></div>
+                           <div class="post-card-content">
+                               <h3>${post.title}</h3>
+                               <div class="post-card-footer">
+                                   <div class="stat"><i class="fas fa-clock"></i>${post.readTime} دقیقه</div>
+                                   <div class="stat"><i class="fas fa-heart"></i>${JSON.parse(post.likes || '[]').length}</div>
+                               </div>
+                           </div>
                        </a>
-                    </div>`;
+                    </article>`;
             });
         } else {
             document.querySelector('.suggested-posts-section').style.display = 'none';
+        }
+        
+        // راه‌اندازی مجدد انیمیشن‌ها
+        if (typeof AOS !== 'undefined') {
+            AOS.refresh();
         }
     }
 }
@@ -261,6 +451,31 @@ function setupInteractiveFeatures() {
 
     window.addEventListener('scroll', () => {
         const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
-        progressBar.style.width = `${(window.scrollY / scrollableHeight) * 100}%`;
+        const scrolled = window.scrollY;
+        progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
     }, { passive: true });
+}
+
+/**
+ * ارسال اکشن به سرور
+ */
+async function sendActionToServer(action, data) {
+    try {
+        const response = await fetch(SCRIPT_URL, {
+            method: 'POST',
+            body: JSON.stringify({ action, ...data })
+        });
+        
+        if (!response.ok) throw new Error('Network response error');
+        
+        const result = await response.json();
+        if (result.status !== 'success') {
+            throw new Error(result.message || 'Action failed');
+        }
+        
+        return result.data;
+    } catch (error) {
+        console.error('Action Error:', error);
+        return null;
+    }
 }
