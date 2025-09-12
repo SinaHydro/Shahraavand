@@ -1,115 +1,67 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>بلاگ تخصصی ساختمان</title>
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" />
-  <style>
-    body{font-family:'Tahoma',sans-serif;direction:rtl;margin:0;padding:0;background:#f9f9f9;color:#333}
-    header{background:#fff;padding:12px 20px;box-shadow:0 1px 6px rgba(0,0,0,.1);display:flex;justify-content:space-between;align-items:center}
-    .logo{font-weight:bold;font-size:18px;color:#1a73e8}
-    nav a{margin:0 8px;text-decoration:none;color:#555;font-weight:600}
-    nav a.highlight{color:#fff;background:#1a73e8;padding:6px 12px;border-radius:999px}
-    .filters{padding:14px 20px;display:flex;flex-wrap:wrap;gap:8px}
-    .filters button{padding:6px 12px;border-radius:999px;border:1px solid #ccc;background:#fff;cursor:pointer}
-    .filters .active{background:#eaf1fe;color:#1a73e8;border-color:#d2e3fc}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:16px;padding:20px}
-    .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.06);cursor:pointer;transition:.2s}
-    .card:hover{transform:translateY(-4px)}
-    .card img{width:100%;height:180px;object-fit:cover}
-    .card h3{margin:12px;font-size:16px;color:#1a73e8}
-    .card p{margin:0 12px 12px;font-size:13px;color:#555}
-    .meta{margin:0 12px 12px;font-size:12px;color:#888;display:flex;gap:12px}
-    .pager{display:flex;justify-content:center;align-items:center;gap:10px;padding:20px}
-    .pager button{padding:6px 12px;border-radius:6px;border:1px solid #ccc;background:#fff;cursor:pointer}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>بلاگ تخصصی ساختمان</title>
+    <style>
+        body { font-family: sans-serif; direction: rtl; padding: 20px; }
+        .posts-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(300px, 1fr)); gap: 20px; }
+        .post-card { border: 1px solid #ddd; border-radius: 8px; overflow: hidden; text-decoration: none; color: #333; }
+        .post-card:hover { box-shadow: 0 4px 12px rgba(0,0,0,0.1); }
+        .post-card img { width: 100%; height: 200px; object-fit: cover; }
+        .post-card-content { padding: 15px; }
+        .loader { text-align: center; font-size: 20px; padding: 50px; }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo">🏗️ بلاگ تخصصی ساختمان</div>
-    <nav>
-      <a href="index.html">خانه</a>
-      <a href="#">کتابخانه</a>
-      <a href="#">جستجو</a>
-      <a href="#" class="highlight">نظام تندیس</a>
-    </nav>
-  </header>
+    <h1>بلاگ تخصصی ساختمان</h1>
+    <main id="posts-grid">
+        <div class="loader">در حال بارگذاری پست‌ها...</div>
+    </main>
 
-  <section class="filters" id="filters"></section>
-  <section class="grid" id="grid"></section>
-  <section class="pager">
-    <button id="prev">قبلی</button>
-    <span id="pageInfo"></span>
-    <button id="next">بعدی</button>
-  </section>
+    <script>
+        // URL وب اپلیکیشنی که در گام قبل کپی کردید را اینجا قرار دهید
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwaCP-kY-LLWh_v3gNr2gu13Zd9Mfkh_s6mjcNzQxVGmyrl-i63fBheHi2kG5y0e1Ub/exec";
 
-  <script>
-    const BASE_API = 'https://script.google.com/macros/s/AKfycbx3l4N0BeIdTZibSIfBtYjgjE_k68Lr0m16iJN0SVnfXdC9l-xz627s1KJs5RdJ0XRQ/exec';
-    const ORIGIN = window.location.origin;
-    const state = { category:'', page:1, pageSize:12, total:0 };
+        document.addEventListener("DOMContentLoaded", () => {
+            fetchPosts();
+        });
 
-    async function callAPI(action, params={}){
-      const url = new URL(BASE_API);
-      url.searchParams.set('action', action);
-      url.searchParams.set('origin', ORIGIN);
-      Object.entries(params).forEach(([k,v])=> url.searchParams.set(k,v));
-      const res = await fetch(url); return res.json();
-    }
+        async function fetchPosts() {
+            const postsGrid = document.getElementById("posts-grid");
+            try {
+                const response = await fetch(WEB_APP_URL);
+                if (!response.ok) throw new Error("خطا در دریافت اطلاعات.");
+                
+                const posts = await response.json();
 
-    function renderFilters(cats){
-      const box = document.getElementById('filters'); box.innerHTML='';
-      const all = document.createElement('button');
-      all.textContent = 'همه'; all.className = state.category ? '' : 'active';
-      all.onclick = ()=>{ state.category=''; state.page=1; loadPosts(); }; box.appendChild(all);
-      cats.forEach(c=>{
-        const btn = document.createElement('button');
-        btn.textContent = c; btn.className = state.category===c ? 'active' : '';
-        btn.onclick = ()=>{ state.category=c; state.page=1; loadPosts(); }; box.appendChild(btn);
-      });
-    }
+                // پاک کردن پیام "در حال بارگذاری"
+                postsGrid.innerHTML = "";
 
-    function renderPosts(items){
-      const grid = document.getElementById('grid'); grid.innerHTML='';
-      items.forEach(p=>{
-        const card = document.createElement('div'); card.className='card';
-        card.onclick = ()=> window.location.href=`post.html?id=${p.postId}`;
-        card.innerHTML = `
-          <img src="${p.heroImage}" alt="">
-          <h3>${p.title}</h3>
-          <p>${p.subtitle}</p>
-          <div class="meta">
-            <span>🕒 ${p.readingTime}</span>
-            <span>📅 ${p.publishedAt}</span>
-            <span>👁️ ${p.clicks}</span>
-          </div>
-        `;
-        grid.appendChild(card);
-      });
-    }
+                if (posts.length === 0) {
+                    postsGrid.innerHTML = "<p>پستی برای نمایش وجود ندارد.</p>";
+                    return;
+                }
 
-    function renderPager(){
-      const pages = Math.ceil(state.total / state.pageSize);
-      document.getElementById('pageInfo').textContent = `${state.page} / ${pages}`;
-      document.getElementById('prev').disabled = state.page <= 1;
-      document.getElementById('next').disabled = state.page >= pages;
-      document.getElementById('prev').onclick = ()=>{ state.page--; loadPosts(); };
-      document.getElementById('next').onclick = ()=>{ state.page++; loadPosts(); };
-    }
+                posts.forEach(post => {
+                    const postCard = `
+                        <a href="post.html?id=${post.id}" class="post-card">
+                            <img src="${post.imageURL}" alt="${post.title}">
+                            <div class="post-card-content">
+                                <h3>${post.title}</h3>
+                                <p>${post.excerpt}</p>
+                                <small>نویسنده: ${post.author} | تاریخ: ${new Date(post.date).toLocaleDateString('fa-IR')}</small>
+                            </div>
+                        </a>
+                    `;
+                    postsGrid.innerHTML += postCard;
+                });
 
-    async function loadPosts(){
-      const res = await callAPI('listPosts',{category:state.category,page:state.page,pageSize:state.pageSize});
-      state.total = res.total || 0;
-      renderPosts(res.items || []);
-      renderPager();
-    }
-
-    async function init(){
-      const cats = await callAPI('categories');
-      renderFilters(cats); loadPosts();
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-  </script>
+            } catch (error) {
+                postsGrid.innerHTML = `<p>متاسفانه مشکلی رخ داده است: ${error.message}</p>`;
+            }
+        }
+    </script>
 </body>
 </html>
