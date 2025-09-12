@@ -1,5 +1,5 @@
 // =================================================================
-// CONFIGURATION
+// CONFIGURATION 
 // =================================================================
 // !!! این آدرس را با آدرس Web App خود جایگزین کنید
 const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQPkfaYzV6lIfOAQFtXjji6Xa1yqpQGVR_AWkg7JXwsTGzxe8q796IdhCs4X0rggwJ/exec';
