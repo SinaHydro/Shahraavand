@@ -6,7 +6,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvo19MrduiMREEcxGVp
 
 // آدرس پایه برای لینک‌دهی به پست‌ها (اگر روی دامنه اصلی است، خالی بگذارید)
 // مثال: 'https://shahraavand.ir/BlogP/' یا فقط '/BlogP/'
-const POST_BASE_URL = 'https://shahraavand.ir/'; // خالی بگذارید تا در همان دامنه فعلی باقی بماند
+const POST_BASE_URL = ''; /https://shahraavand.ir// خالی بگذارید تا در همان دامنه فعلی باقی بماند
 // =================================================================
 
 
@@ -391,41 +391,6 @@ async function renderSlides(slides) {
                     break;
             }
         });
-    });
-    
-    // تنظیم ارتفاع iframe‌ها پس از بارگذاری
-    setTimeout(() => {
-        adjustIframeHeights();
-    }, 1000);
-}
-
-/**
- * تنظیم ارتفاع iframe‌ها بر اساس محتوای آنها
- */
-function adjustIframeHeights() {
-    document.querySelectorAll('.slide-content iframe').forEach(iframe => {
-        try {
-            // تلاش برای تنظیم ارتفاع iframe بر اساس محتوای آن
-            iframe.onload = function() {
-                try {
-                    // اگر iframe به محتوای همان دامنه دسترسی دارد
-                    const iframeHeight = iframe.contentWindow.document.body.scrollHeight;
-                    iframe.style.height = iframeHeight + 'px';
-                } catch (e) {
-                    // اگر iframe به محتوای خارجی دسترسی ندارد، ارتفاع را بر اساس viewport تنظیم می‌کنیم
-                    const viewportHeight = window.innerHeight * 0.7; // 70% ارتفاع viewport
-                    iframe.style.height = Math.max(400, viewportHeight) + 'px';
-                }
-            };
-            
-            // اگر iframe از قبل بارگذاری شده است
-            if (iframe.contentWindow && iframe.contentWindow.document.body) {
-                const iframeHeight = iframe.contentWindow.document.body.scrollHeight;
-                iframe.style.height = iframeHeight + 'px';
-            }
-        } catch (e) {
-            console.error('Error adjusting iframe height:', e);
-        }
     });
 }
 
