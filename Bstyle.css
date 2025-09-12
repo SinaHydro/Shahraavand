@@ -26,7 +26,7 @@ body {
 }
 
 * { box-sizing: border-box; }
-.container { max-width: 100%; margin: 0 auto; padding: 0 15px; } /* حذف padding چپ و راست و کاهش به 15px */
+.container { max-width: 1280px; margin: 0 auto; padding: 20px; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, h4 { font-weight: 700; margin: 0 0 1rem 0; }
 section { margin-bottom: 4rem; }
@@ -35,7 +35,7 @@ section { margin-bottom: 4rem; }
 .main-header {
     background-color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    padding: 0 15px; /* کاهش padding */
+    padding: 0 30px;
     height: var(--header-height);
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--card-shadow);
@@ -45,12 +45,12 @@ section { margin-bottom: 4rem; }
     display: flex;
     align-items: center;
 }
-.header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 100%; margin: 0 auto; }
+.header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; }
 .logo-container { display: flex; align-items: center; gap: 15px; }
 .logo { height: 50px; }
 .title-container h1 { font-size: 1.4rem; margin: 0; color: var(--secondary-color); }
 .title-container h2 { font-size: 0.8rem; margin: 0; font-weight: 400; color: var(--text-light); }
-.main-header nav { display: flex; gap: 20px; } /* کاهش فاصله */
+.main-header nav { display: flex; gap: 30px; }
 .main-header nav a { font-weight: 500; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: all 0.3s ease; }
 .main-header nav a:hover, .main-header nav a.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
 
@@ -64,7 +64,7 @@ section { margin-bottom: 4rem; }
     align-items: flex-end;
     text-align: right;
     color: #fff;
-    padding: 40px 15px; /* کاهش padding */
+    padding: 40px;
     margin-bottom: 2rem;
 }
 .hero-section::before { 
@@ -80,9 +80,8 @@ section { margin-bottom: 4rem; }
 .hero-content { 
     position: relative; 
     z-index: 2; 
+    max-width: 1280px; 
     width: 100%; 
-    max-width: 100%; /* حذف محدودیت عرض */
-    padding: 0 15px; /* افزودن padding */
 }
 .hero-content h1 { 
     font-size: 2.8rem; 
@@ -96,8 +95,7 @@ section { margin-bottom: 4rem; }
 }
 .post-meta { 
     display: flex; 
-    flex-wrap: wrap; /* امکان شکستن در رزولوشن‌های کوچک */
-    gap: 15px; 
+    gap: 25px; 
     font-size: 1rem;
 }
 
@@ -106,7 +104,7 @@ section { margin-bottom: 4rem; }
     background-color: var(--primary-color);
     color: white;
     text-align: center;
-    padding: 1rem 15px; /* کاهش padding */
+    padding: 1rem;
     margin-bottom: 2rem;
     font-weight: 500;
     font-size: 1.2rem;
@@ -124,8 +122,6 @@ section { margin-bottom: 4rem; }
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
-    flex-wrap: wrap; /* امکان شکستن در رزولوشن‌های کوچک */
-    gap: 15px;
 }
 .section-header h2 {
     font-size: 1.8rem;
@@ -199,39 +195,35 @@ section { margin-bottom: 4rem; }
 .post-layout { 
     display: flex; 
     flex-wrap: wrap; 
-    gap: 30px; /* کاهش فاصله */
-    max-width: 100%; /* حذف محدودیت عرض */
-    margin: 30px auto; /* کاهش margin */
-    padding: 0 15px; /* کاهش padding */
+    gap: 40px; 
+    max-width: 1280px; 
+    margin: 40px auto; 
+    padding: 0 20px; 
 }
 .main-column { 
-    flex: 1 1 100%; /* در حالت عادی 100% عرض */
-    min-width: 300px;
+    flex: 1 1 65%; 
+    min-width: 300px; 
 }
 .sidebar { 
-    flex: 1 1 300px; /* عرض ثابت برای سایدبار */
-    min-width: 280px;
+    flex: 1 1 30%; 
+    min-width: 280px; 
 }
 .sidebar-inner { 
     position: sticky; 
-    top: calc(var(--header-height) + 40px);
-    max-height: calc(100vh - var(--header-height) - 40px);
-    overflow-y: auto; /* امکان اسکرول برای سایدبار */
+    top: calc(var(--header-height) + 40px); 
 }
 .slide-container { 
-    margin-bottom: 40px; /* کاهش فاصله بین اسلایدها */
+    margin-bottom: 50px; 
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--card-shadow);
-    background-color: white;
 }
 .slide-header { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    padding: 15px 15px; /* کاهش padding */
+    padding: 15px 10px; 
     background-color: var(--light-gray);
-    border-bottom: 1px solid var(--border-color);
 }
 .slide-author { 
     display: flex; 
@@ -253,28 +245,39 @@ section { margin-bottom: 4rem; }
     width: 100%; 
     position: relative;
     background-color: white;
+    overflow: hidden; /* جلوگیری از overflow */
 }
 .slide-content iframe { 
     width: 100%; 
-    min-height: 400px; /* حداقل ارتفاع */
-    height: auto; /* ارتفاع متغیر */
+    height: 100%; 
     border: none; 
     background: var(--light-gray); 
     display: block;
+    transform: scale(0.8); /* کوچک کردن محتوا به 80% */
+    transform-origin: top right; /* شروع کوچک شدن از بالا و راست */
+    height: 125%; /* افزایش ارتفاع برای جبران کوچک شدن */
+    width: 125%; /* افزایش عرض برای جبران کوچک شدن */
+    margin: -12.5% 0 0 -12.5%; /* تنظیم margin برای مرکز کردن محتوا */
 }
 /* برای محتوای HTML که ارتفاع متغیر دارد */
 .slide-content.html-content {
-    padding: 0; /* حذف padding */
+    transform: scale(0.8); /* کوچک کردن محتوا به 80% */
+    transform-origin: top right; /* شروع کوچک شدن از بالا و راست */
+    height: 125%; /* افزایش ارتفاع برای جبران کوچک شدن */
+    width: 125%; /* افزایش عرض برای جبران کوچک شدن */
+    margin: -12.5% 0 0 -12.5%; /* تنظیم margin برای مرکز کردن محتوا */
     overflow: hidden; /* جلوگیری از اسکرول */
+    font-size: 0.8em; /* کوچک کردن فونت‌ها */
+}
+.slide-content.html-content * {
+    font-size: 0.8em; /* کوچک کردن فونت‌های تمام عناصر داخلی */
 }
 .slide-actions { 
     display: flex; 
     justify-content: space-between; 
     align-items: center; 
-    padding: 15px 15px; /* کاهش padding */
+    padding: 15px; 
     font-size: 1.8rem; 
-    background-color: white;
-    border-top: 1px solid var(--border-color);
 }
 .slide-actions .main-actions { 
     display: flex; 
@@ -295,9 +298,8 @@ section { margin-bottom: 4rem; }
     color: var(--primary-color); 
 }
 .slide-caption { 
-    padding: 0 15px 15px; /* کاهش padding */
+    padding: 0 15px 15px; 
     font-size: 0.95rem; 
-    background-color: white;
 }
 .slide-caption .caption-text { 
     overflow: hidden; 
@@ -326,14 +328,13 @@ section { margin-bottom: 4rem; }
 .slide-gallery {
     position: relative;
     width: 100%;
-    min-height: 400px; /* حداقل ارتفاع */
-    max-height: 80vh; /* حداکثر ارتفاع */
+    aspect-ratio: 16 / 9;
     overflow: hidden;
 }
 .slide-gallery img {
     width: 100%;
     height: 100%;
-    object-fit: contain; /* نمایش کامل تصویر بدون برش */
+    object-fit: cover;
     display: none;
 }
 .slide-gallery img.active {
@@ -391,7 +392,7 @@ section { margin-bottom: 4rem; }
 }
 .environmental-ad img {
     width: 100%;
-    max-width: 100%;
+    max-width: 800px;
     height: auto;
     border-radius: 8px;
     margin-top: 15px;
@@ -400,10 +401,6 @@ section { margin-bottom: 4rem; }
 /* --- Sidebar --- */
 .sidebar-section {
     margin-bottom: 30px;
-    background-color: white;
-    border-radius: var(--border-radius);
-    padding: 20px;
-    box-shadow: var(--card-shadow);
 }
 .sidebar h3 { 
     font-size: 1.3rem; 
@@ -471,10 +468,6 @@ section { margin-bottom: 4rem; }
     padding: 60px 0; 
     margin-top: 40px;
 }
-.suggested-posts-section .container {
-    max-width: 100%;
-    padding: 0 15px;
-}
 .suggested-posts-section h2 {
     text-align: center;
     margin-bottom: 2rem;
@@ -495,9 +488,9 @@ section { margin-bottom: 4rem; }
     padding: 40px 0 20px;
 }
 .footer-content {
-    max-width: 100%;
+    max-width: 1280px;
     margin: 0 auto;
-    padding: 0 15px;
+    padding: 0 20px;
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
@@ -728,20 +721,30 @@ section { margin-bottom: 4rem; }
     }
     .sidebar {
         width: 100%;
-        order: 2; /* سایدبار بعد از محتوا نمایش داده شود */
-    }
-    .main-column {
-        order: 1; /* محتوا اول نمایش داده شود */
     }
     .sidebar-inner {
         position: static;
-        max-height: none;
     }
     .hero-content h1 {
         font-size: 2.2rem;
     }
     .hero-content h2 {
         font-size: 1.2rem;
+    }
+    
+    /* تنظیم کوچک‌سازی برای صفحات کوچک */
+    .slide-content iframe {
+        transform: scale(0.7);
+        height: 143%;
+        width: 143%;
+        margin: -21.5% 0 0 -21.5%;
+    }
+    .slide-content.html-content {
+        transform: scale(0.7);
+        height: 143%;
+        width: 143%;
+        margin: -21.5% 0 0 -21.5%;
+        font-size: 0.7em;
     }
 }
 
@@ -763,7 +766,7 @@ section { margin-bottom: 4rem; }
     }
     .hero-section {
         height: 40vh;
-        padding: 20px 15px;
+        padding: 20px;
     }
     .hero-content h1 {
         font-size: 1.8rem;
@@ -787,54 +790,18 @@ section { margin-bottom: 4rem; }
         width: 100%;
     }
     
-    /* بهبود نمایش اسلایدها در موبایل */
+    /* تنظیم کوچک‌سازی برای موبایل */
     .slide-content iframe {
-        min-height: 300px;
+        transform: scale(0.6);
+        height: 167%;
+        width: 167%;
+        margin: -33.5% 0 0 -33.5%;
     }
-    .slide-gallery {
-        min-height: 300px;
-    }
-}
-
-@media (max-width: 576px) {
-    .container {
-        padding: 0 10px;
-    }
-    .post-layout {
-        padding: 0 10px;
-    }
-    .hero-section {
-        padding: 15px 10px;
-    }
-    .hero-content {
-        padding: 0 10px;
-    }
-    .slide-header {
-        padding: 10px;
-    }
-    .slide-author img {
-        width: 35px;
-        height: 35px;
-    }
-    .slide-brand img {
-        height: 25px;
-    }
-    .slide-actions {
-        padding: 10px;
-        font-size: 1.5rem;
-    }
-    .slide-actions .main-actions {
-        gap: 15px;
-    }
-    .slide-caption {
-        padding: 0 10px 10px;
-    }
-    
-    /* بهبود نمایش اسلایدها در موبایل */
-    .slide-content iframe {
-        min-height: 250px;
-    }
-    .slide-gallery {
-        min-height: 250px;
+    .slide-content.html-content {
+        transform: scale(0.6);
+        height: 167%;
+        width: 167%;
+        margin: -33.5% 0 0 -33.5%;
+        font-size: 0.6em;
     }
 }
