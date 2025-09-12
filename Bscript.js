@@ -52,7 +52,7 @@ async function initIndexPage() {
 
         posts.forEach(post => {
             const tagsHtml = (post.tags || '').split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('');
-            const postLink = `${POST_BASE_URL}${post.postId}.html`;
+            const postLink = `${POST_BASE_URL}Bpost.html?id=${post.postId}`;
 
             const postCard = `
             <div class="post-card">
@@ -98,7 +98,7 @@ function handlePostClick(postId) {
     // ارسال درخواست POST برای شمارش کلیک بدون اختلال در ناوبری
     navigator.sendBeacon(`${SCRIPT_URL}`, JSON.stringify({ action: 'incrementClick', slideId: postId }));
     // هدایت کاربر
-    window.location.href = `${POST_BASE_URL}${postId}.html`;
+    window.location.href = `${POST_BASE_URL}Bpost.html?id=${postId}`;
 }
 
 
@@ -106,8 +106,8 @@ function handlePostClick(postId) {
 // POST PAGE LOGIC
 // =================================================================
 async function initPostPage() {
-    const path = window.location.pathname;
-    const postId = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
+    const params = new URLSearchParams(window.location.search);
+    const postId = params.get('id');
     const contentContainer = document.getElementById('post-content');
 
     if (!postId) {
