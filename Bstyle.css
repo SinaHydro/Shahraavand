@@ -26,7 +26,7 @@ body {
 }
 
 * { box-sizing: border-box; }
-.container { max-width: 1280px; margin: 0 auto; padding: 20px; }
+.container { max-width: 100%; margin: 0 auto; padding: 0 15px; } /* حذف padding چپ و راست و کاهش به 15px */
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, h4 { font-weight: 700; margin: 0 0 1rem 0; }
 section { margin-bottom: 4rem; }
@@ -35,7 +35,7 @@ section { margin-bottom: 4rem; }
 .main-header {
     background-color: rgba(255, 255, 255, 0.95);
     backdrop-filter: blur(10px);
-    padding: 0 30px;
+    padding: 0 15px; /* کاهش padding */
     height: var(--header-height);
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--card-shadow);
@@ -45,12 +45,12 @@ section { margin-bottom: 4rem; }
     display: flex;
     align-items: center;
 }
-.header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; }
+.header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 100%; margin: 0 auto; }
 .logo-container { display: flex; align-items: center; gap: 15px; }
 .logo { height: 50px; }
 .title-container h1 { font-size: 1.4rem; margin: 0; color: var(--secondary-color); }
 .title-container h2 { font-size: 0.8rem; margin: 0; font-weight: 400; color: var(--text-light); }
-.main-header nav { display: flex; gap: 30px; }
+.main-header nav { display: flex; gap: 20px; } /* کاهش فاصله */
 .main-header nav a { font-weight: 500; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: all 0.3s ease; }
 .main-header nav a:hover, .main-header nav a.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
 
@@ -64,7 +64,7 @@ section { margin-bottom: 4rem; }
     align-items: flex-end;
     text-align: right;
     color: #fff;
-    padding: 40px;
+    padding: 40px 15px; /* کاهش padding */
     margin-bottom: 2rem;
 }
 .hero-section::before { 
@@ -80,8 +80,9 @@ section { margin-bottom: 4rem; }
 .hero-content { 
     position: relative; 
     z-index: 2; 
-    max-width: 1280px; 
     width: 100%; 
+    max-width: 100%; /* حذف محدودیت عرض */
+    padding: 0 15px; /* افزودن padding */
 }
 .hero-content h1 { 
     font-size: 2.8rem; 
@@ -95,7 +96,8 @@ section { margin-bottom: 4rem; }
 }
 .post-meta { 
     display: flex; 
-    gap: 25px; 
+    flex-wrap: wrap; /* امکان شکستن در رزولوشن‌های کوچک */
+    gap: 15px; 
     font-size: 1rem;
 }
 
@@ -104,7 +106,7 @@ section { margin-bottom: 4rem; }
     background-color: var(--primary-color);
     color: white;
     text-align: center;
-    padding: 1rem;
+    padding: 1rem 15px; /* کاهش padding */
     margin-bottom: 2rem;
     font-weight: 500;
     font-size: 1.2rem;
@@ -122,6 +124,8 @@ section { margin-bottom: 4rem; }
     justify-content: space-between;
     align-items: center;
     margin-bottom: 1.5rem;
+    flex-wrap: wrap; /* امکان شکستن در رزولوشن‌های کوچک */
+    gap: 15px;
 }
 .section-header h2 {
     font-size: 1.8rem;
@@ -192,43 +196,147 @@ section { margin-bottom: 4rem; }
 
 /* --- Post Page: Layout & Slides --- */
 .container.full-width { max-width: 100%; padding: 0; }
-.post-layout { display: flex; flex-wrap: wrap; gap: 40px; max-width: 1280px; margin: 40px auto; padding: 0 20px; }
-.main-column { flex: 1 1 65%; min-width: 300px; }
-.sidebar { flex: 1 1 30%; min-width: 280px; }
-.sidebar-inner { position: sticky; top: calc(var(--header-height) + 40px); }
-.slide-container { margin-bottom: 50px; border-radius: var(--border-radius); overflow: hidden; box-shadow: var(--card-shadow); }
-.slide-header { display: flex; justify-content: space-between; align-items: center; padding: 15px 10px; background-color: var(--light-gray); }
-.slide-author { display: flex; align-items: center; gap: 12px; font-weight: 600; }
-.slide-author img { width: 45px; height: 45px; border-radius: 50%; border: 2px solid var(--border-color); }
-.slide-brand img { height: 35px; opacity: 0.8; }
-.slide-content { width: 100%; position: relative; }
-.slide-content iframe { width: 100%; aspect-ratio: 16 / 9; border: none; background: var(--light-gray); display: block; }
-.slide-actions { display: flex; justify-content: space-between; align-items: center; padding: 15px; font-size: 1.8rem; background-color: white; }
-.slide-actions .main-actions { display: flex; gap: 20px; }
-.slide-actions i { cursor: pointer; color: #555; transition: all 0.3s; }
-.slide-actions i:hover { transform: scale(1.1); }
-.fa-heart.fas { color: #e74c3c; }
-.fa-bookmark.fas { color: var(--primary-color); }
-.slide-caption { padding: 0 15px 15px; font-size: 0.95rem; background-color: white; }
-.slide-caption .caption-text { overflow: hidden; display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; }
-.slide-caption .caption-text.expanded { -webkit-line-clamp: unset; }
-.slide-caption .more-btn { background: none; border: none; color: var(--primary-color); cursor: pointer; padding: 5px 0; font-weight: bold; }
-.slide-date { font-size: 0.85rem; color: #999; margin-top: 10px; }
+.post-layout { 
+    display: flex; 
+    flex-wrap: wrap; 
+    gap: 30px; /* کاهش فاصله */
+    max-width: 100%; /* حذف محدودیت عرض */
+    margin: 30px auto; /* کاهش margin */
+    padding: 0 15px; /* کاهش padding */
+}
+.main-column { 
+    flex: 1 1 100%; /* در حالت عادی 100% عرض */
+    min-width: 300px;
+}
+.sidebar { 
+    flex: 1 1 300px; /* عرض ثابت برای سایدبار */
+    min-width: 280px;
+}
+.sidebar-inner { 
+    position: sticky; 
+    top: calc(var(--header-height) + 40px);
+    max-height: calc(100vh - var(--header-height) - 40px);
+    overflow-y: auto; /* امکان اسکرول برای سایدبار */
+}
+.slide-container { 
+    margin-bottom: 40px; /* کاهش فاصله بین اسلایدها */
+    border-radius: var(--border-radius);
+    overflow: hidden;
+    box-shadow: var(--card-shadow);
+    background-color: white;
+}
+.slide-header { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 15px; /* کاهش padding */
+    background-color: var(--light-gray);
+    border-bottom: 1px solid var(--border-color);
+}
+.slide-author { 
+    display: flex; 
+    align-items: center; 
+    gap: 12px; 
+    font-weight: 600; 
+}
+.slide-author img { 
+    width: 45px; 
+    height: 45px; 
+    border-radius: 50%; 
+    border: 2px solid var(--border-color); 
+}
+.slide-brand img { 
+    height: 35px; 
+    opacity: 0.8; 
+}
+.slide-content { 
+    width: 100%; 
+    position: relative;
+    background-color: white;
+}
+.slide-content iframe { 
+    width: 100%; 
+    min-height: 400px; /* حداقل ارتفاع */
+    height: auto; /* ارتفاع متغیر */
+    border: none; 
+    background: var(--light-gray); 
+    display: block;
+}
+/* برای محتوای HTML که ارتفاع متغیر دارد */
+.slide-content.html-content {
+    padding: 0; /* حذف padding */
+    overflow: hidden; /* جلوگیری از اسکرول */
+}
+.slide-actions { 
+    display: flex; 
+    justify-content: space-between; 
+    align-items: center; 
+    padding: 15px 15px; /* کاهش padding */
+    font-size: 1.8rem; 
+    background-color: white;
+    border-top: 1px solid var(--border-color);
+}
+.slide-actions .main-actions { 
+    display: flex; 
+    gap: 20px; 
+}
+.slide-actions i { 
+    cursor: pointer; 
+    color: #555; 
+    transition: all 0.3s; 
+}
+.slide-actions i:hover { 
+    transform: scale(1.1); 
+}
+.fa-heart.fas { 
+    color: #e74c3c; 
+}
+.fa-bookmark.fas { 
+    color: var(--primary-color); 
+}
+.slide-caption { 
+    padding: 0 15px 15px; /* کاهش padding */
+    font-size: 0.95rem; 
+    background-color: white;
+}
+.slide-caption .caption-text { 
+    overflow: hidden; 
+    display: -webkit-box; 
+    -webkit-line-clamp: 2; 
+    -webkit-box-orient: vertical; 
+}
+.slide-caption .caption-text.expanded { 
+    -webkit-line-clamp: unset; 
+}
+.slide-caption .more-btn { 
+    background: none; 
+    border: none; 
+    color: var(--primary-color); 
+    cursor: pointer; 
+    padding: 5px 0; 
+    font-weight: bold; 
+}
+.slide-date { 
+    font-size: 0.85rem; 
+    color: #999; 
+    margin-top: 10px; 
+}
 
 /* --- Image Gallery --- */
 .slide-gallery {
     position: relative;
     width: 100%;
-    aspect-ratio: 16/9;
+    min-height: 400px; /* حداقل ارتفاع */
+    max-height: 80vh; /* حداکثر ارتفاع */
     overflow: hidden;
 }
-.slide-image {
+.slide-gallery img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* نمایش کامل تصویر بدون برش */
     display: none;
 }
-.slide-image.active {
+.slide-gallery img.active {
     display: block;
 }
 .gallery-nav {
@@ -283,7 +391,7 @@ section { margin-bottom: 4rem; }
 }
 .environmental-ad img {
     width: 100%;
-    max-width: 800px;
+    max-width: 100%;
     height: auto;
     border-radius: 8px;
     margin-top: 15px;
@@ -292,6 +400,10 @@ section { margin-bottom: 4rem; }
 /* --- Sidebar --- */
 .sidebar-section {
     margin-bottom: 30px;
+    background-color: white;
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--card-shadow);
 }
 .sidebar h3 { 
     font-size: 1.3rem; 
@@ -359,6 +471,10 @@ section { margin-bottom: 4rem; }
     padding: 60px 0; 
     margin-top: 40px;
 }
+.suggested-posts-section .container {
+    max-width: 100%;
+    padding: 0 15px;
+}
 .suggested-posts-section h2 {
     text-align: center;
     margin-bottom: 2rem;
@@ -379,9 +495,9 @@ section { margin-bottom: 4rem; }
     padding: 40px 0 20px;
 }
 .footer-content {
-    max-width: 1280px;
+    max-width: 100%;
     margin: 0 auto;
-    padding: 0 20px;
+    padding: 0 15px;
     display: flex;
     flex-wrap: wrap;
     gap: 30px;
@@ -475,67 +591,6 @@ section { margin-bottom: 4rem; }
     100% { transform: rotate(360deg); } 
 }
 
-/* --- Responsive Design --- */
-@media (max-width: 992px) {
-    .post-layout {
-        flex-direction: column;
-    }
-    .sidebar {
-        width: 100%;
-    }
-    .sidebar-inner {
-        position: static;
-    }
-    .hero-content h1 {
-        font-size: 2.2rem;
-    }
-    .hero-content h2 {
-        font-size: 1.2rem;
-    }
-}
-
-@media (max-width: 768px) {
-    .header-content {
-        flex-direction: column;
-        height: auto;
-        padding: 15px 0;
-    }
-    .main-header {
-        height: auto;
-        position: static;
-    }
-    .main-header nav {
-        margin-top: 15px;
-        flex-wrap: wrap;
-        justify-content: center;
-        gap: 15px;
-    }
-    .hero-section {
-        height: 40vh;
-        padding: 20px;
-    }
-    .hero-content h1 {
-        font-size: 1.8rem;
-    }
-    .hero-content h2 {
-        font-size: 1rem;
-    }
-    .post-meta {
-        flex-direction: column;
-        gap: 10px;
-        font-size: 0.9rem;
-    }
-    .posts-grid {
-        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
-        gap: 20px;
-    }
-    .footer-content {
-        flex-direction: column;
-    }
-    .footer-links {
-        width: 100%;
-    }
-}
 /* --- Comment Modal --- */
 .comment-modal {
     position: fixed;
@@ -664,4 +719,122 @@ section { margin-bottom: 4rem; }
 
 .add-comment button:hover {
     background-color: var(--primary-light);
+}
+
+/* --- Responsive Design --- */
+@media (max-width: 992px) {
+    .post-layout {
+        flex-direction: column;
+    }
+    .sidebar {
+        width: 100%;
+        order: 2; /* سایدبار بعد از محتوا نمایش داده شود */
+    }
+    .main-column {
+        order: 1; /* محتوا اول نمایش داده شود */
+    }
+    .sidebar-inner {
+        position: static;
+        max-height: none;
+    }
+    .hero-content h1 {
+        font-size: 2.2rem;
+    }
+    .hero-content h2 {
+        font-size: 1.2rem;
+    }
+}
+
+@media (max-width: 768px) {
+    .header-content {
+        flex-direction: column;
+        height: auto;
+        padding: 15px 0;
+    }
+    .main-header {
+        height: auto;
+        position: static;
+    }
+    .main-header nav {
+        margin-top: 15px;
+        flex-wrap: wrap;
+        justify-content: center;
+        gap: 15px;
+    }
+    .hero-section {
+        height: 40vh;
+        padding: 20px 15px;
+    }
+    .hero-content h1 {
+        font-size: 1.8rem;
+    }
+    .hero-content h2 {
+        font-size: 1rem;
+    }
+    .post-meta {
+        flex-direction: column;
+        gap: 10px;
+        font-size: 0.9rem;
+    }
+    .posts-grid {
+        grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+        gap: 20px;
+    }
+    .footer-content {
+        flex-direction: column;
+    }
+    .footer-links {
+        width: 100%;
+    }
+    
+    /* بهبود نمایش اسلایدها در موبایل */
+    .slide-content iframe {
+        min-height: 300px;
+    }
+    .slide-gallery {
+        min-height: 300px;
+    }
+}
+
+@media (max-width: 576px) {
+    .container {
+        padding: 0 10px;
+    }
+    .post-layout {
+        padding: 0 10px;
+    }
+    .hero-section {
+        padding: 15px 10px;
+    }
+    .hero-content {
+        padding: 0 10px;
+    }
+    .slide-header {
+        padding: 10px;
+    }
+    .slide-author img {
+        width: 35px;
+        height: 35px;
+    }
+    .slide-brand img {
+        height: 25px;
+    }
+    .slide-actions {
+        padding: 10px;
+        font-size: 1.5rem;
+    }
+    .slide-actions .main-actions {
+        gap: 15px;
+    }
+    .slide-caption {
+        padding: 0 10px 10px;
+    }
+    
+    /* بهبود نمایش اسلایدها در موبایل */
+    .slide-content iframe {
+        min-height: 250px;
+    }
+    .slide-gallery {
+        min-height: 250px;
+    }
 }
