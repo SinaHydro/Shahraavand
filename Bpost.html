@@ -1,143 +1,70 @@
 <!DOCTYPE html>
 <html lang="fa" dir="rtl">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width,initial-scale=1.0" />
-  <title>نمایش پست | بلاگ تخصصی ساختمان</title>
-  <meta name="slide-base" content="https://raw.githubusercontent.com/SinaHydro/Shahraavand/main/BlogP/">
-  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.2/css/all.css" />
-  <style>
-    body{font-family:'Tahoma',sans-serif;direction:rtl;margin:0;background:#f7f8fa;color:#333}
-    header{background:#fff;padding:12px 20px;box-shadow:0 1px 6px rgba(0,0,0,.08);display:flex;justify-content:space-between;align-items:center}
-    .logo{font-weight:bold;font-size:18px;color:#1a73e8}
-    main{max-width:1280px;margin:0 auto;padding:20px}
-    .hero img{width:100%;height:340px;object-fit:cover;border-radius:12px}
-    .hero h1{margin-top:12px;color:#1a73e8}
-    .hero p{margin-top:6px;font-size:14px;color:#555}
-    .meta{margin-top:8px;font-size:13px;color:#666;display:flex;gap:12px;flex-wrap:wrap}
-    .tags{margin-top:20px;display:flex;flex-wrap:wrap;gap:8px}
-    .tags span{background:#eaf1fe;color:#1a73e8;padding:6px 10px;border-radius:999px;font-size:12px}
-    .slide{margin-top:20px;background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.06)}
-    .slide iframe{width:100%;height:720px;border:0;background:#fff}
-    .author{padding:10px;display:flex;align-items:center;gap:10px}
-    .author img{width:40px;height:40px;border-radius:50%;object-fit:cover}
-    .author-info{display:flex;flex-direction:column}
-    .author-info strong{color:#1a73e8}
-    .slide-meta{padding:10px;font-size:13px;color:#666;display:flex;gap:14px;border-top:1px solid #eee}
-    .suggested{margin-top:40px}
-    .suggested h2{font-size:18px;color:#1a73e8;margin-bottom:12px}
-    .grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px}
-    .card{background:#fff;border-radius:12px;overflow:hidden;box-shadow:0 2px 6px rgba(0,0,0,.06);cursor:pointer;transition:.2s}
-    .card:hover{transform:translateY(-4px)}
-    .card img{width:100%;height:140px;object-fit:cover}
-    .card h3{margin:10px;font-size:15px;color:#1a73e8}
-    .card p{margin:0 10px 10px;font-size:12px;color:#666}
-  </style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>محتوای پست</title>
+     <style>
+        body { font-family: sans-serif; direction: rtl; }
+        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
+        .post-image { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; }
+        .loader { text-align: center; font-size: 20px; padding: 50px; }
+        .post-content { line-height: 1.8; }
+        a { color: #1a73e8; }
+    </style>
 </head>
 <body>
-  <header>
-    <div class="logo">🏗️ بلاگ تخصصی ساختمان</div>
-    <nav><a href="index.html">خانه</a></nav>
-  </header>
+    <main id="post-container" class="container">
+        <div class="loader">در حال بارگذاری محتوای پست...</div>
+    </main>
 
-  <main>
-    <section class="hero" id="hero"></section>
-    <section class="tags" id="tags"></section>
-    <section id="slides"></section>
-    <section class="suggested">
-      <h2>مطالب اخیر این دسته</h2>
-      <div class="grid" id="suggested"></div>
-    </section>
-  </main>
+    <script>
+        // URL وب اپلیکیشنی که در گام قبل کپی کردید را اینجا قرار دهید
+        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwaCP-kY-LLWh_v3gNr2gu13Zd9Mfkh_s6mjcNzQxVGmyrl-i63fBheHi2kG5y0e1Ub/exec";
+        
+        document.addEventListener("DOMContentLoaded", () => {
+            const params = new URLSearchParams(window.location.search);
+            const postId = params.get('id');
 
-  <script>
-    const BASE_API = 'https://script.google.com/macros/s/AKfycbx3l4N0BeIdTZibSIfBtYjgjE_k68Lr0m16iJN0SVnfXdC9l-xz627s1KJs5RdJ0XRQ/exec';
-    const SLIDE_BASE = document.querySelector('meta[name="slide-base"]').content;
-    const ORIGIN = window.location.origin;
-    const params = new URLSearchParams(window.location.search);
-    const postId = params.get('id');
+            if (postId) {
+                fetchSinglePost(postId);
+            } else {
+                const postContainer = document.getElementById("post-container");
+                postContainer.innerHTML = "<h1>خطا: شناسه پست مشخص نشده است.</h1>";
+            }
+        });
 
-    async function callAPI(action, params = {}) {
-      const url = new URL(BASE_API);
-      url.searchParams.set('action', action);
-      url.searchParams.set('origin', ORIGIN);
-      Object.entries(params).forEach(([k, v]) => url.searchParams.set(k, v));
-      const res = await fetch(url); return res.json();
-    }
+        async function fetchSinglePost(id) {
+            const postContainer = document.getElementById("post-container");
+            const urlWithId = `${WEB_APP_URL}?id=${id}`;
+            
+            try {
+                const response = await fetch(urlWithId);
+                if (!response.ok) throw new Error("پست یافت نشد.");
 
-    function renderHero(post) {
-      const hero = document.getElementById('hero');
-      hero.innerHTML = `
-        <img src="${post.heroImage}" alt="">
-        <h1>${post.title}</h1>
-        <p>${post.subtitle}</p>
-        <div class="meta">
-          <span>🕒 ${post.readingTime}</span>
-          <span>📅 ${post.publishedAt}</span>
-          <span>🏷️ ${post.category}</span>
-          <span>👁️ ${post.clicks}</span>
-        </div>
-      `;
-    }
+                const post = await response.json();
 
-    function renderTags(tags) {
-      const box = document.getElementById('tags'); box.innerHTML = '';
-      tags.forEach(t => {
-        const tag = document.createElement('span');
-        tag.textContent = t;
-        box.appendChild(tag);
-      });
-    }
+                if (post.error) {
+                    throw new Error(post.error);
+                }
 
-    function renderSlides(slides) {
-      const box = document.getElementById('slides'); box.innerHTML = '';
-      slides.forEach(s => {
-        const url = SLIDE_BASE + encodeURIComponent(s.contentUrl.trim());
-        const slide = document.createElement('div');
-        slide.className = 'slide';
-        slide.innerHTML = `
-          <div class="author">
-            <img src="${s.author.avatar}" alt="">
-            <div class="author-info">
-              <strong>${s.author.name}</strong>
-              <span>${s.publishedAt}</span>
-            </div>
-          </div>
-          <iframe src="${url}" loading="lazy" referrerpolicy="no-referrer" sandbox="allow-scripts allow-same-origin allow-popups"></iframe>
-          <div class="slide-meta">
-            ❤️ ${s.likesCount} 💬 ${s.commentsCount} 🔖 ${s.savesCount} 🔁 ${s.shares}
-          </div>
-        `;
-        box.appendChild(slide);
-      });
-    }
+                document.title = post.title; // عنوان صفحه را آپدیت می‌کند
+                
+                postContainer.innerHTML = `
+                    <h1>${post.title}</h1>
+                    <p><strong>نویسنده: ${post.author} | تاریخ: ${new Date(post.date).toLocaleDateString('fa-IR')}</strong></p>
+                    <img src="${post.imageURL}" alt="${post.title}" class="post-image">
+                    <hr>
+                    <div class="post-content">
+                        ${post.content}
+                    </div>
+                    <a href="index.html">بازگشت به صفحه اصلی</a>
+                `;
 
-    function renderSuggested(items) {
-      const grid = document.getElementById('suggested'); grid.innerHTML = '';
-      items.forEach(p => {
-        const card = document.createElement('div');
-        card.className = 'card';
-        card.onclick = () => window.location.href = `post.html?id=${p.postId}`;
-        card.innerHTML = `
-          <img src="${p.heroImage}" alt="">
-          <h3>${p.title}</h3>
-          <p>${p.publishedAt}</p>
-        `;
-        grid.appendChild(card);
-      });
-    }
-
-    async function init() {
-      if (!postId) return window.location.href = 'index.html';
-      const post = await callAPI('getPost', { id: postId });
-      renderHero(post);
-      renderTags(post.tags);
-      renderSlides(post.slides);
-      const suggested = await callAPI('recentByCategory', { category: post.category, exclude: post.postId, limit: 6 });
-      renderSuggested(suggested);
-    }
-
-    document.addEventListener('DOMContentLoaded', init);
-  </script>
+            } catch (error) {
+                postContainer.innerHTML = `<h1>خطا: ${error.message}</h1> <a href="index.html">بازگشت به صفحه اصلی</a>`;
+            }
+        }
+    </script>
 </body>
 </html>
