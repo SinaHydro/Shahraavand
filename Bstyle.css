@@ -217,6 +217,7 @@ section { margin-bottom: 4rem; }
     border-radius: var(--border-radius);
     overflow: hidden;
     box-shadow: var(--card-shadow);
+    background-color: #fff; /* پس‌زمینه سفید برای اسلایدها */
 }
 .slide-header { 
     display: flex; 
@@ -244,33 +245,34 @@ section { margin-bottom: 4rem; }
 .slide-content { 
     width: 100%; 
     position: relative;
-    background-color: white;
+    background-color: #fff; /* پس‌زمینه سفید */
     overflow: hidden; /* جلوگیری از overflow */
 }
 .slide-content iframe { 
     width: 100%; 
     height: 100%; 
     border: none; 
-    background: var(--light-gray); 
+    background: #fff; /* پس‌زمینه سفید */
     display: block;
-    transform: scale(0.8); /* کوچک کردن محتوا به 80% */
+    transform: scale(0.9); /* کوچک کردن محتوا به 90% (کمتر از قبل) */
     transform-origin: top right; /* شروع کوچک شدن از بالا و راست */
-    height: 125%; /* افزایش ارتفاع برای جبران کوچک شدن */
-    width: 125%; /* افزایش عرض برای جبران کوچک شدن */
-    margin: -12.5% 0 0 -12.5%; /* تنظیم margin برای مرکز کردن محتوا */
+    height: 111%; /* افزایش ارتفاع برای جبران کوچک شدن */
+    width: 111%; /* افزایش عرض برای جبران کوچک شدن */
+    margin: -5.5% 0 0 -5.5%; /* تنظیم margin برای مرکز کردن محتوا */
 }
 /* برای محتوای HTML که ارتفاع متغیر دارد */
 .slide-content.html-content {
-    transform: scale(0.8); /* کوچک کردن محتوا به 80% */
+    transform: scale(0.9); /* کوچک کردن محتوا به 90% (کمتر از قبل) */
     transform-origin: top right; /* شروع کوچک شدن از بالا و راست */
-    height: 125%; /* افزایش ارتفاع برای جبران کوچک شدن */
-    width: 125%; /* افزایش عرض برای جبران کوچک شدن */
-    margin: -12.5% 0 0 -12.5%; /* تنظیم margin برای مرکز کردن محتوا */
+    height: 111%; /* افزایش ارتفاع برای جبران کوچک شدن */
+    width: 111%; /* افزایش عرض برای جبران کوچک شدن */
+    margin: -5.5% 0 0 -5.5%; /* تنظیم margin برای مرکز کردن محتوا */
     overflow: hidden; /* جلوگیری از اسکرول */
-    font-size: 0.8em; /* کوچک کردن فونت‌ها */
+    font-size: 0.9em; /* کوچک کردن فونت‌ها (کمتر از قبل) */
+    background-color: #fff; /* پس‌زمینه سفید */
 }
 .slide-content.html-content * {
-    font-size: 0.8em; /* کوچک کردن فونت‌های تمام عناصر داخلی */
+    font-size: 0.9em; /* کوچک کردن فونت‌های تمام عناصر داخلی (کمتر از قبل) */
 }
 .slide-actions { 
     display: flex; 
@@ -278,6 +280,8 @@ section { margin-bottom: 4rem; }
     align-items: center; 
     padding: 15px; 
     font-size: 1.8rem; 
+    background-color: #fff; /* پس‌زمینه سفید */
+    border-top: 1px solid var(--border-color);
 }
 .slide-actions .main-actions { 
     display: flex; 
@@ -300,6 +304,7 @@ section { margin-bottom: 4rem; }
 .slide-caption { 
     padding: 0 15px 15px; 
     font-size: 0.95rem; 
+    background-color: #fff; /* پس‌زمینه سفید */
 }
 .slide-caption .caption-text { 
     overflow: hidden; 
@@ -330,12 +335,14 @@ section { margin-bottom: 4rem; }
     width: 100%;
     aspect-ratio: 16 / 9;
     overflow: hidden;
+    background-color: #fff; /* پس‌زمینه سفید */
 }
 .slide-gallery img {
     width: 100%;
     height: 100%;
-    object-fit: cover;
+    object-fit: contain; /* نمایش کامل تصویر بدون برش */
     display: none;
+    background-color: #fff; /* پس‌زمینه سفید */
 }
 .slide-gallery img.active {
     display: block;
@@ -401,6 +408,11 @@ section { margin-bottom: 4rem; }
 /* --- Sidebar --- */
 .sidebar-section {
     margin-bottom: 30px;
+    background-color: #fff; /* پس‌زمینه سفید */
+    border-radius: var(--border-radius);
+    padding: 20px;
+    box-shadow: var(--card-shadow);
+    border: 1px solid var(--border-color);
 }
 .sidebar h3 { 
     font-size: 1.3rem; 
@@ -732,19 +744,19 @@ section { margin-bottom: 4rem; }
         font-size: 1.2rem;
     }
     
-    /* تنظیم کوچک‌سازی برای صفحات کوچک */
+    /* تنظیم کوچک‌سازی برای صفحات متوسط */
     .slide-content iframe {
-        transform: scale(0.7);
-        height: 143%;
-        width: 143%;
-        margin: -21.5% 0 0 -21.5%;
+        transform: scale(0.85); /* مقدار کمتری از قبل */
+        height: 118%;
+        width: 118%;
+        margin: -9% 0 0 -9%;
     }
     .slide-content.html-content {
-        transform: scale(0.7);
-        height: 143%;
-        width: 143%;
-        margin: -21.5% 0 0 -21.5%;
-        font-size: 0.7em;
+        transform: scale(0.85); /* مقدار کمتری از قبل */
+        height: 118%;
+        width: 118%;
+        margin: -9% 0 0 -9%;
+        font-size: 0.85em; /* مقدار کمتری از قبل */
     }
 }
 
@@ -792,16 +804,16 @@ section { margin-bottom: 4rem; }
     
     /* تنظیم کوچک‌سازی برای موبایل */
     .slide-content iframe {
-        transform: scale(0.6);
-        height: 167%;
-        width: 167%;
-        margin: -33.5% 0 0 -33.5%;
+        transform: scale(0.8); /* مقدار کمتری از قبل */
+        height: 125%;
+        width: 125%;
+        margin: -12.5% 0 0 -12.5%;
     }
     .slide-content.html-content {
-        transform: scale(0.6);
-        height: 167%;
-        width: 167%;
-        margin: -33.5% 0 0 -33.5%;
-        font-size: 0.6em;
+        transform: scale(0.8); /* مقدار کمتری از قبل */
+        height: 125%;
+        width: 125%;
+        margin: -12.5% 0 0 -12.5%;
+        font-size: 0.8em; /* مقدار کمتری از قبل */
     }
 }
