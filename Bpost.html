@@ -3,68 +3,73 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>محتوای پست</title>
-     <style>
-        body { font-family: sans-serif; direction: rtl; }
-        .container { max-width: 800px; margin: 20px auto; padding: 20px; }
-        .post-image { width: 100%; max-height: 400px; object-fit: cover; border-radius: 8px; }
-        .loader { text-align: center; font-size: 20px; padding: 50px; }
-        .post-content { line-height: 1.8; }
-        a { color: #1a73e8; }
-    </style>
+    <title>پست وبلاگ</title>
+    <link rel="stylesheet" href="Bstyle.css">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 </head>
 <body>
-    <main id="post-container" class="container">
-        <div class="loader">در حال بارگذاری محتوای پست...</div>
-    </main>
 
-    <script>
-        // URL وب اپلیکیشنی که در گام قبل کپی کردید را اینجا قرار دهید
-        const WEB_APP_URL = "https://script.google.com/macros/s/AKfycbwaCP-kY-LLWh_v3gNr2gu13Zd9Mfkh_s6mjcNzQxVGmyrl-i63fBheHi2kG5y0e1Ub/exec";
-        
-        document.addEventListener("DOMContentLoaded", () => {
-            const params = new URLSearchParams(window.location.search);
-            const postId = params.get('id');
+    <div id="progress-bar"></div>
 
-            if (postId) {
-                fetchSinglePost(postId);
-            } else {
-                const postContainer = document.getElementById("post-container");
-                postContainer.innerHTML = "<h1>خطا: شناسه پست مشخص نشده است.</h1>";
-            }
-        });
+    <header class="main-header">
+         <div class="header-content">
+            <div class="logo-container">
+                <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس" class="logo">
+                <div class="title-container">
+                    <h1>نظام تندیس</h1>
+                    <h2>تدارک نیازمندی دقیق و یکپارچه ساختمان</h2>
+                </div>
+            </div>
+            <nav>
+                 <a href="index.html">خانه</a>
+                <a href="#">کتابخانه</a>
+                <a href="#">جستجو</a>
+            </nav>
+        </div>
+    </header>
 
-        async function fetchSinglePost(id) {
-            const postContainer = document.getElementById("post-container");
-            const urlWithId = `${WEB_APP_URL}?id=${id}`;
-            
-            try {
-                const response = await fetch(urlWithId);
-                if (!response.ok) throw new Error("پست یافت نشد.");
+    <div id="post-hero" class="hero-section">
+        <div class="hero-content">
+            <h1 id="hero-title"></h1>
+            <h2 id="hero-subtitle"></h2>
+            <div class="post-meta">
+                <span id="hero-author"></span>
+                <span id="hero-date"></span>
+                <span id="hero-read-time"></span>
+            </div>
+        </div>
+    </div>
 
-                const post = await response.json();
+    <div class="container post-layout">
+        <main id="post-content" class="main-column">
+            <div class="loader"></div>
+        </main>
 
-                if (post.error) {
-                    throw new Error(post.error);
-                }
+        <aside id="sidebar" class="sidebar">
+            <div class="sidebar-inner">
+                <h3>فهرست مطالب</h3>
+                <nav id="toc-container"></nav>
+                <h3>برچسب‌ها</h3>
+                <div id="post-tags" class="tags-container"></div>
+                <div class="ad-banner">
+                    <img src="https://via.placeholder.com/300x600.png?text=Ad+Banner" alt="تبلیغات">
+                </div>
+            </div>
+        </aside>
+    </div>
 
-                document.title = post.title; // عنوان صفحه را آپدیت می‌کند
-                
-                postContainer.innerHTML = `
-                    <h1>${post.title}</h1>
-                    <p><strong>نویسنده: ${post.author} | تاریخ: ${new Date(post.date).toLocaleDateString('fa-IR')}</strong></p>
-                    <img src="${post.imageURL}" alt="${post.title}" class="post-image">
-                    <hr>
-                    <div class="post-content">
-                        ${post.content}
-                    </div>
-                    <a href="index.html">بازگشت به صفحه اصلی</a>
-                `;
+    <section class="suggested-posts-section">
+         <div class="container">
+            <h2>پست‌های اخیر در این دسته</h2>
+            <div id="suggested-posts-container" class="posts-grid mini">
+                </div>
+         </div>
+    </section>
 
-            } catch (error) {
-                postContainer.innerHTML = `<h1>خطا: ${error.message}</h1> <a href="index.html">بازگشت به صفحه اصلی</a>`;
-            }
-        }
-    </script>
+    <footer class="main-footer">
+        <p>تمامی حقوق معنوی این سایت متعلق به “شرکت مهندسین مشاور شهرآوند” است.</p>
+    </footer>
+
+    <script src="Bscript.js"></script>
 </body>
 </html>
