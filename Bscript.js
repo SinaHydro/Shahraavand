@@ -267,16 +267,10 @@ async function renderSlides(slides) {
                     
                     const htmlContent = await response.text();
                     
-                    // ایجاد یک iframe برای نمایش محتوای HTML
+                    // ایجاد یک div برای نمایش محتوای HTML به جای iframe
                     slideContent = `
-                        <div class="slide-content">
-                            <iframe 
-                                srcdoc="${htmlContent.replace(/"/g, '&quot;')}" 
-                                loading="lazy" 
-                                title="محتوای اسلاید" 
-                                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-                                style="width: 100%; height: 100%; border: none;">
-                            </iframe>
+                        <div class="slide-content html-content">
+                            ${htmlContent}
                         </div>`;
                 } catch (error) {
                     console.error('Error loading slide content:', error);
@@ -397,6 +391,41 @@ async function renderSlides(slides) {
                     break;
             }
         });
+    });
+    
+    // تنظیم ارتفاع iframe‌ها پس از بارگذاری
+    setTimeout(() => {
+        adjustIframeHeights();
+    }, 1000);
+}
+
+/**
+ * تنظیم ارتفاع iframe‌ها بر اساس محتوای آنها
+ */
+function adjustIframeHeights() {
+    document.querySelectorAll('.slide-content iframe').forEach(iframe => {
+        try {
+            // تلاش برای تنظیم ارتفاع iframe بر اساس محتوای آن
+            iframe.onload = function() {
+                try {
+                    // اگر iframe به محتوای همان دامنه دسترسی دارد
+                    const iframeHeight = iframe.contentWindow.document.body.scrollHeight;
+                    iframe.style.height = iframeHeight + 'px';
+                } catch (e) {
+                    // اگر iframe به محتوای خارجی دسترسی ندارد، ارتفاع را بر اساس viewport تنظیم می‌کنیم
+                    const viewportHeight = window.innerHeight * 0.7; // 70% ارتفاع viewport
+                    iframe.style.height = Math.max(400, viewportHeight) + 'px';
+                }
+            };
+            
+            // اگر iframe از قبل بارگذاری شده است
+            if (iframe.contentWindow && iframe.contentWindow.document.body) {
+                const iframeHeight = iframe.contentWindow.document.body.scrollHeight;
+                iframe.style.height = iframeHeight + 'px';
+            }
+        } catch (e) {
+            console.error('Error adjusting iframe height:', e);
+        }
     });
 }
 
