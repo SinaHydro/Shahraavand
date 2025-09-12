@@ -2,9 +2,10 @@
 // CONFIGURATION 
 // =================================================================
 // !!! این آدرس را با آدرس Web App خود جایگزین کنید
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbzQPkfaYzV6lIfOAQFtXjji6Xa1yqpQGVR_AWkg7JXwsTGzxe8q796IdhCs4X0rggwJ/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyOHF5T2NVaPqE-2U_zVfF6-T3NlDRe7JMSxVm3lIWFjr-7bnOozHNLRA_2n1JYOjfx/exec';
 
-// آدرس پایه برای لینک‌دهی به پست‌ها
+// آدرس پایه برای لینک‌دهی به پست‌ها (اگر روی دامنه اصلی است، خالی بگذارید)
+// مثال: 'https://shahraavand.ir/BlogP/' یا فقط '/BlogP/'
 const POST_BASE_URL = 'https://shahraavand.ir/BlogP/';
 // =================================================================
 
@@ -22,9 +23,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
 /**
  * تابع عمومی برای دریافت داده از گوگل اسکریپت
- * @param {string} action - نام اکشن (مثلا getPosts)
- * @param {string} params - پارامترهای اضافی برای URL
- * @returns {Promise<Array|null>} - داده‌های دریافت شده یا null در صورت خطا
  */
 async function fetchData(action, params = '') {
     try {
@@ -53,13 +51,7 @@ async function initIndexPage() {
         const categories = new Set();
 
         posts.forEach(post => {
-            // ساخت HTML برای تگ‌ها
-            const tagsHtml = (post.tags || '')
-                .split(',')
-                .map(tag => `<span class="tag">${tag.trim()}</span>`)
-                .join('');
-            
-            // لینک به پست با فرمت جدید
+            const tagsHtml = (post.tags || '').split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('');
             const postLink = `${POST_BASE_URL}${post.postId}.html`;
 
             const postCard = `
@@ -74,7 +66,7 @@ async function initIndexPage() {
                     </div>
                     <a href="${postLink}" onclick="handlePostClick('${post.postId}'); return false;">
                         <h3>${post.title}</h3>
-                        <p>${post.description}</p>
+                        <p>${post.description || ''}</p>
                     </a>
                     <div class="post-card-tags">${tagsHtml}</div>
                     <div class="post-card-footer">
@@ -98,20 +90,14 @@ async function initIndexPage() {
     }
 }
 
+
 /**
  * مدیریت کلیک روی پست و هدایت به صفحه مربوطه
- * @param {string} postId - شناسه پست
  */
 function handlePostClick(postId) {
-    // افزایش شمارنده کلیک در بک‌اند (ارسال بدون انتظار پاسخ)
-    fetch(SCRIPT_URL, {
-        method: 'POST',
-        mode: 'no-cors',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify({ action: 'incrementClick', slideId: postId })
-    });
-    
-    // هدایت کاربر به صفحه پست
+    // ارسال درخواست POST برای شمارش کلیک بدون اختلال در ناوبری
+    navigator.sendBeacon(`${SCRIPT_URL}`, JSON.stringify({ action: 'incrementClick', slideId: postId }));
+    // هدایت کاربر
     window.location.href = `${POST_BASE_URL}${postId}.html`;
 }
 
@@ -120,11 +106,10 @@ function handlePostClick(postId) {
 // POST PAGE LOGIC
 // =================================================================
 async function initPostPage() {
-    // استخراج شناسه پست از URL صفحه
     const path = window.location.pathname;
     const postId = path.substring(path.lastIndexOf('/') + 1).replace('.html', '');
-
     const contentContainer = document.getElementById('post-content');
+
     if (!postId) {
         contentContainer.innerHTML = '<p>شناسه پست نامعتبر است.</p>';
         return;
@@ -159,7 +144,7 @@ function setupHero(postData) {
 function renderSlides(slides) {
     const contentContainer = document.getElementById('post-content');
     contentContainer.innerHTML = ''; // Clear loader
-    slides.forEach((slide) => {
+    slides.forEach((slide, index) => {
         const slideHtml = `
             <div class="slide-container" id="slide-${slide.slideId}">
                 <div class="slide-header">
@@ -168,11 +153,11 @@ function renderSlides(slides) {
                         <span>${slide.authorName}</span>
                     </div>
                     <div class="slide-brand">
-                        <img src="https://via.placeholder.com/120x40.png?text=NezamTandis" alt="نظام تندیس">
+                        <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="نظام تندیس">
                     </div>
                 </div>
                 <div class="slide-content">
-                    <iframe src="${slide.contentUrl}" loading="lazy" title="محتوای اسلاید" seamless></iframe>
+                    <iframe src="${slide.contentUrl}" loading="lazy" title="محتوای اسلاید" seamless onload="this.style.height = this.contentWindow.document.body.scrollHeight + 'px';"></iframe>
                 </div>
                 <div class="slide-actions">
                     <div class="main-actions">
@@ -185,11 +170,33 @@ function renderSlides(slides) {
                     </div>
                 </div>
                 <div class="slide-caption">
-                    <p>${slide.description || ''}</p>
+                    <div class="caption-text">${slide.description || ''}</div>
+                    <button class="more-btn">بیشتر</button>
                     <div class="slide-date">${new Date(slide.publishDate).toLocaleDateString('fa-IR')}</div>
                 </div>
             </div>`;
         contentContainer.innerHTML += slideHtml;
+
+        // Add ad banner after every 3 slides
+        if ((index + 1) % 3 === 0 && index < slides.length - 1) {
+             contentContainer.innerHTML += `
+                <div class="environmental-ad">
+                    <img src="https://picsum.photos/seed/env${index}/800/200" alt="تبلیغ محیط زیستی">
+                </div>`;
+        }
+    });
+
+    // Add event listeners for "more" buttons
+    document.querySelectorAll('.more-btn').forEach(button => {
+        const caption = button.previousElementSibling;
+        if (caption.scrollHeight <= caption.clientHeight) {
+            button.style.display = 'none';
+        } else {
+            button.addEventListener('click', () => {
+                caption.classList.toggle('expanded');
+                button.textContent = caption.classList.contains('expanded') ? 'کمتر' : 'بیشتر';
+            });
+        }
     });
 }
 
@@ -201,7 +208,7 @@ function setupSidebar(slides, postData) {
 
     slides.forEach((slide, index) => {
         tocContainer.innerHTML += `
-            <a href="#slide-${slide.slideId}">
+            <a href="#slide-${slide.slideId}" data-slide-id="slide-${slide.slideId}">
                 <img src="${slide.imageUrl || postData.imageUrl}" alt="Slide ${index + 1}">
                 <span>${slide.title || `اسلاید ${index + 1}`}</span>
             </a>`;
@@ -218,6 +225,7 @@ async function loadSuggestedPosts(currentCategory, currentPostId) {
     const allPosts = await fetchData('getPosts');
     if (allPosts) {
         const suggested = allPosts.filter(p => p.category === currentCategory && p.postId !== currentPostId).slice(0, 3);
+        container.innerHTML = '';
         if (suggested.length > 0) {
             suggested.forEach(post => {
                  container.innerHTML += `
@@ -236,6 +244,21 @@ async function loadSuggestedPosts(currentCategory, currentPostId) {
 
 function setupInteractiveFeatures() {
     const progressBar = document.getElementById('progress-bar');
+    const tocLinks = document.querySelectorAll('#toc-container a');
+
+    const observer = new IntersectionObserver((entries) => {
+        entries.forEach(entry => {
+            if (entry.isIntersecting) {
+                const id = entry.target.id;
+                tocLinks.forEach(link => {
+                    link.classList.toggle('active', link.getAttribute('href') === `#${id}`);
+                });
+            }
+        });
+    }, { rootMargin: "-40% 0px -60% 0px" });
+
+    document.querySelectorAll('.slide-container').forEach(slide => observer.observe(slide));
+
     window.addEventListener('scroll', () => {
         const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
         progressBar.style.width = `${(window.scrollY / scrollableHeight) * 100}%`;
