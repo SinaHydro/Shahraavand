@@ -12,7 +12,7 @@
     --card-shadow: 0 4px 15px rgba(0,0,0,0.08);
     --card-hover-shadow: 0 10px 25px rgba(0,0,0,0.12);
     --border-radius: 12px;
-    --slide-frame-width: 1080px; /* عرض فریم اسلاید */
+    --slide-frame-width: 900px; /* عرض فریم اسلاید */
 }
 
 /* --- General & Resets --- */
@@ -197,12 +197,12 @@ section { margin-bottom: 4rem; }
     display: flex; 
     flex-wrap: wrap; 
     gap: 40px; 
-    max-width: 1280px; 
+    max-width: 1380px; 
     margin: 40px auto; 
     padding: 0 20px; 
 }
 .main-column { 
-    flex: 1 1 75%; 
+    flex: 1 1 73%; 
     min-width: 300px; 
 }
 .sidebar { 
