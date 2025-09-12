@@ -6,7 +6,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvo19MrduiMREEcxGVp
 
 // آدرس پایه برای لینک‌دهی به پست‌ها (اگر روی دامنه اصلی است، خالی بگذارید)
 // مثال: 'https://shahraavand.ir/BlogP/' یا فقط '/BlogP/'
-const POST_BASE_URL = 'https://shahraavand.ir/';
+const POST_BASE_URL = 'https://shahraavand.ir/'; // خالی بگذارید تا در همان دامنه فعلی باقی بماند
 // =================================================================
 
 
@@ -267,10 +267,16 @@ async function renderSlides(slides) {
                     
                     const htmlContent = await response.text();
                     
-                    // ایجاد یک div برای نمایش محتوای HTML به جای iframe
+                    // ایجاد یک iframe برای نمایش محتوای HTML
                     slideContent = `
-                        <div class="slide-content html-content">
-                            ${htmlContent}
+                        <div class="slide-content">
+                            <iframe 
+                                srcdoc="${htmlContent.replace(/"/g, '&quot;')}" 
+                                loading="lazy" 
+                                title="محتوای اسلاید" 
+                                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                                style="width: 100%; height: 100%; border: none;">
+                            </iframe>
                         </div>`;
                 } catch (error) {
                     console.error('Error loading slide content:', error);
