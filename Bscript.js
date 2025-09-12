@@ -2,11 +2,11 @@
 // CONFIGURATION 
 // =================================================================
 // !!! این آدرس را با آدرس Web App خود جایگزین کنید
-const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbybD1ok0qXeREn0kK-slPznt-IRkBTdR_k38t23xa9z21L96vqCIT1Gmxt6by8QvfQV/exec';
+const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvo19MrduiMREEcxGVp9bSLFNPU5Ri1fnzhdmLyjv5mwk4Is1Fmgi_2B_8WdtwdQKS/exec';
 
 // آدرس پایه برای لینک‌دهی به پست‌ها (اگر روی دامنه اصلی است، خالی بگذارید)
 // مثال: 'https://shahraavand.ir/BlogP/' یا فقط '/BlogP/'
-const POST_BASE_URL = 'https://shahraavand.ir/BlogP/';
+const POST_BASE_URL = 'https://shahraavand.ir/BlogP/'; // خالی بگذارید تا در همان دامنه فعلی باقی بماند
 // =================================================================
 
 
@@ -89,7 +89,7 @@ async function initIndexPage() {
             
             postsToDisplay.forEach(post => {
                 const tagsHtml = (post.tags || '').split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('');
-                const postLink = `${POST_BASE_URL}Bpost.html?id=${post.postId}`;
+                const postLink = `Bpost.html?id=${post.postId}`; // تغییر لینک به صفحه محلی
                 const likesCount = JSON.parse(post.likes || '[]').length;
 
                 const postCard = `
@@ -181,8 +181,8 @@ async function initIndexPage() {
 function handlePostClick(postId) {
     // ارسال درخواست POST برای شمارش کلیک بدون اختلال در ناوبری
     navigator.sendBeacon(`${SCRIPT_URL}`, JSON.stringify({ action: 'incrementClick', slideId: postId }));
-    // هدایت کاربر
-    window.location.href = `${POST_BASE_URL}Bpost.html?id=${postId}`;
+    // هدایت کاربر به صفحه محلی Bpost.html
+    window.location.href = `Bpost.html?id=${postId}`;
 }
 
 
@@ -204,7 +204,7 @@ async function initPostPage() {
     if (slides && Array.isArray(slides) && slides.length > 0) {
         const firstSlide = slides[0];
         setupHero(firstSlide);
-        renderSlides(slides);
+        await renderSlides(slides);
         setupSidebar(slides, firstSlide);
         setupAuthorInfo(firstSlide);
         loadSuggestedPosts(firstSlide.category, postId);
@@ -226,87 +226,121 @@ function setupHero(postData) {
     document.getElementById('hero-read-time').innerHTML = `<i class="fas fa-clock"></i> ${postData.readTime} دقیقه`;
 }
 
-function renderSlides(slides) {
+async function renderSlides(slides) {
     const contentContainer = document.getElementById('post-content');
     contentContainer.innerHTML = ''; // Clear loader
     
-    slides.forEach((slide, index) => {
-        // تعیین نوع محتوا (تصویر، ویدیو یا وب پیج)
-        let slideContent = '';
-        
-        if (slide.contentUrl.includes('youtube.com') || slide.contentUrl.includes('youtu.be')) {
-            // محتوای ویدیو یوتیوب
-            const videoId = slide.contentUrl.includes('youtu.be') 
-                ? slide.contentUrl.split('/').pop() 
-                : new URLSearchParams(slide.contentUrl.split('?')[1]).get('v');
-                
-            slideContent = `
-                <div class="slide-content">
-                    <iframe 
-                        width="100%" 
-                        height="100%" 
-                        src="https://www.youtube.com/embed/${videoId}" 
-                        title="YouTube video player" 
-                        frameborder="0" 
-                        allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                        allowfullscreen>
-                    </iframe>
-                </div>`;
-        } else if (slide.contentUrl.includes('.jpg') || slide.contentUrl.includes('.jpeg') || slide.contentUrl.includes('.png') || slide.contentUrl.includes('.webp')) {
-            // محتوای گالری تصاویر
-            slideContent = `
-                <div class="slide-gallery">
-                    <!-- تصاویر گالری در اینجا قرار می‌گیرند -->
-                </div>`;
-        } else {
-            // محتوای وب پیج
-            slideContent = `
-                <div class="slide-content">
-                    <iframe src="${slide.contentUrl}" loading="lazy" title="محتوای اسلاید" seamless></iframe>
-                </div>`;
-        }
-        
-        const slideHtml = `
-            <div class="slide-container" id="slide-${slide.slideId}">
-                <div class="slide-header">
-                    <div class="slide-author">
-                        <img src="${slide.authorImageUrl}" alt="${slide.authorName}">
-                        <span>${slide.authorName}</span>
-                    </div>
-                    <div class="slide-brand">
-                        <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="نظام تندیس">
-                    </div>
-                </div>
-                ${slideContent}
-                <div class="slide-actions">
-                    <div class="main-actions">
-                        <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
-                        <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
-                        <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
-                    </div>
-                    <div class="save-action">
-                        <i class="far fa-bookmark" data-action="save" data-slide-id="${slide.slideId}"></i>
-                    </div>
-                </div>
-                <div class="slide-caption">
-                    <div class="caption-text">${slide.description || ''}</div>
-                    <button class="more-btn">بیشتر</button>
-                    <div class="slide-date">${new Date(slide.publishDate).toLocaleDateString('fa-IR')}</div>
-                </div>
-            </div>`;
+    for (const slide of slides) {
+        try {
+            // تعیین نوع محتوا و بارگذاری آن
+            let slideContent = '';
             
-        contentContainer.innerHTML += slideHtml;
+            if (slide.contentUrl.includes('youtube.com') || slide.contentUrl.includes('youtu.be')) {
+                // محتوای ویدیو یوتیوب
+                const videoId = slide.contentUrl.includes('youtu.be') 
+                    ? slide.contentUrl.split('/').pop() 
+                    : new URLSearchParams(slide.contentUrl.split('?')[1]).get('v');
+                    
+                slideContent = `
+                    <div class="slide-content">
+                        <iframe 
+                            width="100%" 
+                            height="100%" 
+                            src="https://www.youtube.com/embed/${videoId}" 
+                            title="YouTube video player" 
+                            frameborder="0" 
+                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                            allowfullscreen>
+                        </iframe>
+                    </div>`;
+            } else if (slide.contentUrl.includes('.jpg') || slide.contentUrl.includes('.jpeg') || slide.contentUrl.includes('.png') || slide.contentUrl.includes('.webp')) {
+                // محتوای گالری تصاویر
+                slideContent = `
+                    <div class="slide-gallery">
+                        <img src="${slide.contentUrl}" alt="${slide.title}" class="slide-image active">
+                    </div>`;
+            } else {
+                // محتوای وب پیج - بارگذاری از لینک خارجی
+                try {
+                    const response = await fetch(slide.contentUrl);
+                    if (!response.ok) throw new Error('Failed to load content');
+                    
+                    const htmlContent = await response.text();
+                    
+                    // ایجاد یک iframe برای نمایش محتوای HTML
+                    slideContent = `
+                        <div class="slide-content">
+                            <iframe 
+                                srcdoc="${htmlContent.replace(/"/g, '&quot;')}" 
+                                loading="lazy" 
+                                title="محتوای اسلاید" 
+                                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
+                                style="width: 100%; height: 100%; border: none;">
+                            </iframe>
+                        </div>`;
+                } catch (error) {
+                    console.error('Error loading slide content:', error);
+                    slideContent = `
+                        <div class="slide-content">
+                            <div style="padding: 20px; text-align: center; color: red;">
+                                خطا در بارگذاری محتوای اسلاید
+                            </div>
+                        </div>`;
+                }
+            }
+            
+            const slideHtml = `
+                <div class="slide-container" id="slide-${slide.slideId}">
+                    <div class="slide-header">
+                        <div class="slide-author">
+                            <img src="${slide.authorImageUrl}" alt="${slide.authorName}">
+                            <span>${slide.authorName}</span>
+                        </div>
+                        <div class="slide-brand">
+                            <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="نظام تندیس">
+                        </div>
+                    </div>
+                    ${slideContent}
+                    <div class="slide-actions">
+                        <div class="main-actions">
+                            <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
+                            <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
+                            <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
+                        </div>
+                        <div class="save-action">
+                            <i class="far fa-bookmark" data-action="save" data-slide-id="${slide.slideId}"></i>
+                        </div>
+                    </div>
+                    <div class="slide-caption">
+                        <div class="caption-text">${slide.description || ''}</div>
+                        <button class="more-btn">بیشتر</button>
+                        <div class="slide-date">${new Date(slide.publishDate).toLocaleDateString('fa-IR')}</div>
+                    </div>
+                </div>`;
+            
+            contentContainer.innerHTML += slideHtml;
 
-        // Add ad banner after every 3 slides
-        if ((index + 1) % 3 === 0 && index < slides.length - 1) {
-             contentContainer.innerHTML += `
-                <div class="environmental-ad">
-                    <h3>محیط زیست ما، مسئولیت ما</h3>
-                    <p>با استفاده از مصالح پایدار و روش‌های سازگار با محیط زیست، به آینده زمین احترام بگذاریم.</p>
-                    <img src="https://picsum.photos/seed/env${index}/800/200" alt="تبلیغ محیط زیستی">
+            // Add ad banner after every 3 slides
+            if ((slides.indexOf(slide) + 1) % 3 === 0 && slides.indexOf(slide) < slides.length - 1) {
+                 contentContainer.innerHTML += `
+                    <div class="environmental-ad">
+                        <h3>محیط زیست ما، مسئولیت ما</h3>
+                        <p>با استفاده از مصالح پایدار و روش‌های سازگار با محیط زیست، به آینده زمین احترام بگذاریم.</p>
+                        <img src="https://picsum.photos/seed/env${slides.indexOf(slide)}/800/200" alt="تبلیغ محیط زیستی">
+                    </div>`;
+            }
+        } catch (error) {
+            console.error('Error rendering slide:', error);
+            contentContainer.innerHTML += `
+                <div class="slide-container">
+                    <div class="slide-content">
+                        <div style="padding: 20px; text-align: center; color: red;">
+                            خطا در بارگذاری اسلاید
+                        </div>
+                    </div>
                 </div>`;
         }
-    });
+    }
 
     // Add event listeners for "more" buttons
     document.querySelectorAll('.more-btn').forEach(button => {
@@ -359,7 +393,7 @@ function renderSlides(slides) {
                     break;
                 case 'comment':
                     // نمایش بخش نظرات
-                    alert('بخش نظرات به زودی اضافه خواهد شد!');
+                    showCommentSection(slideId);
                     break;
             }
         });
@@ -409,7 +443,7 @@ async function loadSuggestedPosts(currentCategory, currentPostId) {
             suggested.forEach(post => {
                  container.innerHTML += `
                     <article class="post-card" data-aos="fade-up">
-                       <a href="${POST_BASE_URL}Bpost.html?id=${post.postId}" onclick="handlePostClick('${post.postId}'); return false;">
+                       <a href="Bpost.html?id=${post.postId}" onclick="handlePostClick('${post.postId}'); return false;">
                            <img src="${post.imageUrl}" alt="${post.title}" class="post-card-image">
                            <div class="post-card-content">
                                <h3>${post.title}</h3>
@@ -454,6 +488,106 @@ function setupInteractiveFeatures() {
         const scrolled = window.scrollY;
         progressBar.style.width = `${(scrolled / scrollableHeight) * 100}%`;
     }, { passive: true });
+}
+
+/**
+ * نمایش بخش نظرات
+ */
+function showCommentSection(slideId) {
+    // ایجاد یک مدال برای نمایش نظرات
+    const modal = document.createElement('div');
+    modal.className = 'comment-modal';
+    modal.innerHTML = `
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3>نظرات</h3>
+                <span class="close-modal">&times;</span>
+            </div>
+            <div class="modal-body">
+                <div class="comments-list" id="comments-${slideId}">
+                    <!-- نظرات از سرور بارگذاری می شوند -->
+                    <p>در حال بارگذاری نظرات...</p>
+                </div>
+                <div class="add-comment">
+                    <h4>افزودن نظر</h4>
+                    <textarea id="comment-text-${slideId}" placeholder="نظر خود را بنویسید..."></textarea>
+                    <button onclick="submitComment('${slideId}')">ارسال نظر</button>
+                </div>
+            </div>
+        </div>
+    `;
+    
+    document.body.appendChild(modal);
+    
+    // بستن مدال
+    modal.querySelector('.close-modal').addEventListener('click', () => {
+        document.body.removeChild(modal);
+    });
+    
+    // بارگذاری نظرات از سرور
+    loadComments(slideId);
+}
+
+/**
+ * بارگذاری نظرات از سرور
+ */
+async function loadComments(slideId) {
+    const commentsContainer = document.getElementById(`comments-${slideId}`);
+    
+    try {
+        const comments = await fetchData('getComments', `&slideId=${slideId}`);
+        
+        if (comments && comments.length > 0) {
+            commentsContainer.innerHTML = comments.map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <img src="${comment.userImage || 'https://via.placeholder.com/40'}" alt="${comment.userName}">
+                        <div>
+                            <span class="comment-author">${comment.userName}</span>
+                            <span class="comment-date">${new Date(comment.date).toLocaleDateString('fa-IR')}</span>
+                        </div>
+                    </div>
+                    <div class="comment-text">${comment.text}</div>
+                </div>
+            `).join('');
+        } else {
+            commentsContainer.innerHTML = '<p>هیچ نظری ثبت نشده است.</p>';
+        }
+    } catch (error) {
+        commentsContainer.innerHTML = '<p>خطا در بارگذاری نظرات.</p>';
+    }
+}
+
+/**
+ * ارسال نظر به سرور
+ */
+async function submitComment(slideId) {
+    const commentText = document.getElementById(`comment-text-${slideId}`).value.trim();
+    
+    if (!commentText) {
+        alert('لطفاً متن نظر خود را وارد کنید.');
+        return;
+    }
+    
+    try {
+        const result = await sendActionToServer('addComment', {
+            slideId,
+            text: commentText,
+            userId: 'anonymous', // در نسخه واقعی، شناسه کاربر لاگین شده را ارسال کنید
+            userName: 'کاربر مهمان', // در نسخه واقعی، نام کاربر لاگین شده را ارسال کنید
+            userImage: 'https://via.placeholder.com/40' // در نسخه واقعی، تصویر کاربر لاگین شده را ارسال کنید
+        });
+        
+        if (result) {
+            alert('نظر شما با موفقیت ثبت شد.');
+            document.getElementById(`comment-text-${slideId}`).value = '';
+            loadComments(slideId); // بارگذاری مجدد نظرات
+        } else {
+            alert('خطا در ثبت نظر.');
+        }
+    } catch (error) {
+        alert('خطا در ثبت نظر.');
+    }
 }
 
 /**
