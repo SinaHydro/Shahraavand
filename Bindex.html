@@ -19,31 +19,85 @@
                 </div>
             </div>
             <nav>
-                <a href="index.html">خانه</a>
+                <a href="index.html" class="active">خانه</a>
                 <a href="#">کتابخانه</a>
                 <a href="#">جستجو</a>
-                <a href="#">نظام تندیس</a>
+                <a href="https://tandis.shahraavand.ir" target="_blank">نظام تندیس</a>
             </nav>
         </div>
     </header>
+
+    <div class="hero-section">
+        <div class="hero-content">
+            <h1>پلتفرم ارتباط هوشمند مهندسان، کارفرمایان و پیمانکاران</h1>
+            <p>مرجع تخصصی مطالب و مقالات مهندسی ساختمان</p>
+        </div>
+    </div>
 
     <main class="container">
         <section class="categories-section">
             <h2>دسته بندی مطالب</h2>
             <div id="categories-container" class="categories-wrapper">
-                </div>
+                <!-- دسته بندی ها از طریق جاوا اسکریپت پر می شوند -->
+            </div>
         </section>
 
         <section class="posts-section">
+            <div class="section-header">
+                <h2>جدیدترین مطالب</h2>
+                <div class="sort-options">
+                    <select id="sort-select">
+                        <option value="newest">جدیدترین</option>
+                        <option value="popular">پربازدیدترین</option>
+                        <option value="liked">پرامتیازترین</option>
+                    </select>
+                </div>
+            </div>
             <div id="posts-container" class="posts-grid">
                 <div class="loader"></div>
+            </div>
+            <div class="load-more-container">
+                <button id="load-more-btn" class="load-more-btn">نمایش مطالب بیشتر</button>
             </div>
         </section>
     </main>
 
     <footer class="main-footer">
-        <p>تمامی حقوق معنوی این سایت متعلق به “شرکت مهندسین مشاور شهرآوند” است.</p>
-        <p>پلتفرم ارتباط هوشمند مهندسان، کارفرمایان و پیمانکاران</p>
+        <div class="footer-content">
+            <div class="footer-logo">
+                <img src="https://shahraavand.ir/images/logoT.png" alt="لوگو شرکت شهرآوند">
+                <h3>شرکت مهندسین مشاور شهرآوند</h3>
+                <p>پلتفرم ارتباط هوشمند مهندسان، کارفرمایان و پیمانکاران</p>
+            </div>
+            <div class="footer-links">
+                <div class="footer-column">
+                    <h4>دسترسی سریع</h4>
+                    <ul>
+                        <li><a href="index.html">خانه</a></li>
+                        <li><a href="#">کتابخانه</a></li>
+                        <li><a href="#">جستجو</a></li>
+                        <li><a href="https://tandis.shahraavand.ir" target="_blank">نظام تندیس</a></li>
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>دسته بندی‌ها</h4>
+                    <ul id="footer-categories">
+                        <!-- دسته بندی ها از طریق جاوا اسکریپت پر می شوند -->
+                    </ul>
+                </div>
+                <div class="footer-column">
+                    <h4>تماس با ما</h4>
+                    <ul>
+                        <li><a href="#">درباره ما</a></li>
+                        <li><a href="#">تماس</a></li>
+                        <li><a href="#">حریم خصوصی</a></li>
+                    </ul>
+                </div>
+            </div>
+        </div>
+        <div class="copyright">
+            <p>تمامی حقوق معنوی این سایت متعلق به "شرکت مهندسین مشاور شهرآوند" است.</p>
+        </div>
     </footer>
 
     <script src="Bscript.js"></script>
