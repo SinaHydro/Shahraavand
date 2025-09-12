@@ -243,21 +243,25 @@ async function renderSlides(slides) {
                     
                 slideContent = `
                     <div class="slide-content">
-                        <iframe 
-                            width="100%" 
-                            height="100%" 
-                            src="https://www.youtube.com/embed/${videoId}" 
-                            title="YouTube video player" 
-                            frameborder="0" 
-                            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
-                            allowfullscreen>
-                        </iframe>
+                        <div class="slide-frame">
+                            <iframe 
+                                width="1280" 
+                                height="720" 
+                                src="https://www.youtube.com/embed/${videoId}" 
+                                title="YouTube video player" 
+                                frameborder="0" 
+                                allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture" 
+                                allowfullscreen>
+                            </iframe>
+                        </div>
                     </div>`;
             } else if (slide.contentUrl.includes('.jpg') || slide.contentUrl.includes('.jpeg') || slide.contentUrl.includes('.png') || slide.contentUrl.includes('.webp')) {
                 // محتوای گالری تصاویر
                 slideContent = `
-                    <div class="slide-gallery">
-                        <img src="${slide.contentUrl}" alt="${slide.title}" class="slide-image active">
+                    <div class="slide-content">
+                        <div class="slide-gallery">
+                            <img src="${slide.contentUrl}" alt="${slide.title}" class="slide-image active">
+                        </div>
                     </div>`;
             } else {
                 // محتوای وب پیج - بارگذاری از لینک خارجی
@@ -267,16 +271,12 @@ async function renderSlides(slides) {
                     
                     const htmlContent = await response.text();
                     
-                    // ایجاد یک iframe برای نمایش محتوای HTML
+                    // ایجاد یک div برای نمایش محتوای HTML
                     slideContent = `
                         <div class="slide-content">
-                            <iframe 
-                                srcdoc="${htmlContent.replace(/"/g, '&quot;')}" 
-                                loading="lazy" 
-                                title="محتوای اسلاید" 
-                                sandbox="allow-same-origin allow-scripts allow-popups allow-forms"
-                                style="width: 100%; height: 100%; border: none;">
-                            </iframe>
+                            <div class="slide-frame html-content">
+                                ${htmlContent}
+                            </div>
                         </div>`;
                 } catch (error) {
                     console.error('Error loading slide content:', error);
