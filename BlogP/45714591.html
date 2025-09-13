@@ -1,0 +1,196 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>جدول قیمت‌ها و توضیح افزایش قیمت‌ها</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #FFD54F;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .title .material-icons {
+            font-size: 36px;
+            margin-left: 15px;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0 70px 40px;
+        }
+        .table-container {
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin-bottom: 30px;
+            flex-grow: 1;
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            background-color: rgba(255, 255, 255, 0.05);
+        }
+        th {
+            background-color: rgba(255, 213, 79, 0.2);
+            color: #FFD54F;
+            font-weight: 700;
+            text-align: center;
+            padding: 15px;
+            font-size: 18px;
+        }
+        td {
+            padding: 15px;
+            text-align: center;
+            font-size: 18px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+        }
+        tr:last-child td {
+            border-bottom: none;
+        }
+        tr:nth-child(even) {
+            background-color: rgba(255, 255, 255, 0.03);
+        }
+        .code-cell {
+            text-align: right;
+            font-weight: 500;
+        }
+        .price-cell {
+            font-weight: 700;
+        }
+        .increase-cell {
+            color: #FF5252;
+            font-weight: 700;
+        }
+        .percentage-cell {
+            color: #FF5252;
+            font-weight: 700;
+        }
+        .explanation {
+            background-color: rgba(255, 213, 79, 0.1);
+            border-radius: 10px;
+            padding: 20px;
+            margin-top: 20px;
+        }
+        .explanation-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFD54F;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .explanation-title .material-icons {
+            font-size: 28px;
+            margin-left: 10px;
+        }
+        .explanation-text {
+            font-size: 20px;
+            line-height: 1.6;
+        }
+        .highlight {
+            color: #FFD54F;
+            font-weight: 500;
+        }
+        .increase-high {
+            color: #FF5252;
+            font-weight: 700;
+        }
+        .increase-low {
+            color: #4CAF50;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">
+                <i class="material-icons">table_chart</i>
+                جدول قیمت‌ها و توضیح افزایش قیمت‌ها
+            </h1>
+        </div>
+        <div class="content">
+            <div class="table-container">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>کد آیتم</th>
+                            <th>قیمت ۱۴۰۳ (ریال)</th>
+                            <th>قیمت ۱۴۰۴ (ریال)</th>
+                            <th>افزایش (ریال)</th>
+                            <th>درصد افزایش</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td class="code-cell">۲۵۰۶۰۱</td>
+                            <td class="price-cell">۱۱۰,۵۰۰</td>
+                            <td class="price-cell">۱۴۷,۵۰۰</td>
+                            <td class="increase-cell">۳۷,۰۰۰</td>
+                            <td class="percentage-cell">۳۳.۴۸٪</td>
+                        </tr>
+                        <tr>
+                            <td class="code-cell">۲۵۰۶۰۲</td>
+                            <td class="price-cell">۱۰۷,۰۰۰</td>
+                            <td class="price-cell">۱۴۳,۰۰۰</td>
+                            <td class="increase-cell">۳۶,۰۰۰</td>
+                            <td class="percentage-cell">۳۳.۶۴٪</td>
+                        </tr>
+                        <tr>
+                            <td class="code-cell">۲۵۰۶۰۳</td>
+                            <td class="price-cell">۵,۱۰۸,۰۰۰</td>
+                            <td class="price-cell">۶,۳۱۹,۰۰۰</td>
+                            <td class="increase-cell">۱,۲۱۱,۰۰۰</td>
+                            <td class="percentage-cell">۲۳.۷۱٪</td>
+                        </tr>
+                        <tr>
+                            <td class="code-cell">۲۵۰۶۰۴</td>
+                            <td class="price-cell">۱۱,۱۰۰</td>
+                            <td class="price-cell">۱۴,۸۰۰</td>
+                            <td class="increase-cell">۳,۷۰۰</td>
+                            <td class="percentage-cell">۳۳.۳۳٪</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+            <div class="explanation">
+                <h2 class="explanation-title">
+                    <i class="material-icons">trending_up</i>
+                    توضیح افزایش قیمت
+                </h2>
+                <p class="explanation-text">
+                    در این بخش، تمامی آیتم‌ها افزایش قیمت مشابهی بین <span class="increase-low">۲۳.۷۱٪</span> تا <span class="increase-high">۳۳.۶۴٪</span> را نشان می‌دهند. بیشترین افزایش در ردیف‌های خط‌کشی ترافیکی با حدود <span class="highlight">۳۳.۵٪</span> و کمترین در رنگ‌آمیزی سطوح آسفالت و بتن با <span class="highlight">۲۳.۷۱٪</span> مشاهده می‌شود. این نشان‌دهنده رشد هزینه‌های مربوط به رنگ‌های ترافیکی و اجرای آنهاست.
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
