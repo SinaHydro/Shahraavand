@@ -9,7 +9,6 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvo19MrduiMREEcxGVp
 const POST_BASE_URL = 'https://shahraavand.ir/'; // خالی بگذارید تا در همان دامنه فعلی باقی بماند
 // =================================================================
 
-
 document.addEventListener('DOMContentLoaded', () => {
     // تشخیص اینکه در کدام صفحه هستیم و اجرای تابع مربوطه
     if (document.getElementById('posts-container')) {
@@ -75,9 +74,34 @@ async function initIndexPage() {
                         const bLikes = JSON.parse(b.likes || '[]').length;
                         return bLikes - aLikes;
                     });
+                case 'priority': // نمایش پست‌هایی که اولویت 1 دارند
+                    return sortedPosts.sort((a, b) => {
+                        // اگر هر دو اولویت 1 دارند یا ندارند، بر اساس تاریخ مرتب کن
+                        if ((a.priority === 1 && b.priority === 1) || (a.priority !== 1 && b.priority !== 1)) {
+                            return new Date(b.publishDate) - new Date(a.publishDate);
+                        }
+                        // پست‌هایی که اولویت 1 دارند بالاتر بیایند
+                        return a.priority === 1 ? -1 : 1;
+                    });
                 case 'newest':
                 default:
                     return sortedPosts.sort((a, b) => new Date(b.publishDate) - new Date(a.publishDate));
+            }
+        }
+        
+        // تبدیل زمان مطالعه از ثانیه به دقیقه و ثانیه
+        function formatReadTime(seconds) {
+            if (!seconds) return '0 دقیقه';
+            
+            const mins = Math.floor(seconds / 60);
+            const secs = seconds % 60;
+            
+            if (mins > 0 && secs > 0) {
+                return `${mins} دقیقه و ${secs} ثانیه`;
+            } else if (mins > 0) {
+                return `${mins} دقیقه`;
+            } else {
+                return `${secs} ثانیه`;
             }
         }
         
@@ -91,11 +115,16 @@ async function initIndexPage() {
                 const tagsHtml = (post.tags || '').split(',').map(tag => `<span class="tag">${tag.trim()}</span>`).join('');
                 const postLink = `Bpost.html?id=${post.postId}`; // تغییر لینک به صفحه محلی
                 const likesCount = JSON.parse(post.likes || '[]').length;
+                const readTime = formatReadTime(post.readTime || 0);
+                
+                // اگر پست اولویت 1 دارد، یک کلاس خاص به آن اضافه کن
+                const priorityClass = post.priority === 1 ? 'priority-post' : '';
 
                 const postCard = `
-                <article class="post-card" data-aos="fade-up">
+                <article class="post-card ${priorityClass}" data-aos="fade-up">
                     <a href="${postLink}" onclick="handlePostClick('${post.postId}'); return false;">
                         <img src="${post.imageUrl}" alt="${post.title}" class="post-card-image">
+                        ${post.priority === 1 ? '<div class="priority-badge">پست ویژه</div>' : ''}
                     </a>
                     <div class="post-card-content">
                         <div class="post-card-author">
@@ -108,7 +137,7 @@ async function initIndexPage() {
                         </a>
                         <div class="post-card-tags">${tagsHtml}</div>
                         <div class="post-card-footer">
-                            <div class="stat"><i class="fas fa-clock"></i>${post.readTime} دقیقه</div>
+                            <div class="stat"><i class="fas fa-clock"></i>${readTime}</div>
                             <div class="stat"><i class="fas fa-heart"></i>${likesCount}</div>
                             <div class="stat"><i class="fas fa-eye"></i>${post.clicks || 0}</div>
                         </div>
@@ -154,7 +183,7 @@ async function initIndexPage() {
         
         // نمایش اولیه پست‌ها و دسته‌بندی‌ها
         displayCategories();
-        displayPosts(sortPosts(posts, currentSort).slice(0, displayedPosts));
+        displayPosts(sortPosts(posts, 'priority').slice(0, displayedPosts));
         
         // رویداد کلیک برای دکمه "نمایش مطالب بیشتر"
         loadMoreBtn.addEventListener('click', () => {
@@ -223,7 +252,28 @@ function setupHero(postData) {
     document.getElementById('hero-author').innerHTML = `<i class="fas fa-user"></i> ${postData.authorName}`;
     const date = new Date(postData.publishDate).toLocaleDateString('fa-IR');
     document.getElementById('hero-date').innerHTML = `<i class="fas fa-calendar-alt"></i> ${date}`;
-    document.getElementById('hero-read-time').innerHTML = `<i class="fas fa-clock"></i> ${postData.readTime} دقیقه`;
+    
+    // تبدیل زمان مطالعه از ثانیه به دقیقه و ثانیه
+    const readTime = formatReadTime(postData.readTime || 0);
+    document.getElementById('hero-read-time').innerHTML = `<i class="fas fa-clock"></i> ${readTime}`;
+}
+
+/**
+ * تبدیل زمان مطالعه از ثانیه به دقیقه و ثانیه
+ */
+function formatReadTime(seconds) {
+    if (!seconds) return '0 دقیقه';
+    
+    const mins = Math.floor(seconds / 60);
+    const secs = seconds % 60;
+    
+    if (mins > 0 && secs > 0) {
+        return `${mins} دقیقه و ${secs} ثانیه`;
+    } else if (mins > 0) {
+        return `${mins} دقیقه`;
+    } else {
+        return `${secs} ثانیه`;
+    }
 }
 
 async function renderSlides(slides) {
@@ -286,6 +336,7 @@ async function renderSlides(slides) {
                 slideIframe.style.height = '0';
                 slideIframe.scrolling = 'no';
                 slideIframe.style.border = 'none';
+                slideIframe.style.width = '100%';
                 
                 // ایجاد کانتینر برای iframe
                 const iframeContainer = document.createElement('div');
@@ -311,24 +362,46 @@ async function renderSlides(slides) {
                     slideIframe.onload = function() {
                         try {
                             // تلاش برای تنظیم ارتفاع iframe بر اساس محتوای آن
-                            const iframeDoc = slideIframe.contentDocument || slideIframe.contentWindow.document;
-                            const iframeHeight = iframeDoc.body.scrollHeight;
-                            
-                            // محاسبه نسبت ابعاد
-                            const aspectRatio = 1280 / iframeHeight; // عرض استاندارد 1280 پیکسل
-                            const paddingBottom = (1 / aspectRatio) * 100;
-                            
-                            // تنظیم ارتفاع iframe با استفاده از padding-bottom
-                            slideIframe.style.paddingBottom = `${paddingBottom}%`;
-                            
-                            // آزاد کردن URL blob
-                            URL.revokeObjectURL(url);
+                            setTimeout(() => {
+                                try {
+                                    const iframeDoc = slideIframe.contentDocument || slideIframe.contentWindow.document;
+                                    
+                                    // اگر محتوا بارگذاری شده باشد
+                                    if (iframeDoc && iframeDoc.body) {
+                                        const iframeHeight = iframeDoc.body.scrollHeight;
+                                        
+                                        // محاسبه نسبت ابعاد
+                                        const aspectRatio = 1280 / iframeHeight; // عرض استاندارد 1280 پیکسل
+                                        const paddingBottom = (1 / aspectRatio) * 100;
+                                        
+                                        // تنظیم ارتفاع iframe با استفاده از padding-bottom
+                                        slideIframe.style.paddingBottom = `${paddingBottom}%`;
+                                    } else {
+                                        // اگر محتوا بارگذاری نشده، از یک ارتفاع پیش‌فرض استفاده کن
+                                        slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
+                                    }
+                                } catch (e) {
+                                    console.error('Error accessing iframe content:', e);
+                                    // در صورت خطا، از یک ارتفاع پیش‌فرض استفاده کن
+                                    slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
+                                }
+                                
+                                // آزاد کردن URL blob
+                                URL.revokeObjectURL(url);
+                            }, 1000); // انتظار 1 ثانیه برای اطمینان از بارگذاری کامل محتوا
                         } catch (e) {
                             console.error('Error setting iframe height:', e);
                             // در صورت خطا، از یک ارتفاع پیش‌فرض استفاده کن
                             slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
                         }
                     };
+                    
+                    // اگر iframe پس از 5 ثانیه بارگذاری نشد، از ارتفاع پیش‌فرض استفاده کن
+                    setTimeout(() => {
+                        if (slideIframe.style.paddingBottom === '0px' || !slideIframe.style.paddingBottom) {
+                            slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
+                        }
+                    }, 5000);
                 } catch (error) {
                     console.error('Error loading slide content:', error);
                     slideContent.innerHTML = `
@@ -464,7 +537,7 @@ async function renderSlides(slides) {
     window.addEventListener('resize', adjustSlideDimensions);
     
     // اجرای اولیه تنظیم ابعاد اسلایدها
-    adjustSlideDimensions();
+    setTimeout(adjustSlideDimensions, 1000); // انتظار برای بارگذاری کامل اسلایدها
 }
 
 /**
@@ -551,7 +624,7 @@ async function loadSuggestedPosts(currentCategory, currentPostId) {
                            <div class="post-card-content">
                                <h3>${post.title}</h3>
                                <div class="post-card-footer">
-                                   <div class="stat"><i class="fas fa-clock"></i>${post.readTime} دقیقه</div>
+                                   <div class="stat"><i class="fas fa-clock"></i>${formatReadTime(post.readTime || 0)}</div>
                                    <div class="stat"><i class="fas fa-heart"></i>${JSON.parse(post.likes || '[]').length}</div>
                                </div>
                            </div>
