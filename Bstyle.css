@@ -38,11 +38,24 @@ section { margin-bottom: 4rem; }
     height: var(--header-height);
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--card-shadow);
-    position: sticky;
-    top: 0;
+    position: sticky; /* این را به sticky تغییر می‌دهیم */
+    top: 0; /* این را نگه می‌داریم */
     z-index: 1000;
     display: flex;
     align-items: center;
+    transition: all 0.3s ease; /* اضافه کردن ترنزیشن برای تغییرات نرم */
+}
+
+/* اضافه کردن کلاس برای هدر غیر ثابت */
+.main-header.hidden {
+    transform: translateY(-100%); /* حرکت هدر به بالا */
+    opacity: 0; /* کاهش شفافیت */
+}
+
+/* اضافه کردن کلاس برای هدر با پس‌زمینه شفاف */
+.main-header.transparent {
+    background-color: rgba(255, 255, 255, 0.8);
+    box-shadow: none;
 }
 .header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; }
 .logo-container { display: flex; align-items: center; gap: 15px; }
@@ -244,7 +257,7 @@ section { margin-bottom: 4rem; }
     height: 60vh;
     position: relative;
     display: flex;
-    justify-content: center;
+    /*justify-content: center;*/
     align-items: flex-end;
     text-align: right;
     color: #fff;
