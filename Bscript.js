@@ -542,3 +542,49 @@ async function sendActionToServer(action, data) {
         return null;
     }
 }
+// =================================================================
+// HEADER SCROLL BEHAVIOR
+// =================================================================
+
+document.addEventListener('DOMContentLoaded', function() {
+    const header = document.querySelector('.main-header');
+    let lastScrollTop = 0;
+    let scrollThreshold = 100; // آستانه شروع تغییرات هدر
+    let hideThreshold = 300; // آستانه مخفی کردن هدر
+    
+    window.addEventListener('scroll', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        
+        // اگر اسکرول به سمت بالا باشد، هدر را نمایش بده
+        // اگر اسکرول به سمت پایین باشد، هدر را مخفی کن
+        if (scrollTop > lastScrollTop && scrollTop > hideThreshold) {
+            // اسکرول به سمت پایین
+            header.classList.add('hidden');
+        } else {
+            // اسکرول به سمت بالا
+            header.classList.remove('hidden');
+        }
+        
+        // اگر در بالای صفحه هستیم، پس‌زمینه هدر را شفاف کن
+        if (scrollTop < scrollThreshold) {
+            header.classList.add('transparent');
+        } else {
+            header.classList.remove('transparent');
+        }
+        
+        lastScrollTop = scrollTop;
+    });
+    
+    // اضافه کردن رویداد موس برای نمایش هدر وقتی موس روی آن می‌رود
+    header.addEventListener('mouseenter', function() {
+        header.classList.remove('hidden');
+    });
+    
+    // اضافه کردن رویداد خروج موس از هدر
+    header.addEventListener('mouseleave', function() {
+        const scrollTop = window.pageYOffset || document.documentElement.scrollTop;
+        if (scrollTop > hideThreshold) {
+            header.classList.add('hidden');
+        }
+    });
+});
