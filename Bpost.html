@@ -6,6 +6,167 @@
     <title>پست وبلاگ - نظام تندیس</title>
     <link rel="stylesheet" href="Bstyle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
+    <style>
+        /* استایل‌های جدید برای نمایش ریسپانسیو اسلایدها */
+        .slide-wrapper {
+            width: 100%;
+            position: relative;
+            margin-bottom: 50px;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+        }
+        
+        .slide-container {
+            width: 100%;
+            position: relative;
+            transform-origin: top right;
+        }
+        
+        .slide-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px 10px;
+            background-color: var(--light-gray);
+        }
+        
+        .slide-author {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            font-weight: 600;
+        }
+        
+        .slide-author img {
+            width: 45px;
+            height: 45px;
+            border-radius: 50%;
+            border: 2px solid var(--border-color);
+        }
+        
+        .slide-brand img {
+            height: 35px;
+            opacity: 0.8;
+        }
+        
+        .slide-content {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide-actions {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 15px;
+            font-size: 1.8rem;
+            background-color: white;
+        }
+        
+        .slide-actions .main-actions {
+            display: flex;
+            gap: 20px;
+        }
+        
+        .slide-actions i {
+            cursor: pointer;
+            color: #555;
+            transition: all 0.3s;
+        }
+        
+        .slide-actions i:hover {
+            transform: scale(1.1);
+        }
+        
+        .fa-heart.fas {
+            color: #e74c3c;
+        }
+        
+        .fa-bookmark.fas {
+            color: var(--primary-color);
+        }
+        
+        .slide-caption {
+            padding: 0 15px 15px;
+            font-size: 0.95rem;
+            background-color: white;
+        }
+        
+        .slide-caption .caption-text {
+            overflow: hidden;
+            display: -webkit-box;
+            -webkit-line-clamp: 2;
+            -webkit-box-orient: vertical;
+        }
+        
+        .slide-caption .caption-text.expanded {
+            -webkit-line-clamp: unset;
+        }
+        
+        .slide-caption .more-btn {
+            background: none;
+            border: none;
+            color: var(--primary-color);
+            cursor: pointer;
+            padding: 5px 0;
+            font-weight: bold;
+        }
+        
+        .slide-date {
+            font-size: 0.85rem;
+            color: #999;
+            margin-top: 10px;
+        }
+        
+        /* استایل‌های جدید برای اسلایدهای HTML */
+        .slide-iframe-container {
+            width: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .slide-iframe {
+            width: 100%;
+            height: 0;
+            border: none;
+            background: var(--light-gray);
+            display: block;
+        }
+        
+        /* استایل‌های مربوط به نوار پیشرفت */
+        #progress-bar {
+            position: fixed;
+            top: 0;
+            right: 0;
+            width: 0%;
+            height: 5px;
+            background: var(--primary-light);
+            z-index: 1001;
+            transition: width 0.1s linear;
+        }
+        
+        /* استایل‌های مربوط به تبلیغات محیطی */
+        .environmental-ad {
+            background-color: #e8f5e9;
+            border-radius: var(--border-radius);
+            padding: 20px;
+            text-align: center;
+            margin: 30px 0;
+        }
+        
+        .environmental-ad img {
+            width: 100%;
+            max-width: 800px;
+            height: auto;
+            border-radius: 8px;
+            margin-top: 15px;
+        }
+    </style>
 </head>
 <body>
 
@@ -89,6 +250,12 @@
                 <img src="https://shahraavand.ir/images/logoT.png" alt="لوگو شرکت شهرآوند">
                 <h3>شرکت مهندسین مشاور شهرآوند</h3>
                 <p>پلتفرم ارتباط هوشمند مهندسان، کارفرمایان و پیمانکاران</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                </div>
             </div>
             <div class="footer-links">
                 <div class="footer-column">
@@ -122,5 +289,10 @@
     </footer>
 
     <script src="Bscript.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init();
+        });
+    </script>
 </body>
 </html>
