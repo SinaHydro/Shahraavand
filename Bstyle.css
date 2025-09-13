@@ -1,3 +1,4 @@
+@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
 
 :root {
     --primary-color: #1E3A8A; /* رنگ اصلی الهام گرفته از category.html */
@@ -25,7 +26,7 @@ body {
 }
 
 * { box-sizing: border-box; }
-.container { max-width: 1380px; margin: 0 auto; padding: 20px; }
+.container { max-width: 1380px; margin: 0 auto; padding-top: calc(var(--header-height) + 20px); }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, h4 { font-weight: 700; margin: 0 0 1rem 0; }
 section { margin-bottom: 4rem; }
@@ -38,24 +39,13 @@ section { margin-bottom: 4rem; }
     height: var(--header-height);
     border-bottom: 1px solid var(--border-color);
     box-shadow: var(--card-shadow);
-    position: sticky; /* این را به sticky تغییر می‌دهیم */
-    top: 0; /* این را نگه می‌داریم */
+    position: fixed; /* یا fixed اگر می‌خواهید کاملاً ثابت باشد */
+    top: 0;
+    left: 0;
+    right: 0;
     z-index: 1000;
     display: flex;
     align-items: center;
-    transition: all 0.3s ease; /* اضافه کردن ترنزیشن برای تغییرات نرم */
-}
-
-/* اضافه کردن کلاس برای هدر غیر ثابت */
-.main-header.hidden {
-    transform: translateY(-100%); /* حرکت هدر به بالا */
-    opacity: 0; /* کاهش شفافیت */
-}
-
-/* اضافه کردن کلاس برای هدر با پس‌زمینه شفاف */
-.main-header.transparent {
-    background-color: rgba(255, 255, 255, 0.8);
-    box-shadow: none;
 }
 .header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; }
 .logo-container { display: flex; align-items: center; gap: 15px; }
