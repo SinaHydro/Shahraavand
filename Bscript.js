@@ -232,20 +232,40 @@ async function renderSlides(slides) {
     
     for (const slide of slides) {
         try {
-            // تعیین نوع محتوا و بارگذاری آن
-            let slideContent = '';
+            // ایجاد کانتینر اسلاید
+            const slideWrapper = document.createElement('div');
+            slideWrapper.className = 'slide-wrapper';
+            slideWrapper.id = `slide-wrapper-${slide.slideId}`;
             
+            // ایجاد هدر اسلاید
+            const slideHeader = document.createElement('div');
+            slideHeader.className = 'slide-header';
+            slideHeader.innerHTML = `
+                <div class="slide-author">
+                    <img src="${slide.authorImageUrl}" alt="${slide.authorName}">
+                    <span>${slide.authorName}</span>
+                </div>
+                <div class="slide-brand">
+                    <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="نظام تندیس">
+                </div>
+            `;
+            
+            // ایجاد محتوای اسلاید
+            const slideContent = document.createElement('div');
+            slideContent.className = 'slide-content';
+            
+            // تعیین نوع محتوا و بارگذاری آن
             if (slide.contentUrl.includes('youtube.com') || slide.contentUrl.includes('youtu.be')) {
                 // محتوای ویدیو یوتیوب
                 const videoId = slide.contentUrl.includes('youtu.be') 
                     ? slide.contentUrl.split('/').pop() 
                     : new URLSearchParams(slide.contentUrl.split('?')[1]).get('v');
                     
-                slideContent = `
-                    <div class="slide-content">
+                slideContent.innerHTML = `
+                    <div class="slide-iframe-container">
                         <iframe 
-                            width="100%" 
-                            height="100%" 
+                            class="slide-iframe"
+                            style="height: 0; padding-bottom: 56.25%;" /* 16:9 Aspect Ratio */
                             src="https://www.youtube.com/embed/${videoId}" 
                             title="YouTube video player" 
                             frameborder="0" 
@@ -255,77 +275,123 @@ async function renderSlides(slides) {
                     </div>`;
             } else if (slide.contentUrl.includes('.jpg') || slide.contentUrl.includes('.jpeg') || slide.contentUrl.includes('.png') || slide.contentUrl.includes('.webp')) {
                 // محتوای گالری تصاویر
-                slideContent = `
+                slideContent.innerHTML = `
                     <div class="slide-gallery">
                         <img src="${slide.contentUrl}" alt="${slide.title}" class="slide-image active">
                     </div>`;
             } else {
                 // محتوای وب پیج - بارگذاری از لینک خارجی
+                const slideIframe = document.createElement('iframe');
+                slideIframe.className = 'slide-iframe';
+                slideIframe.style.height = '0';
+                slideIframe.scrolling = 'no';
+                slideIframe.style.border = 'none';
+                
+                // ایجاد کانتینر برای iframe
+                const iframeContainer = document.createElement('div');
+                iframeContainer.className = 'slide-iframe-container';
+                iframeContainer.appendChild(slideIframe);
+                slideContent.appendChild(iframeContainer);
+                
+                // بارگذاری محتوای HTML در iframe
                 try {
                     const response = await fetch(slide.contentUrl);
                     if (!response.ok) throw new Error('Failed to load content');
                     
                     const htmlContent = await response.text();
                     
-                    // ایجاد یک div برای نمایش محتوای HTML به جای iframe
-                    slideContent = `
-                        <div class="slide-content html-content">
-                            ${htmlContent}
-                        </div>`;
+                    // ایجاد یک blob از محتوای HTML
+                    const blob = new Blob([htmlContent], { type: 'text/html' });
+                    const url = URL.createObjectURL(blob);
+                    
+                    // تنظیم src برای iframe
+                    slideIframe.src = url;
+                    
+                    // تنظیم ارتفاع iframe پس از بارگذاری
+                    slideIframe.onload = function() {
+                        try {
+                            // تلاش برای تنظیم ارتفاع iframe بر اساس محتوای آن
+                            const iframeDoc = slideIframe.contentDocument || slideIframe.contentWindow.document;
+                            const iframeHeight = iframeDoc.body.scrollHeight;
+                            
+                            // محاسبه نسبت ابعاد
+                            const aspectRatio = 1280 / iframeHeight; // عرض استاندارد 1280 پیکسل
+                            const paddingBottom = (1 / aspectRatio) * 100;
+                            
+                            // تنظیم ارتفاع iframe با استفاده از padding-bottom
+                            slideIframe.style.paddingBottom = `${paddingBottom}%`;
+                            
+                            // آزاد کردن URL blob
+                            URL.revokeObjectURL(url);
+                        } catch (e) {
+                            console.error('Error setting iframe height:', e);
+                            // در صورت خطا، از یک ارتفاع پیش‌فرض استفاده کن
+                            slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
+                        }
+                    };
                 } catch (error) {
                     console.error('Error loading slide content:', error);
-                    slideContent = `
-                        <div class="slide-content">
-                            <div style="padding: 20px; text-align: center; color: red;">
-                                خطا در بارگذاری محتوای اسلاید
-                            </div>
+                    slideContent.innerHTML = `
+                        <div style="padding: 20px; text-align: center; color: red;">
+                            خطا در بارگذاری محتوای اسلاید
                         </div>`;
                 }
             }
             
-            const slideHtml = `
-                <div class="slide-container" id="slide-${slide.slideId}">
-                    <div class="slide-header">
-                        <div class="slide-author">
-                            <img src="${slide.authorImageUrl}" alt="${slide.authorName}">
-                            <span>${slide.authorName}</span>
-                        </div>
-                        <div class="slide-brand">
-                            <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="نظام تندیس">
-                        </div>
-                    </div>
-                    ${slideContent}
-                    <div class="slide-actions">
-                        <div class="main-actions">
-                            <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
-                            <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
-                            <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
-                        </div>
-                        <div class="save-action">
-                            <i class="far fa-bookmark" data-action="save" data-slide-id="${slide.slideId}"></i>
-                        </div>
-                    </div>
-                    <div class="slide-caption">
-                        <div class="caption-text">${slide.description || ''}</div>
-                        <button class="more-btn">بیشتر</button>
-                        <div class="slide-date">${new Date(slide.publishDate).toLocaleDateString('fa-IR')}</div>
-                    </div>
-                </div>`;
+            // ایجاد اکشن‌های اسلاید
+            const slideActions = document.createElement('div');
+            slideActions.className = 'slide-actions';
+            slideActions.innerHTML = `
+                <div class="main-actions">
+                    <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
+                    <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
+                    <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
+                </div>
+                <div class="save-action">
+                    <i class="far fa-bookmark" data-action="save" data-slide-id="${slide.slideId}"></i>
+                </div>
+            `;
             
-            contentContainer.innerHTML += slideHtml;
+            // creating کپشن اسلاید
+            const slideCaption = document.createElement('div');
+            slideCaption.className = 'slide-caption';
+            slideCaption.innerHTML = `
+                <div class="caption-text">${slide.description || ''}</div>
+                <button class="more-btn">بیشتر</button>
+                <div class="slide-date">${new Date(slide.publishDate).toLocaleDateString('fa-IR')}</div>
+            `;
+            
+            // ایجاد کانتینر اصلی اسلاید
+            const slideContainer = document.createElement('div');
+            slideContainer.className = 'slide-container';
+            slideContainer.id = `slide-${slide.slideId}`;
+            
+            // اضافه کردن تمام بخش‌ها به کانتینر اسلاید
+            slideContainer.appendChild(slideHeader);
+            slideContainer.appendChild(slideContent);
+            slideContainer.appendChild(slideActions);
+            slideContainer.appendChild(slideCaption);
+            
+            // اضافه کردن اسلاید به کانتینر اصلی
+            slideWrapper.appendChild(slideContainer);
+            contentContainer.appendChild(slideWrapper);
 
             // Add ad banner after every 3 slides
             if ((slides.indexOf(slide) + 1) % 3 === 0 && slides.indexOf(slide) < slides.length - 1) {
-                 contentContainer.innerHTML += `
-                    <div class="environmental-ad">
-                        <h3>محیط زیست ما، مسئولیت ما</h3>
-                        <p>با استفاده از مصالح پایدار و روش‌های سازگار با محیط زیست، به آینده زمین احترام بگذاریم.</p>
-                        <img src="https://picsum.photos/seed/env${slides.indexOf(slide)}/800/200" alt="تبلیغ محیط زیستی">
-                    </div>`;
+                const adBanner = document.createElement('div');
+                adBanner.className = 'environmental-ad';
+                adBanner.innerHTML = `
+                    <h3>محیط زیست ما، مسئولیت ما</h3>
+                    <p>با استفاده از مصالح پایدار و روش‌های سازگار با محیط زیست، به آینده زمین احترام بگذاریم.</p>
+                    <img src="https://picsum.photos/seed/env${slides.indexOf(slide)}/800/200" alt="تبلیغ محیط زیستی">
+                `;
+                contentContainer.appendChild(adBanner);
             }
         } catch (error) {
             console.error('Error rendering slide:', error);
-            contentContainer.innerHTML += `
+            const errorSlide = document.createElement('div');
+            errorSlide.className = 'slide-wrapper';
+            errorSlide.innerHTML = `
                 <div class="slide-container">
                     <div class="slide-content">
                         <div style="padding: 20px; text-align: center; color: red;">
@@ -333,6 +399,7 @@ async function renderSlides(slides) {
                         </div>
                     </div>
                 </div>`;
+            contentContainer.appendChild(errorSlide);
         }
     }
 
@@ -392,6 +459,48 @@ async function renderSlides(slides) {
             }
         });
     });
+    
+    // اضافه کردن رویداد resize برای تنظیم مجدد اسلایدها
+    window.addEventListener('resize', adjustSlideDimensions);
+    
+    // اجرای اولیه تنظیم ابعاد اسلایدها
+    adjustSlideDimensions();
+}
+
+/**
+ * تنظیم ابعاد اسلایدها بر اساس عرض صفحه
+ */
+function adjustSlideDimensions() {
+    const slideWrappers = document.querySelectorAll('.slide-wrapper');
+    const mainColumnWidth = document.querySelector('.main-column').offsetWidth;
+    
+    slideWrappers.forEach(wrapper => {
+        const slideContainer = wrapper.querySelector('.slide-container');
+        const slideContent = wrapper.querySelector('.slide-content');
+        const iframe = wrapper.querySelector('.slide-iframe');
+        
+        if (slideContainer && slideContent) {
+            // محاسبه نسبت ابعاد
+            const slideWidth = mainColumnWidth;
+            const scale = slideWidth / 1280; // 1280 پیکسل عرض استاندارد
+            
+            // تنظیم مقیاس برای اسلاید
+            slideContainer.style.transform = `scale(${scale})`;
+            slideContainer.style.transformOrigin = 'top right';
+            
+            // تنظیم ارتفاع کانتینر بر اساس مقیاس
+            const iframeContainer = wrapper.querySelector('.slide-iframe-container');
+            if (iframeContainer && iframe) {
+                const paddingBottom = parseFloat(iframe.style.paddingBottom || '56.25');
+                const scaledHeight = (slideWidth * paddingBottom) / 100;
+                iframeContainer.style.height = `${scaledHeight}px`;
+            }
+            
+            // تنظیم ارتفاع کلی wrapper برای جلوگیری از همپوشانی
+            const originalHeight = slideContainer.offsetHeight;
+            wrapper.style.height = `${originalHeight * scale}px`;
+        }
+    });
 }
 
 function setupSidebar(slides, postData) {
@@ -403,7 +512,7 @@ function setupSidebar(slides, postData) {
     slides.forEach((slide, index) => {
         const thumbnail = slide.imageUrl || postData.imageUrl;
         tocContainer.innerHTML += `
-            <a href="#slide-${slide.slideId}" data-slide-id="slide-${slide.slideId}">
+            <a href="#slide-wrapper-${slide.slideId}" data-slide-id="slide-wrapper-${slide.slideId}">
                 <img src="${thumbnail}" alt="Slide ${index + 1}">
                 <span>${slide.title || `اسلاید ${index + 1}`}</span>
             </a>`;
@@ -475,7 +584,7 @@ function setupInteractiveFeatures() {
         });
     }, { rootMargin: "-40% 0px -60% 0px" });
 
-    document.querySelectorAll('.slide-container').forEach(slide => observer.observe(slide));
+    document.querySelectorAll('.slide-wrapper').forEach(slide => observer.observe(slide));
 
     window.addEventListener('scroll', () => {
         const scrollableHeight = document.documentElement.scrollHeight - window.innerHeight;
