@@ -212,7 +212,7 @@ section { margin-bottom: 4rem; }
 
 /* --- Post Page: Layout & Slides --- */
 .container.full-width { max-width: 100%; padding: 0; }
-.post-layout { display: flex; flex-wrap: wrap; gap: 40px; max-width: 1580px; margin: 40px auto; padding: 0 20px; }
+.post-layout { display: flex; flex-wrap: wrap; gap: 40px; max-width: 1280px; margin: 40px auto; padding: 0 20px; }
 .main-column { flex: 1 1 72%; min-width: 300px; }
 .sidebar { flex: 1 1 25%; min-width: 280px; }
 .sidebar-inner { position: sticky; top: calc(var(--header-height) + 40px); }
