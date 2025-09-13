@@ -6,6 +6,9 @@
     <title>بلاگ تخصصی ساختمان - شهرآوند</title>
     <link rel="stylesheet" href="Bstyle.css">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link href="https://unpkg.com/aos@2.3.1/dist/aos.css" rel="stylesheet">
+    <script src="https://unpkg.com/aos@2.3.1/dist/aos.js"></script>
 </head>
 <body>
 
@@ -36,7 +39,9 @@
 
     <main class="container">
         <section class="categories-section">
-            <h2>دسته بندی مطالب</h2>
+            <div class="section-header">
+                <h2>دسته بندی مطالب</h2>
+            </div>
             <div id="categories-container" class="categories-wrapper">
                 <!-- دسته بندی ها از طریق جاوا اسکریپت پر می شوند -->
             </div>
@@ -68,6 +73,12 @@
                 <img src="https://shahraavand.ir/images/logoT.png" alt="لوگو شرکت شهرآوند">
                 <h3>شرکت مهندسین مشاور شهرآوند</h3>
                 <p>پلتفرم ارتباط هوشمند مهندسان، کارفرمایان و پیمانکاران</p>
+                <div class="social-links">
+                    <a href="#" class="social-icon"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-linkedin"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-twitter"></i></a>
+                    <a href="#" class="social-icon"><i class="fab fa-telegram"></i></a>
+                </div>
             </div>
             <div class="footer-links">
                 <div class="footer-column">
@@ -101,5 +112,10 @@
     </footer>
 
     <script src="Bscript.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            AOS.init();
+        });
+    </script>
 </body>
 </html>
