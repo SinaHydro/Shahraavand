@@ -216,27 +216,26 @@ function renderSlides(slides) {
     const contentContainer = document.getElementById('post-content');
     contentContainer.innerHTML = slides.map((slide, index) => {
         // این بخش برای تبلیغات است
-if ((index + 1) % 3 === 0 && index < slides.length - 1) {
-    const adHtml = `
-        <div class="in-post-ad-container">
-            <div class="in-post-ad">
-                <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
-                <div>
-                    <h4>نظام تندیس</h4>
-                    <p>پلتفرم ارتباط هوشمند مهندسان و کارفرمایان خصوصی</p>
+        const adHtml = (index + 1) % 3 === 0 && index < slides.length - 1
+            ? `
+                <div class="in-post-ad-container">
+                    <div class="in-post-ad">
+                        <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
+                        <div>
+                            <h4>نظام تندیس</h4>
+                            <p>پلتفرم ارتباط هوشمند مهندسان و کارفرمایان خصوصی</p>
+                        </div>
+                    </div>
+                    <div class="in-post-ad">
+                        <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
+                        <div>
+                            <h4>نظام تندیس</h4>
+                            <p>تدارک نیازمندی دقیق و یکپارچه ساختمان</p>
+                        </div>
+                    </div>
                 </div>
-            </div>
-            <div class="in-post-ad">
-                <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
-                <div>
-                    <h4>نظام تندیس</h4>
-                    <p>تدارک نیازمندی دقیق و یکپارچه ساختمان</p>
-                </div>
-            </div>
-        </div>
-    `;
-    contentContainer.innerHTML += adHtml;
-}
+            `
+            : '';
 
         return `
             <div class="slide-container" id="slide-${slide.slideId}">
