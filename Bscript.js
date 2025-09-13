@@ -8,6 +8,23 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvo19MrduiMREEcxGVp
 const POST_BASE_URL = 'https://shahraavand.ir/'; // خالی بگذارید تا در همان دامنه فعلی باقی بماند
 // =================================================================
 
+function formatReadTime(totalSeconds) {
+    if (!totalSeconds || totalSeconds < 1) return 'نامشخص';
+    const minutes = Math.floor(totalSeconds / 60);
+    const seconds = totalSeconds % 60;
+    
+    let timeString = '';
+    if (minutes > 0) {
+        timeString += `${minutes} دقیقه`;
+    }
+    if (seconds > 0) {
+        if (timeString.length > 0) {
+            timeString += ' و ';
+        }
+        timeString += `${seconds} ثانیه`;
+    }
+    return timeString;
+}
 
 document.addEventListener('DOMContentLoaded', () => {
     // تشخیص اینکه در کدام صفحه هستیم و اجرای تابع مربوطه
@@ -115,7 +132,7 @@ async function initIndexPage() {
                         </a>
                         <div class="post-card-tags">${tagsHtml}</div>
                         <div class="post-card-footer">
-                            <div class="stat"><i class="fas fa-clock"></i>${post.readTime} دقیقه</div>
+                            <div class="stat"><i class="fas fa-clock"></i>${formatReadTime(post.readTime)}</div>
                             <div class="stat"><i class="fas fa-heart"></i>${likesCount}</div>
                             <div class="stat"><i class="fas fa-eye"></i>${post.clicks || 0}</div>
                         </div>
@@ -199,9 +216,27 @@ function renderSlides(slides) {
     const contentContainer = document.getElementById('post-content');
     contentContainer.innerHTML = slides.map((slide, index) => {
         // این بخش برای تبلیغات است
-        const adHtml = (index + 1) % 3 === 0 && index < slides.length - 1
-            ? `<div class="environmental-ad"><img src="https://picsum.photos/seed/env${index}/800/200" alt="تبلیغ"></div>`
-            : '';
+if ((index + 1) % 3 === 0 && index < slides.length - 1) {
+    const adHtml = `
+        <div class="in-post-ad-container">
+            <div class="in-post-ad">
+                <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
+                <div>
+                    <h4>نظام تندیس</h4>
+                    <p>پلتفرم ارتباط هوشمند مهندسان و کارفرمایان خصوصی</p>
+                </div>
+            </div>
+            <div class="in-post-ad">
+                <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
+                <div>
+                    <h4>نظام تندیس</h4>
+                    <p>تدارک نیازمندی دقیق و یکپارچه ساختمان</p>
+                </div>
+            </div>
+        </div>
+    `;
+    contentContainer.innerHTML += adHtml;
+}
 
         return `
             <div class="slide-container" id="slide-${slide.slideId}">
@@ -214,9 +249,18 @@ function renderSlides(slides) {
                 </div>
                 <div class="slide-actions">
                     <div class="main-actions">
-                        <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
-                        <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
-                        <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
+                        <div class="action-item">
+                            <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
+                            <span>${JSON.parse(slide.likes || '[]').length}</span>
+                        </div>
+                        <div class="action-item">
+                            <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
+                            <span>${JSON.parse(slide.comments || '[]').length}</span>
+                        </div>
+                        <div class="action-item">
+                            <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
+                            <span>${slide.shares || 0}</span>
+                        </div>
                     </div>
                     <div><i class="far fa-bookmark" data-action="save" data-slide-id="${slide.slideId}"></i></div>
                 </div>
@@ -294,7 +338,7 @@ function setupHero(postData) {
     document.getElementById('hero-author').innerHTML = `<i class="fas fa-user"></i> ${postData.authorName}`;
     const date = new Date(postData.publishDate).toLocaleDateString('fa-IR');
     document.getElementById('hero-date').innerHTML = `<i class="fas fa-calendar-alt"></i> ${date}`;
-    document.getElementById('hero-read-time').innerHTML = `<i class="fas fa-clock"></i> ${postData.readTime} دقیقه`;
+    document.getElementById('hero-read-time').innerHTML = `<i class="fas fa-clock"></i> ${formatReadTime(postData.readTime)}`;
 }
 
 function setupSidebar(slides, postData) {
