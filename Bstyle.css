@@ -1,5 +1,3 @@
-@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
-
 :root {
     --primary-color: #1E3A8A; /* رنگ اصلی الهام گرفته از category.html */
     --primary-light: #3B82F6;
@@ -236,3 +234,14 @@ section { margin-bottom: 4rem; }
 .add-comment textarea { width: 100%; min-height: 100px; padding: 10px; border: 1px solid var(--border-color); border-radius: 8px; font-family: 'Vazirmatn', sans-serif; resize: vertical; margin-bottom: 10px; }
 .add-comment button { background-color: var(--primary-color); color: white; border: none; padding: 8px 15px; border-radius: 5px; cursor: pointer; transition: background-color 0.3s ease; }
 .add-comment button:hover { background-color: var(--primary-light); }
+
+.tags-container { display: flex; flex-wrap: wrap; gap: 10px; }
+
+.action-item { display: flex; align-items: center; gap: 8px; font-size: 1.1rem; color: var(--text-light); }
+.action-item span { font-weight: 500; }
+
+.in-post-ad-container { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin: 50px 0; padding: 20px; background-color: var(--light-gray); border-radius: var(--border-radius); }
+.in-post-ad { display: flex; align-items: center; gap: 15px; text-align: right; }
+.in-post-ad img { height: 50px; width: 50px; flex-shrink: 0; }
+.in-post-ad h4 { margin: 0 0 5px 0; font-size: 1.1rem; color: var(--primary-color); }
+.in-post-ad p { margin: 0; font-size: 0.9rem; color: var(--text-light); line-height: 1.5; }
