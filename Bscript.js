@@ -9,6 +9,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvo19MrduiMREEcxGVp
 const POST_BASE_URL = 'https://shahraavand.ir/'; // خالی بگذارید تا در همان دامنه فعلی باقی بماند
 // =================================================================
 
+
 document.addEventListener('DOMContentLoaded', () => {
     // تشخیص اینکه در کدام صفحه هستیم و اجرای تابع مربوطه
     if (document.getElementById('posts-container')) {
@@ -330,7 +331,7 @@ async function renderSlides(slides) {
                         <img src="${slide.contentUrl}" alt="${slide.title}" class="slide-image active">
                     </div>`;
             } else {
-                // محتوای وب پیج - بارگذاری از لینک خارجی
+                // محتوای وب پیج - بارگذاری مستقیم از URL
                 const slideIframe = document.createElement('iframe');
                 slideIframe.className = 'slide-iframe';
                 slideIframe.style.height = '0';
@@ -344,71 +345,65 @@ async function renderSlides(slides) {
                 iframeContainer.appendChild(slideIframe);
                 slideContent.appendChild(iframeContainer);
                 
-                // بارگذاری محتوای HTML در iframe
-                try {
-                    const response = await fetch(slide.contentUrl);
-                    if (!response.ok) throw new Error('Failed to load content');
-                    
-                    const htmlContent = await response.text();
-                    
-                    // ایجاد یک blob از محتوای HTML
-                    const blob = new Blob([htmlContent], { type: 'text/html' });
-                    const url = URL.createObjectURL(blob);
-                    
-                    // تنظیم src برای iframe
-                    slideIframe.src = url;
-                    
-                    // تنظیم ارتفاع iframe پس از بارگذاری
-                    slideIframe.onload = function() {
-                        try {
-                            // تلاش برای تنظیم ارتفاع iframe بر اساس محتوای آن
-                            setTimeout(() => {
-                                try {
-                                    const iframeDoc = slideIframe.contentDocument || slideIframe.contentWindow.document;
+                // استفاده مستقیم از URL به جای blob
+                const fullUrl = POST_BASE_URL + slide.contentUrl;
+                console.log('Loading slide from URL:', fullUrl);
+                
+                // تنظیم src برای iframe
+                slideIframe.src = fullUrl;
+                
+                // تنظیم ارتفاع iframe پس از بارگذاری
+                slideIframe.onload = function() {
+                    try {
+                        // تلاش برای تنظیم ارتفاع iframe بر اساس محتوای آن
+                        setTimeout(() => {
+                            try {
+                                const iframeDoc = slideIframe.contentDocument || slideIframe.contentWindow.document;
+                                
+                                // اگر محتوا بارگذاری شده باشد
+                                if (iframeDoc && iframeDoc.body) {
+                                    const iframeHeight = iframeDoc.body.scrollHeight;
                                     
-                                    // اگر محتوا بارگذاری شده باشد
-                                    if (iframeDoc && iframeDoc.body) {
-                                        const iframeHeight = iframeDoc.body.scrollHeight;
-                                        
-                                        // محاسبه نسبت ابعاد
-                                        const aspectRatio = 1280 / iframeHeight; // عرض استاندارد 1280 پیکسل
-                                        const paddingBottom = (1 / aspectRatio) * 100;
-                                        
-                                        // تنظیم ارتفاع iframe با استفاده از padding-bottom
-                                        slideIframe.style.paddingBottom = `${paddingBottom}%`;
-                                    } else {
-                                        // اگر محتوا بارگذاری نشده، از یک ارتفاع پیش‌فرض استفاده کن
-                                        slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
-                                    }
-                                } catch (e) {
-                                    console.error('Error accessing iframe content:', e);
-                                    // در صورت خطا، از یک ارتفاع پیش‌فرض استفاده کن
+                                    // محاسبه نسبت ابعاد
+                                    const aspectRatio = 1280 / iframeHeight; // عرض استاندارد 1280 پیکسل
+                                    const paddingBottom = (1 / aspectRatio) * 100;
+                                    
+                                    // تنظیم ارتفاع iframe با استفاده از padding-bottom
+                                    slideIframe.style.paddingBottom = `${paddingBottom}%`;
+                                } else {
+                                    // اگر محتوا بارگذاری نشده، از یک ارتفاع پیش‌فرض استفاده کن
                                     slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
                                 }
-                                
-                                // آزاد کردن URL blob
-                                URL.revokeObjectURL(url);
-                            }, 1000); // انتظار 1 ثانیه برای اطمینان از بارگذاری کامل محتوا
-                        } catch (e) {
-                            console.error('Error setting iframe height:', e);
-                            // در صورت خطا، از یک ارتفاع پیش‌فرض استفاده کن
-                            slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
-                        }
-                    };
-                    
-                    // اگر iframe پس از 5 ثانیه بارگذاری نشد، از ارتفاع پیش‌فرض استفاده کن
-                    setTimeout(() => {
-                        if (slideIframe.style.paddingBottom === '0px' || !slideIframe.style.paddingBottom) {
-                            slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
-                        }
-                    }, 5000);
-                } catch (error) {
-                    console.error('Error loading slide content:', error);
+                            } catch (e) {
+                                console.error('Error accessing iframe content:', e);
+                                // در صورت خطا، از یک ارتفاع پیش‌فرض استفاده کن
+                                slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
+                            }
+                        }, 1000); // انتظار 1 ثانیه برای اطمینان از بارگذاری کامل محتوا
+                    } catch (e) {
+                        console.error('Error setting iframe height:', e);
+                        // در صورت خطا، از یک ارتفاع پیش‌فرض استفاده کن
+                        slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
+                    }
+                };
+                
+                // اگر iframe پس از 5 ثانیه بارگذاری نشد، از ارتفاع پیش‌فرض استفاده کن
+                setTimeout(() => {
+                    if (slideIframe.style.paddingBottom === '0px' || !slideIframe.style.paddingBottom) {
+                        slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
+                    }
+                }, 5000);
+                
+                // مدیریت خطای بارگذاری iframe
+                slideIframe.onerror = function() {
+                    console.error('Error loading iframe content from URL:', fullUrl);
                     slideContent.innerHTML = `
                         <div style="padding: 20px; text-align: center; color: red;">
                             خطا در بارگذاری محتوای اسلاید
+                            <br>
+                            <small>URL: ${fullUrl}</small>
                         </div>`;
-                }
+                };
             }
             
             // ایجاد اکشن‌های اسلاید
@@ -469,6 +464,8 @@ async function renderSlides(slides) {
                     <div class="slide-content">
                         <div style="padding: 20px; text-align: center; color: red;">
                             خطا در بارگذاری اسلاید
+                            <br>
+                            <small>${error.message}</small>
                         </div>
                     </div>
                 </div>`;
