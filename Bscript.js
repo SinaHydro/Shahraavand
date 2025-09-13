@@ -6,7 +6,7 @@ const SCRIPT_URL = 'https://script.google.com/macros/s/AKfycbyvo19MrduiMREEcxGVp
 
 // آدرس پایه برای لینک‌دهی به پست‌ها (اگر روی دامنه اصلی است، خالی بگذارید)
 // مثال: 'https://shahraavand.ir/BlogP/' یا فقط '/BlogP/'
-const POST_BASE_URL = 'https://shahraavand.ir/'; // خالی بگذارید تا در همان دامنه فعلی باقی بماند
+const POST_BASE_URL = 'https://shahraavand.ir/';
 // =================================================================
 
 
@@ -277,6 +277,40 @@ function formatReadTime(seconds) {
     }
 }
 
+/**
+ * بارگذاری محتوای HTML از URL
+ */
+async function loadHtmlContent(url) {
+    try {
+        const response = await fetch(url);
+        if (!response.ok) {
+            throw new Error(`HTTP error! status: ${response.status}`);
+        }
+        return await response.text();
+    } catch (error) {
+        console.error('Error loading HTML content:', error);
+        throw error;
+    }
+}
+
+/**
+ * استخراج محتوای body از HTML
+ */
+function extractBodyContent(html) {
+    // ایجاد یک DOM موقت برای استخراج محتوای body
+    const tempDiv = document.createElement('div');
+    tempDiv.innerHTML = html;
+    
+    // استخراج محتوای body
+    const bodyContent = tempDiv.querySelector('body');
+    if (bodyContent) {
+        return bodyContent.innerHTML;
+    }
+    
+    // اگر body وجود نداشت، کل HTML را برگردان
+    return html;
+}
+
 async function renderSlides(slides) {
     const contentContainer = document.getElementById('post-content');
     contentContainer.innerHTML = ''; // Clear loader
@@ -332,78 +366,60 @@ async function renderSlides(slides) {
                     </div>`;
             } else {
                 // محتوای وب پیج - بارگذاری مستقیم از URL
-                const slideIframe = document.createElement('iframe');
-                slideIframe.className = 'slide-iframe';
-                slideIframe.style.height = '0';
-                slideIframe.scrolling = 'no';
-                slideIframe.style.border = 'none';
-                slideIframe.style.width = '100%';
                 
-                // ایجاد کانتینر برای iframe
-                const iframeContainer = document.createElement('div');
-                iframeContainer.className = 'slide-iframe-container';
-                iframeContainer.appendChild(slideIframe);
-                slideContent.appendChild(iframeContainer);
+                // ایجاد کانتینر برای محتوای HTML
+                const htmlContainer = document.createElement('div');
+                htmlContainer.className = 'slide-html-container';
+                htmlContainer.style.width = '1280px';
+                htmlContainer.style.position = 'relative';
+                htmlContainer.style.overflow = 'hidden';
                 
-                // استفاده مستقیم از URL به جای blob
-                const fullUrl = POST_BASE_URL + slide.contentUrl;
-                console.log('Loading slide from URL:', fullUrl);
+                // اضافه کردن loader
+                htmlContainer.innerHTML = '<div class="slide-loader">در حال بارگذاری محتوا...</div>';
+                slideContent.appendChild(htmlContainer);
                 
-                // تنظیم src برای iframe
-                slideIframe.src = fullUrl;
-                
-                // تنظیم ارتفاع iframe پس از بارگذاری
-                slideIframe.onload = function() {
-                    try {
-                        // تلاش برای تنظیم ارتفاع iframe بر اساس محتوای آن
-                        setTimeout(() => {
-                            try {
-                                const iframeDoc = slideIframe.contentDocument || slideIframe.contentWindow.document;
-                                
-                                // اگر محتوا بارگذاری شده باشد
-                                if (iframeDoc && iframeDoc.body) {
-                                    const iframeHeight = iframeDoc.body.scrollHeight;
-                                    
-                                    // محاسبه نسبت ابعاد
-                                    const aspectRatio = 1280 / iframeHeight; // عرض استاندارد 1280 پیکسل
-                                    const paddingBottom = (1 / aspectRatio) * 100;
-                                    
-                                    // تنظیم ارتفاع iframe با استفاده از padding-bottom
-                                    slideIframe.style.paddingBottom = `${paddingBottom}%`;
-                                } else {
-                                    // اگر محتوا بارگذاری نشده، از یک ارتفاع پیش‌فرض استفاده کن
-                                    slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
-                                }
-                            } catch (e) {
-                                console.error('Error accessing iframe content:', e);
-                                // در صورت خطا، از یک ارتفاع پیش‌فرض استفاده کن
-                                slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
-                            }
-                        }, 1000); // انتظار 1 ثانیه برای اطمینان از بارگذاری کامل محتوا
-                    } catch (e) {
-                        console.error('Error setting iframe height:', e);
-                        // در صورت خطا، از یک ارتفاع پیش‌فرض استفاده کن
-                        slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
-                    }
-                };
-                
-                // اگر iframe پس از 5 ثانیه بارگذاری نشد، از ارتفاع پیش‌فرض استفاده کن
-                setTimeout(() => {
-                    if (slideIframe.style.paddingBottom === '0px' || !slideIframe.style.paddingBottom) {
-                        slideIframe.style.paddingBottom = '56.25%'; // نسبت 16:9
-                    }
-                }, 5000);
-                
-                // مدیریت خطای بارگذاری iframe
-                slideIframe.onerror = function() {
-                    console.error('Error loading iframe content from URL:', fullUrl);
-                    slideContent.innerHTML = `
+                try {
+                    // ساخت URL کامل
+                    const fullUrl = POST_BASE_URL + slide.contentUrl;
+                    console.log('Loading slide from URL:', fullUrl);
+                    
+                    // بارگذاری محتوای HTML
+                    const htmlContent = await loadHtmlContent(fullUrl);
+                    
+                    // استخراج محتوای body
+                    const bodyContent = extractBodyContent(htmlContent);
+                    
+                    // پاک کردن loader و اضافه کردن محتوای HTML
+                    htmlContainer.innerHTML = '';
+                    htmlContainer.innerHTML = bodyContent;
+                    
+                    // استخراج و تنظیم ارتفاع محتوا
+                    setTimeout(() => {
+                        const contentHeight = htmlContainer.scrollHeight;
+                        console.log('Slide content height:', contentHeight);
+                        
+                        // محاسبه نسبت ابعاد
+                        const aspectRatio = 1280 / contentHeight; // عرض استاندارد 1280 پیکسل
+                        const paddingBottom = (1 / aspectRatio) * 100;
+                        
+                        // تنظیم ارتفاع کانتینر با استفاده از padding-bottom
+                        slideContent.style.paddingBottom = `${paddingBottom}%`;
+                        
+                        // تنظیم ارتفاع کانتینر HTML
+                        htmlContainer.style.height = 'auto';
+                    }, 500);
+                    
+                } catch (error) {
+                    console.error('Error loading slide content:', error);
+                    htmlContainer.innerHTML = `
                         <div style="padding: 20px; text-align: center; color: red;">
                             خطا در بارگذاری محتوای اسلاید
                             <br>
                             <small>URL: ${fullUrl}</small>
+                            <br>
+                            <small>${error.message}</small>
                         </div>`;
-                };
+                }
             }
             
             // ایجاد اکشن‌های اسلاید
@@ -547,7 +563,7 @@ function adjustSlideDimensions() {
     slideWrappers.forEach(wrapper => {
         const slideContainer = wrapper.querySelector('.slide-container');
         const slideContent = wrapper.querySelector('.slide-content');
-        const iframe = wrapper.querySelector('.slide-iframe');
+        const htmlContainer = wrapper.querySelector('.slide-html-container');
         
         if (slideContainer && slideContent) {
             // محاسبه نسبت ابعاد
@@ -559,11 +575,14 @@ function adjustSlideDimensions() {
             slideContainer.style.transformOrigin = 'top right';
             
             // تنظیم ارتفاع کانتینر بر اساس مقیاس
-            const iframeContainer = wrapper.querySelector('.slide-iframe-container');
-            if (iframeContainer && iframe) {
-                const paddingBottom = parseFloat(iframe.style.paddingBottom || '56.25');
+            if (htmlContainer) {
+                const contentHeight = htmlContainer.offsetHeight;
+                const scaledHeight = contentHeight * scale;
+                slideContent.style.height = `${scaledHeight}px`;
+            } else {
+                const paddingBottom = parseFloat(slideContent.style.paddingBottom || '56.25');
                 const scaledHeight = (slideWidth * paddingBottom) / 100;
-                iframeContainer.style.height = `${scaledHeight}px`;
+                slideContent.style.height = `${scaledHeight}px`;
             }
             
             // تنظیم ارتفاع کلی wrapper برای جلوگیری از همپوشانی
