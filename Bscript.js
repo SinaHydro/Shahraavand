@@ -252,10 +252,10 @@ function renderSlides(slides) {
                             <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
                             <span>${JSON.parse(slide.likes || '[]').length}</span>
                         </div>
-                        <div class="action-item">
-                            <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
-                            <span>${JSON.parse(slide.comments || '[]').length}</span>
-                        </div>
+                         <div class="action-item">
+                             <i class="far fa-comment" data-action="toggle-comment" data-slide-id="${slide.slideId}"></i>
+                             <span id="comment-count-${slide.slideId}">${JSON.parse(slide.comments || '[]').length}</span>
+                         </div>
                         <div class="action-item">
                             <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
                             <span>${slide.shares || 0}</span>
@@ -268,6 +268,13 @@ function renderSlides(slides) {
                     <button class="more-btn">بیشتر</button>
                     <div class="slide-date">${new Date(slide.publishDate).toLocaleDateString('fa-IR')}</div>
                 </div>
+                 <div class="inline-comment-section" id="comment-section-${slide.slideId}" style="display: none;">
+                    <div class="comments-list" id="comments-list-${slide.slideId}"><p>برای مشاهده نظرات کلیک کنید.</p></div>
+                    <div class="add-comment">
+                        <textarea id="comment-text-${slide.slideId}" placeholder="نظر خود را بنویسید..."></textarea>
+                        <button onclick="submitComment('${slide.slideId}')">ارسال نظر</button>
+                    </div>
+                 </div>
             </div>
             ${adHtml}
         `;
@@ -300,6 +307,23 @@ window.addEventListener('resize', () => {
     resizeTimeout = setTimeout(() => document.querySelectorAll('.slide-content-wrapper iframe').forEach(adjustSlideScaling), 150);
 });
 
+function toggleCommentSection(slideId) {
+    const commentSection = document.getElementById(`comment-section-${slideId}`);
+    const isVisible = commentSection.style.display === 'block';
+
+    if (isVisible) {
+        commentSection.style.display = 'none';
+    } else {
+        commentSection.style.display = 'block';
+        // فقط اگر نظرات هنوز بارگذاری نشده‌اند، آن‌ها را لود کن
+        const commentsList = document.getElementById(`comments-list-${slideId}`);
+        if (!commentsList.dataset.loaded) {
+            loadComments(slideId);
+            commentsList.dataset.loaded = 'true';
+        }
+    }
+}
+
 function setupSlideInteractions(){
     document.querySelectorAll('.more-btn').forEach(button => {
         const caption = button.previousElementSibling;
@@ -313,7 +337,7 @@ function setupSlideInteractions(){
         }
     });
 
-    document.querySelectorAll('.slide-actions i').forEach(icon => {
+    document.querySelectorAll('.slide-actions i[data-action]').forEach(icon => {
         icon.addEventListener('click', function() {
             const action = this.dataset.action;
             const slideId = this.dataset.slideId;
@@ -322,7 +346,7 @@ function setupSlideInteractions(){
                 this.classList.toggle('far');
                 this.classList.toggle(action + 'd');
             } else if (action === 'comment') {
-                showCommentSection(slideId);
+                toggleCommentSection(slideId);
             }
         });
     });
@@ -423,47 +447,11 @@ function setupInteractiveFeatures() {
         progressBar.style.width = `${(window.scrollY / scrollableHeight) * 100}%`;
     }, { passive: true });
 }
-
-/**
- * نمایش بخش نظرات
- */
-function showCommentSection(slideId) {
-    // ایجاد یک مدال برای نمایش نظرات
-    const modal = document.createElement('div');
-    modal.className = 'comment-modal';
-    modal.innerHTML = `
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3>نظرات</h3>
-                <span class="close-modal">&times;</span>
-            </div>
-            <div class="modal-body">
-                <div class="comments-list" id="comments-${slideId}">
-                    <p>در حال بارگذاری نظرات...</p>
-                </div>
-                <div class="add-comment">
-                    <h4>افزودن نظر</h4>
-                    <textarea id="comment-text-${slideId}" placeholder="نظر خود را بنویسید..."></textarea>
-                    <button onclick="submitComment('${slideId}')">ارسال نظر</button>
-                </div>
-            </div>
-        </div>
-    `;
-    document.body.appendChild(modal);
-
-    // بستن مدال
-    modal.querySelector('.close-modal').addEventListener('click', () => {
-        document.body.removeChild(modal);
-    });
-    // بارگذاری نظرات از سرور [cite: 443]
-    loadComments(slideId);
-}
-
 /**
  * بارگذاری نظرات از سرور
  */
 async function loadComments(slideId) {
-    const commentsContainer = document.getElementById(`comments-${slideId}`);
+    const commentsContainer = document.getElementById(`comments-list-${slideId}`);
     try {
         const comments = await fetchData('getComments', `&slideId=${slideId}`);
         if (comments && comments.length > 0) {
@@ -509,6 +497,8 @@ async function submitComment(slideId) {
             alert('نظر شما با موفقیت ثبت شد.');
             document.getElementById(`comment-text-${slideId}`).value = '';
             loadComments(slideId); // بارگذاری مجدد نظرات
+            const countSpan = document.getElementById(`comment-count-${slideId}`);
+            countSpan.textContent = parseInt(countSpan.textContent) + 1;
         } else {
             alert('خطا در ثبت نظر.');
         }
