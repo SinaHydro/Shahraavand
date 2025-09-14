@@ -578,3 +578,28 @@ section { margin-bottom: 4rem; }
     font-weight: 600;
     margin-bottom: 10px;
 }
+/* --- Responsive Ad Styles --- */
+@media (max-width: 992px) {
+    /* مخفی کردن تبلیغ سایدبار در صفحات تبلت و موبایل */
+    .sidebar-ad {
+        display: none;
+    }
+}
+
+@media (max-width: 768px) {
+    /* تبدیل تبلیغات درون متنی از دو ستون به یک ستون */
+    .in-post-ad-container {
+        grid-template-columns: 1fr; /* نمایش در یک ستون */
+    }
+}
+.post-card-footer .action-item {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    color: var(--text-light);
+}
+.post-card-footer .action-item i {
+    font-size: 1.1rem;
+    color: #555;
+}
