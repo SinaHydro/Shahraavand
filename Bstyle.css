@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap');
 
 :root {
     --primary-color: #1E3A8A; /* رنگ اصلی الهام گرفته از category.html */
@@ -16,7 +16,7 @@
 
 /* --- General & Resets --- */
 body {
-    font-family: 'Source Sans Pro', sans-serif;
+    font-family: 'Vazirmatn', sans-serif;
     direction: rtl;
     text-align: right;
     margin: 0;
@@ -26,7 +26,7 @@ body {
 }
 
 body, h1, h2, h3, h4, h5, h6, p, a, span, div, button, textarea, select {
-    font-family: 'Source Sans Pro', sans-serif !important;
+    font-family: 'Vazirmatn', sans-serif !important;
 }
 
 * { box-sizing: border-box; }
@@ -145,7 +145,7 @@ section { margin-bottom: 4rem; }
 .sidebar h3 { font-size: 1.3rem; padding-bottom: 10px; border-bottom: 2px solid var(--primary-color); margin-bottom: 20px; }
 #toc-container a { display: flex; align-items: center; gap: 15px; padding: 12px; border-radius: 8px; transition: background-color 0.3s; margin-bottom: 8px; }
 #toc-container a.active { background-color: #e9f5ff; font-weight: bold; color: var(--primary-color); }
-#toc-container img { width: 70px; height: 40px; object-fit: cover; border-radius: 5px; }
+#toc-container img { width: 70px;  height: 40px;  flex-shrink: 0; object-fit: cover; border-radius: 5px;}
 .author-info { display: flex; align-items: center; gap: 15px; }
 .author-info img { width: 60px; height: 60px; border-radius: 50%; }
 .author-info div h4 { margin-bottom: 5px; color: var(--primary-color); }
@@ -500,6 +500,7 @@ section { margin-bottom: 4rem; }
     border-radius: 8px;
     margin-top: 15px;
 }
+
 /* --- Inline Comment Section Styles --- */
 .inline-comment-section {
     padding: 15px;
@@ -562,3 +563,18 @@ section { margin-bottom: 4rem; }
 }
 
 .add-comment button:hover { background-color: var(--primary-light); }
+/* --- Inline Comment Section Styles --- */
+.inline-comment-section {
+    padding: 20px 15px;
+    background-color: #f9fafb; /* کمی متفاوت از رنگ اصلی */
+    border-top: 1px solid var(--border-color);
+    margin-top: -15px; /* چسبیدن به بخش بالایی */
+}
+.comments-list {
+    margin-bottom: 20px;
+}
+.add-comment h4 {
+    font-size: 1rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+}
