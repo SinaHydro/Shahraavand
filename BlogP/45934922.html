@@ -1,0 +1,198 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>هزینه‌های اضافی در استفاده از ابزار غیرخودرویی</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #FFD54F;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .title .material-icons {
+            font-size: 36px;
+            margin-left: 15px;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0 70px 40px;
+        }
+        .intro {
+            font-size: 20px;
+            line-height: 1.6;
+            margin-bottom: 30px;
+            background-color: rgba(255, 213, 79, 0.1);
+            border-radius: 10px;
+            padding: 15px 20px;
+        }
+        .highlight {
+            color: #FFD54F;
+            font-weight: 500;
+        }
+        .costs-grid {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 20px;
+            flex-grow: 1;
+        }
+        .cost-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+        .cost-card:hover {
+            transform: translateY(-5px);
+        }
+        .cost-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+        }
+        .cost-icon {
+            background-color: rgba(255, 213, 79, 0.2);
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+        }
+        .cost-icon .material-icons {
+            font-size: 28px;
+            color: #FFD54F;
+        }
+        .cost-title {
+            font-size: 22px;
+            font-weight: 700;
+            color: #FFD54F;
+        }
+        .cost-description {
+            font-size: 20px;
+            line-height: 1.5;
+            flex-grow: 1;
+        }
+        .conclusion {
+            background-color: rgba(255, 82, 82, 0.1);
+            border-radius: 10px;
+            padding: 15px 20px;
+            margin-top: 30px;
+            display: flex;
+            align-items: center;
+        }
+        .conclusion .material-icons {
+            font-size: 28px;
+            color: #FF5252;
+            margin-left: 15px;
+        }
+        .conclusion-text {
+            font-size: 20px;
+            line-height: 1.5;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">
+                <i class="material-icons">warning</i>
+                هزینه‌های اضافی در استفاده از ابزار غیرخودرویی
+            </h1>
+        </div>
+        <div class="content">
+            <p class="intro">
+                استفاده از ابزارهای غیرخودرویی برای رنگ‌آمیزی ترافیکی دوجزئی، با وجود کاربرد در فضاهای محدود، <span class="highlight">هزینه‌ها و چالش‌های متعددی</span> را به همراه دارد که در نهایت بر کیفیت و ایمنی پروژه تأثیر منفی می‌گذارد.
+            </p>
+            
+            <div class="costs-grid">
+                <div class="cost-card">
+                    <div class="cost-header">
+                        <div class="cost-icon">
+                            <i class="material-icons">people</i>
+                        </div>
+                        <h2 class="cost-title">افزایش نیروی انسانی و زمان اجرا</h2>
+                    </div>
+                    <p class="cost-description">
+                        نیاز به نیروی کار بیشتر و زمان طولانی‌تر برای اجرای پروژه، که منجر به افزایش هزینه‌های دستمزد و تاخیر در تکمیل کار می‌شود
+                    </p>
+                </div>
+                
+                <div class="cost-card">
+                    <div class="cost-header">
+                        <div class="cost-icon">
+                            <i class="material-icons">delete</i>
+                        </div>
+                        <h2 class="cost-title">اتلاف مصالح</h2>
+                    </div>
+                    <p class="cost-description">
+                        عدم دقت در نسبت اختلاط دستی باعث هدر رفتن مقادیر زیادی از رنگ‌های گران‌قیمت دوجزئی می‌شود
+                    </p>
+                </div>
+                
+                <div class="cost-card">
+                    <div class="cost-header">
+                        <div class="cost-icon">
+                            <i class="material-icons">balance</i>
+                        </div>
+                        <h2 class="cost-title">کیفیت نامتوازن خطوط</h2>
+                    </div>
+                    <p class="cost-description">
+                        ضخامت و عرض غیر یکنواخت خطوط که باعث کاهش کیفیت بصری و ایمنی ترافیکی می‌شود
+                    </p>
+                </div>
+                
+                <div class="cost-card">
+                    <div class="cost-header">
+                        <div class="cost-icon">
+                            <i class="material-icons">timer</i>
+                        </div>
+                        <h2 class="cost-title">سخت‌شدن سریع رنگ</h2>
+                    </div>
+                    <p class="cost-description">
+                        احتمال سخت‌شدن سریع رنگ و مسدود شدن تجهیزات دستی، که نیاز به تعویض یا تمیزکاری مکرر دارد
+                    </p>
+                </div>
+            </div>
+            
+            <div class="conclusion">
+                <i class="material-icons">dangerous</i>
+                <p class="conclusion-text">
+                    <span class="highlight">خطرات ایمنی بیشتر:</span> کارگران در معرض تماس مستقیم با مواد شیمیایی خطرناک و ریسک بالاتر حوادث کاری قرار دارند
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
