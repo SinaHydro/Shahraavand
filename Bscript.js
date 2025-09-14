@@ -252,10 +252,10 @@ function renderSlides(slides) {
                             <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
                             <span>${JSON.parse(slide.likes || '[]').length}</span>
                         </div>
-                         <div class="action-item">
-                             <i class="far fa-comment" data-action="toggle-comment" data-slide-id="${slide.slideId}"></i>
-                             <span id="comment-count-${slide.slideId}">${JSON.parse(slide.comments || '[]').length}</span>
-                         </div>
+                        <div class="action-item">
+                            <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
+                            <span id="comment-count-${slide.slideId}">${JSON.parse(slide.comments || '[]').length}</span>
+                        </div>
                         <div class="action-item">
                             <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
                             <span>${slide.shares || 0}</span>
@@ -268,13 +268,14 @@ function renderSlides(slides) {
                     <button class="more-btn">بیشتر</button>
                     <div class="slide-date">${new Date(slide.publishDate).toLocaleDateString('fa-IR')}</div>
                 </div>
-                 <div class="inline-comment-section" id="comment-section-${slide.slideId}" style="display: none;">
-                    <div class="comments-list" id="comments-list-${slide.slideId}"><p>برای مشاهده نظرات کلیک کنید.</p></div>
-                    <div class="add-comment">
-                        <textarea id="comment-text-${slide.slideId}" placeholder="نظر خود را بنویسید..."></textarea>
-                        <button onclick="submitComment('${slide.slideId}')">ارسال نظر</button>
-                    </div>
-                 </div>
+                <div class="inline-comment-section" id="comment-section-${slide.slideId}" style="display: none;">
+                   <div class="comments-list" id="comments-list-${slide.slideId}"></div>
+                   <div class="add-comment">
+                       <h4>نظر خود را بنویسید:</h4>
+                       <textarea id="comment-text-${slide.slideId}" placeholder="..."></textarea>
+                       <button onclick="submitComment('${slide.slideId}')">ارسال نظر</button>
+                   </div>
+                </div>
             </div>
             ${adHtml}
         `;
@@ -307,24 +308,23 @@ window.addEventListener('resize', () => {
     resizeTimeout = setTimeout(() => document.querySelectorAll('.slide-content-wrapper iframe').forEach(adjustSlideScaling), 150);
 });
 
-function toggleCommentSection(slideId) {
-    const commentSection = document.getElementById(`comment-section-${slideId}`);
-    const isVisible = commentSection.style.display === 'block';
+function setupSlideInteractions() {
+    document.querySelectorAll('.slide-actions i[data-action]').forEach(icon => {
+        icon.addEventListener('click', function() {
+            const action = this.dataset.action;
+            const slideId = this.dataset.slideId;
 
-    if (isVisible) {
-        commentSection.style.display = 'none';
-    } else {
-        commentSection.style.display = 'block';
-        // فقط اگر نظرات هنوز بارگذاری نشده‌اند، آن‌ها را لود کن
-        const commentsList = document.getElementById(`comments-list-${slideId}`);
-        if (!commentsList.dataset.loaded) {
-            loadComments(slideId);
-            commentsList.dataset.loaded = 'true';
-        }
-    }
-}
+            if (action === 'like' || action === 'save') {
+                this.classList.toggle('fas'); // Toggle solid icon
+                this.classList.toggle('far'); // Toggle regular icon
+                // اینجا می‌توانید کد مربوط به ارسال لایک/ذخیره به سرور را اضافه کنید
+            } else if (action === 'comment') {
+                toggleCommentSection(slideId);
+            }
+        });
+    });
 
-function setupSlideInteractions(){
+    // این بخش برای دکمه "بیشتر" در کپشن است و باید باقی بماند
     document.querySelectorAll('.more-btn').forEach(button => {
         const caption = button.previousElementSibling;
         if (caption.scrollHeight <= caption.clientHeight) {
@@ -336,20 +336,52 @@ function setupSlideInteractions(){
             });
         }
     });
+}
 
-    document.querySelectorAll('.slide-actions i[data-action]').forEach(icon => {
-        icon.addEventListener('click', function() {
-            const action = this.dataset.action;
-            const slideId = this.dataset.slideId;
-            if (action === 'like' || action === 'save') {
-                this.classList.toggle('fas');
-                this.classList.toggle('far');
-                this.classList.toggle(action + 'd');
-            } else if (action === 'comment') {
-                toggleCommentSection(slideId);
+function toggleCommentSection(slideId) {
+    const commentSection = document.getElementById(`comment-section-${slideId}`);
+    const commentsList = document.getElementById(`comments-list-${slideId}`);
+    const isVisible = commentSection.style.display === 'block';
+
+    if (isVisible) {
+        commentSection.style.display = 'none';
+    } else {
+        commentSection.style.display = 'block';
+        // فقط در صورتی که نظرات قبلاً بارگذاری نشده‌اند، آن‌ها را از سرور بگیر
+        if (!commentsList.hasAttribute('data-loaded')) {
+            loadComments(slideId);
+            commentsList.setAttribute('data-loaded', 'true');
+        }
+    }
+}
+async function loadComments(slideId) {
+    const commentsContainer = document.getElementById(`comments-list-${slideId}`);
+    commentsContainer.innerHTML = '<p>در حال بارگذاری نظرات...</p>'; // نمایش پیام لودینگ
+    try {
+        const comments = await fetchData('getComments', `&slideId=${slideId}`);
+        if (comments && comments.length > 0) {
+            // نمایش حداکثر ۳ نظر اول
+            commentsContainer.innerHTML = comments.slice(0, 3).map(comment => `
+                <div class="comment">
+                    <div class="comment-header">
+                        <img src="${comment.userImage || 'https://via.placeholder.com/40'}" alt="${comment.userName}">
+                        <div>
+                            <span class="comment-author">${comment.userName}</span>
+                            <span class="comment-date">${new Date(comment.date).toLocaleDateString('fa-IR')}</span>
+                        </div>
+                    </div>
+                    <div class="comment-text">${comment.text}</div>
+                </div>
+            `).join('');
+            if (comments.length > 3) {
+                commentsContainer.innerHTML += `<a href="#" class="more-comments-link">مشاهده همه ${comments.length} نظر</a>`;
             }
-        });
-    });
+        } else {
+            commentsContainer.innerHTML = '<p>هنوز نظری ثبت نشده است. شما اولین نفر باشید!</p>';
+        }
+    } catch (error) {
+        commentsContainer.innerHTML = '<p>خطا در بارگذاری نظرات.</p>';
+    }
 }
 
 function setupHero(postData) {
@@ -447,34 +479,6 @@ function setupInteractiveFeatures() {
         progressBar.style.width = `${(window.scrollY / scrollableHeight) * 100}%`;
     }, { passive: true });
 }
-/**
- * بارگذاری نظرات از سرور
- */
-async function loadComments(slideId) {
-    const commentsContainer = document.getElementById(`comments-list-${slideId}`);
-    try {
-        const comments = await fetchData('getComments', `&slideId=${slideId}`);
-        if (comments && comments.length > 0) {
-            commentsContainer.innerHTML = comments.map(comment => `
-                <div class="comment">
-                    <div class="comment-header">
-                        <img src="${comment.userImage || 'https://via.placeholder.com/40'}" alt="${comment.userName}">
-                        <div>
-                            <span class="comment-author">${comment.userName}</span>
-                            <span class="comment-date">${new Date(comment.date).toLocaleDateString('fa-IR')}</span>
-                        </div>
-                    </div>
-                    <div class="comment-text">${comment.text}</div>
-                </div>
-            `).join('');
-        } else {
-            commentsContainer.innerHTML = '<p>هیچ نظری ثبت نشده است.</p>';
-        }
-    } catch (error) {
-        commentsContainer.innerHTML = '<p>خطا در بارگذاری نظرات.</p>';
-    }
-}
-
 /**
  * ارسال نظر به سرور
  */
