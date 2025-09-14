@@ -27,6 +27,19 @@ function formatReadTime(totalSeconds) {
 }
 
 document.addEventListener('DOMContentLoaded', () => {
+    // کد جدید برای منوی همبرگری
+    const hamburgerBtn = document.querySelector('.hamburger-btn');
+    const navMenu = document.querySelector('.main-header nav .nav-links');
+    if (hamburgerBtn && navMenu) {
+        hamburgerBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            navMenu.classList.toggle('active');
+        });
+        // بستن منو با کلیک بیرون از آن
+        document.addEventListener('click', () => navMenu.classList.remove('active'));
+        navMenu.addEventListener('click', (e) => e.stopPropagation());
+    }
+
     // تشخیص اینکه در کدام صفحه هستیم و اجرای تابع مربوطه
     if (document.getElementById('posts-container')) {
         initIndexPage();
@@ -46,6 +59,33 @@ document.addEventListener('DOMContentLoaded', () => {
         AOS.init();
     }
 });
+
+function createPostCard(post) {
+    const postLink = `Bpost.html?id=${post.postId}`;
+    const likesCount = JSON.parse(post.likes || '[]').length;
+    const commentsCount = JSON.parse(post.comments || '[]').length; // اضافه شد
+    
+    return `
+        <article class="post-card" data-aos="fade-up">
+            <a href="${postLink}" onclick="handlePostClick('${post.postId}'); return false;">
+                <img src="${post.imageUrl}" alt="${post.title}" class="post-card-image">
+            </a>
+            <div class="post-card-content">
+                <div class="post-card-author">
+                    <img src="${post.authorImageUrl}" alt="${post.authorName}">
+                    <span>${post.authorName}</span>
+                </div>
+                <a href="${postLink}" onclick="handlePostClick('${post.postId}'); return false;">
+                    <h3>${post.title}</h3>
+                </a>
+                <div class="post-card-footer">
+                    <div class="action-item"><i class="far fa-heart"></i><span>${likesCount}</span></div>
+                    <div class="action-item"><i class="far fa-comment"></i><span>${commentsCount}</span></div>
+                    <div class="action-item"><i class="far fa-eye"></i><span>${post.clicks || 0}</span></div>
+                </div>
+            </div>
+        </article>`;
+}
 /**
  * تابع عمومی برای دریافت داده از گوگل اسکریپت
  */
@@ -218,22 +258,22 @@ function renderSlides(slides) {
         // این بخش برای تبلیغات است
         const adHtml = (index + 1) % 3 === 0 && index < slides.length - 1
             ? `
-                <div class="in-post-ad-container">
-                    <div class="in-post-ad">
-                        <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
-                        <div>
-                            <h4>نظام تندیس</h4>
-                            <p>پلتفرم ارتباط هوشمند مهندسان و کارفرمایان خصوصی</p>
-                        </div>
+            <div class="in-post-ad-container">
+                <a href="https://tandis.shahraavand.ir" target="_blank" class="in-post-ad">
+                    <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
+                    <div>
+                        <h4>نظام تندیس</h4>
+                        <p>پلتفرم ارتباط هوشمند مهندسان و کارفرمایان خصوصی</p>
                     </div>
-                    <div class="in-post-ad">
-                        <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
-                        <div>
-                            <h4>نظام تندیس</h4>
-                            <p>تدارک نیازمندی دقیق و یکپارچه ساختمان</p>
-                        </div>
+                </a>
+                <a href="https://tandis.shahraavand.ir" target="_blank" class="in-post-ad">
+                    <img src="https://tandis.shahraavand.ir/images/new-TLogo_B.avif" alt="لوگو نظام تندیس">
+                    <div>
+                        <h4>نظام تندیس</h4>
+                        <p>تدارک نیازمندی دقیق و یکپارچه ساختمان</p>
                     </div>
-                </div>
+                </a>
+            </div>
             `
             : '';
 
@@ -432,32 +472,28 @@ function setupAuthorInfo(postData) {
 
 async function loadSuggestedPosts(currentCategory, currentPostId) {
     const container = document.getElementById('suggested-posts-container');
+    if (!container) return; // اگر کانتینر وجود نداشت، خارج شو
+
+    // ۱. دریافت تمام پست‌ها از سرور
     const allPosts = await fetchData('getPosts');
     if (allPosts) {
-        const suggested = allPosts.filter(p => p.category === currentCategory && p.postId !== currentPostId).slice(0, 3);
-        container.innerHTML = '';
+        // ۲. فیلتر کردن پست‌های مرتبط (همان دسته‌بندی و غیر از پست فعلی)
+        const suggested = allPosts
+            .filter(p => p.category === currentCategory && p.postId !== currentPostId)
+            .slice(0, 3); // انتخاب حداکثر ۳ پست
+
         if (suggested.length > 0) {
-            suggested.forEach(post => {
-                 container.innerHTML += `
-                    <article class="post-card">
-                       <a href="Bpost.html?id=${post.postId}" onclick="handlePostClick('${post.postId}'); return false;">
-                            <img src="${post.imageUrl}" alt="${post.title}" class="post-card-image">
-                           <div class="post-card-content">
-                               <h3>${post.title}</h3>
-                               <div class="post-card-footer">
-                                   <div class="stat"><i class="fas fa-clock"></i>${post.readTime} دقیقه</div>
-                                   <div class="stat"><i class="fas fa-heart"></i>${JSON.parse(post.likes || '[]').length}</div>
-                               </div>
-                           </div>
-                       </a>
-                    </article>`;
-            });
+            // ۳. استفاده از تابع createPostCard برای ساخت HTML کارت‌ها
+            container.innerHTML = suggested.map(post => createPostCard(post)).join('');
         } else {
-            document.querySelector('.suggested-posts-section').style.display = 'none';
+            // ۴. اگر پست مرتبطی وجود نداشت، کل بخش را مخفی کن
+            const suggestedSection = document.querySelector('.suggested-posts-section');
+            if (suggestedSection) {
+                suggestedSection.style.display = 'none';
+            }
         }
     }
 }
-
 function setupInteractiveFeatures() {
     const progressBar = document.getElementById('progress-bar');
     const tocLinks = document.querySelectorAll('#toc-container a');
