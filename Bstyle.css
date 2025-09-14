@@ -236,18 +236,47 @@ section { margin-bottom: 4rem; }
     font-weight: 300; 
     margin-bottom: 1.5rem;
 }
+/* --- Header & Hero Section Integration --- */
+.header-wrapper {
+    position: relative;
+    z-index: 1000;
+}
+.main-header {
+    background: transparent; /* هدر شفاف می‌شود */
+    position: absolute; /* روی هیرو قرار می‌گیرد */
+    top: 0;
+    left: 0;
+    width: 100%;
+    z-index: 1001;
+    border-bottom: 1px solid rgba(255, 255, 255, 0.2);
+}
+/* سفید کردن متون و لوگوی هدر */
+.title-container h1, .title-container h2, .main-header nav a {
+    color: #fff;
+}
+.logo {
+    filter: brightness(0) invert(1);
+}
+.main-header nav a:hover, .main-header nav a.active {
+    border-bottom-color: #fff;
+}
 .hero-section {
     width: 100%;
     height: 60vh;
     position: relative;
     display: flex;
     justify-content: center;
-    align-items: flex-end;
-    text-align: right; /* تغییر از center به right */
+    align-items: center;
+    text-align: center;
     color: #fff;
     padding: 40px;
-    margin-bottom: 2rem;
-    overflow: hidden; /* اضافه شده برای مخفی کردن قسمت‌های اضافی تصویر */
+    overflow: hidden;
+    /* گرادینت آبی به عنوان روکش تصویر */
+    background: 
+        linear-gradient(to bottom, rgba(30, 58, 138, 0.95) 0%, rgba(59, 130, 246, 0.7) 100%),
+        var(--bg-image, url('https://shahraavand.ir/images/TitlePhoto.avif'));
+    background-size: cover;
+    background-position: center;
 }
 .hero-section::before { 
     content: ''; 
@@ -274,24 +303,15 @@ section { margin-bottom: 4rem; }
     margin-right: 0; /* اضافه کردن برای اطمینان از راست‌چین بودن */
     margin-left: auto; /* اضافه کردن برای حفظ تعادل */
 }
-.hero-content h1 { 
-    font-size: 3rem; /* افزایش اندازه فونت */
-    text-shadow: 0 2px 10px rgba(0,0,0,0.7); /* افزایش سایه برای خوانایی بهتر */
-    margin-bottom: 1.5rem;
-    font-weight: 800; /* افزایش ضخامت فونت */
-    line-height: 1.2; /* تنظیم فاصله خطوط */
+.hero-content h1 {
+    font-size: 3rem;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.5);
+    font-weight: 800;
 }
-.hero-content p { 
-    font-size: 1.6rem; /* افزایش اندازه فونت */
-    font-weight: 300; 
-    margin-bottom: 2rem;
-    text-shadow: 0 1px 5px rgba(0,0,0,0.7); /* اضافه کردن سایه به متن */
-    line-height: 1.5; /* تنظیم فاصله خطوط */
-    max-width: 800px; /* محدود کردن عرض متن برای خوانایی بهتر */
-    margin-left: auto; /* اضافه کردن برای راست‌چین بودن */
-    margin-right: 0; /* اضافه کردن برای راست‌چین بودن */
+.hero-content p {
+    font-size: 1.6rem;
+    font-weight: 300;
 }
-
 /* اضافه شدن افکت‌های ویژه برای Hero Section */
 .hero-content::after {
     content: '';
@@ -602,4 +622,66 @@ section { margin-bottom: 4rem; }
 .post-card-footer .action-item i {
     font-size: 1.1rem;
     color: #555;
+}
+/* Hamburger Menu Styles */
+.hamburger-btn {
+    display: none; /* در حالت دسکتاپ مخفی است */
+    cursor: pointer;
+    background: none;
+    border: none;
+    padding: 10px;
+    z-index: 1002;
+}
+.hamburger-btn i {
+    font-size: 24px;
+    color: #fff; /* رنگ آیکون در حالت شفاف */
+}
+.main-header.scrolled .hamburger-btn i {
+    color: var(--text-color); /* رنگ آیکون بعد از اسکرول */
+}
+
+@media (max-width: 992px) {
+    .main-header nav .nav-links {
+        display: none; /* مخفی کردن لینک‌های اصلی */
+        flex-direction: column;
+        position: absolute;
+        top: var(--header-height);
+        right: 0;
+        background-color: var(--secondary-color);
+        width: 100%;
+        padding: 20px;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    }
+    .main-header nav.active .nav-links {
+        display: flex; /* نمایش منو در حالت فعال */
+    }
+    .hamburger-btn {
+        display: block; /* نمایش دکمه همبرگری */
+    }
+    .main-header nav .tandis-btn {
+        margin-right: auto; /* دکمه تندیس را در سمت چپ قرار می‌دهد */
+    }
+}
+.tandis-btn {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: rgba(255, 255, 255, 0.15);
+    padding: 8px 16px;
+    border-radius: 20px;
+    transition: background-color 0.3s ease;
+    white-space: nowrap; /* جلوگیری از شکستن متن */
+}
+.tandis-btn:hover {
+    background-color: rgba(255, 255, 255, 0.25);
+}
+.tandis-btn img {
+    height: 24px;
+}
+/* این استایل برای هر دو صفحه کار می‌کند */
+.suggested-posts-section h2,
+.posts-section .section-header h2 {
+    font-size: 2.2rem;
+    margin-bottom: 2.5rem;
+    text-align: center;
 }
