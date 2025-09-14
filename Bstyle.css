@@ -1,4 +1,4 @@
-@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Source+Sans+Pro:wght@400;600;700&display=swap');
 
 :root {
     --primary-color: #1E3A8A; /* رنگ اصلی الهام گرفته از category.html */
@@ -16,7 +16,7 @@
 
 /* --- General & Resets --- */
 body {
-    font-family: 'Vazirmatn', sans-serif;
+    font-family: 'Source Sans Pro', sans-serif;
     direction: rtl;
     text-align: right;
     margin: 0;
