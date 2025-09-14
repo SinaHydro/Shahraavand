@@ -9,8 +9,8 @@
     --light-gray: #f4f7f6;
     --border-color: #dee2e6;
     --header-height: 80px;
-    --card-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    --card-hover-shadow: 0 10px 25px rgba(0,0,0,0.12);
+    --card-shadow: 0 4px 15px rgba(0,0,0,0.01);
+    --card-hover-shadow: 0 10px 25px rgba(0,0,0,0.1);
     --border-radius: 12px;
 }
 
