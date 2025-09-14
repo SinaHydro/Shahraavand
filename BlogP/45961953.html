@@ -1,0 +1,326 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>نتیجه‌گیری</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #FFD54F;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .title .material-icons {
+            font-size: 36px;
+            margin-left: 15px;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0 70px 40px;
+        }
+        .conclusion-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 25px;
+            flex-grow: 1;
+        }
+        .conclusion-card {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 25px;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            overflow: hidden;
+            transition: transform 0.3s ease;
+        }
+        .conclusion-card:hover {
+            transform: translateY(-5px);
+        }
+        .card-header {
+            display: flex;
+            align-items: center;
+            margin-bottom: 20px;
+        }
+        .card-icon {
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+        .card-icon .material-icons {
+            font-size: 32px;
+        }
+        .card-title {
+            font-size: 24px;
+            font-weight: 700;
+        }
+        .card-features {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            margin-top: 15px;
+            flex-grow: 1;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        .feature-item .material-icons {
+            font-size: 24px;
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+        .feature-text {
+            font-size: 20px;
+            line-height: 1.5;
+        }
+        .highlight {
+            font-weight: 500;
+        }
+        
+        /* Card 1 - Single Component */
+        .single-component .card-icon {
+            background-color: rgba(76, 175, 80, 0.2);
+        }
+        .single-component .card-icon .material-icons {
+            color: #4CAF50;
+        }
+        .single-component .card-title {
+            color: #4CAF50;
+        }
+        .single-component .feature-item .material-icons {
+            color: #4CAF50;
+        }
+        .single-component .highlight {
+            color: #4CAF50;
+        }
+        
+        /* Card 2 - Two Component */
+        .two-component .card-icon {
+            background-color: rgba(255, 213, 79, 0.2);
+        }
+        .two-component .card-icon .material-icons {
+            color: #FFD54F;
+        }
+        .two-component .card-title {
+            color: #FFD54F;
+        }
+        .two-component .feature-item .material-icons {
+            color: #FFD54F;
+        }
+        .two-component .highlight {
+            color: #FFD54F;
+        }
+        
+        /* Card 3 - Machinery */
+        .machinery .card-icon {
+            background-color: rgba(33, 150, 243, 0.2);
+        }
+        .machinery .card-icon .material-icons {
+            color: #2196F3;
+        }
+        .machinery .card-title {
+            color: #2196F3;
+        }
+        .machinery .feature-item .material-icons {
+            color: #2196F3;
+        }
+        .machinery .highlight {
+            color: #2196F3;
+        }
+        
+        .final-note {
+            background-color: rgba(255, 213, 79, 0.1);
+            border-radius: 12px;
+            padding: 20px 25px;
+            margin-top: 25px;
+            display: flex;
+            align-items: center;
+        }
+        .final-note .material-icons {
+            font-size: 32px;
+            color: #FFD54F;
+            margin-left: 20px;
+            flex-shrink: 0;
+        }
+        .final-note-text {
+            font-size: 22px;
+            line-height: 1.6;
+        }
+        .final-highlight {
+            color: #FFD54F;
+            font-weight: 700;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">
+                <i class="material-icons">summarize</i>
+                نتیجه‌گیری
+            </h1>
+        </div>
+        <div class="content">
+            <div class="conclusion-grid">
+                <div class="conclusion-card single-component">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="material-icons">opacity</i>
+                        </div>
+                        <h2 class="card-title">رنگ تک‌جزئی سرد</h2>
+                    </div>
+                    <div class="card-features">
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                مناسب برای پروژه‌های <span class="highlight">کم‌ترافیک</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                گزینه ایده‌آل برای پروژه‌های <span class="highlight">کوتاه‌مدت</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                <span class="highlight">هزینه اولیه پایین</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                اجرای سریع و آسان
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="conclusion-card two-component">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="material-icons">science</i>
+                        </div>
+                        <h2 class="card-title">رنگ دوجزئی سرد</h2>
+                    </div>
+                    <div class="card-features">
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                انتخاب بهینه برای پروژه‌های <span class="highlight">بلندمدت</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                مناسب برای مناطق <span class="highlight">پرترافیک</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                عمر طولانی‌تر <span class="highlight">۳–۱۰ سال</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                <span class="highlight">ایمنی و وضوح بالاتر</span>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                صرفه‌جویی اقتصادی در چرخه عمر
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="conclusion-card machinery">
+                    <div class="card-header">
+                        <div class="card-icon">
+                            <i class="material-icons">precision_manufacturing</i>
+                        </div>
+                        <h2 class="card-title">ماشین‌آلات مکانیزه</h2>
+                    </div>
+                    <div class="card-features">
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                افزایش <span class="highlight">کیفیت</span> خط‌کشی
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                افزایش <span class="highlight">بهره‌وری</span> و سرعت اجرا
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                <span class="highlight">دقت</span> در نسبت اختلاط رنگ
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                کاهش هزینه‌های ناشی از ابزار دستی
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <div class="feature-text">
+                                افزایش ایمنی کارگران
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            
+            <div class="final-note">
+                <i class="material-icons">lightbulb</i>
+                <p class="final-note-text">
+                    انتخاب مناسب نوع رنگ و تجهیزات اجرا بر اساس <span class="final-highlight">شرایط ترافیکی</span>، <span class="final-highlight">بودجه</span> و <span class="final-highlight">طول عمر مورد انتظار</span>، تعیین‌کننده اصلی موفقیت و اقتصادی بودن پروژه‌های رنگ‌آمیزی ترافیکی است
+                </p>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
