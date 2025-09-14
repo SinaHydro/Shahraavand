@@ -132,9 +132,9 @@ async function initIndexPage() {
                         </a>
                         <div class="post-card-tags">${tagsHtml}</div>
                         <div class="post-card-footer">
-                            <div class="stat"><i class="fas fa-clock"></i>${formatReadTime(post.readTime)}</div>
-                            <div class="stat"><i class="fas fa-heart"></i>${likesCount}</div>
-                            <div class="stat"><i class="fas fa-eye"></i>${post.clicks || 0}</div>
+                            <div class="action-item"><i class="far fa-clock"></i><span>${formatReadTime(post.readTime)}</span></div>
+                            <div class="action-item"><i class="far fa-heart"></i><span>${likesCount}</span></div>
+                            <div class="action-item"><i class="far fa-eye"></i><span>${post.clicks || 0}</span></div>
                         </div>
                     </div>
                 </article>`;
@@ -250,11 +250,11 @@ function renderSlides(slides) {
                     <div class="main-actions">
                         <div class="action-item">
                             <i class="far fa-heart" data-action="like" data-slide-id="${slide.slideId}"></i>
-                            <span>${JSON.parse(slide.likes || '[]').length}</span>
+                            <span>${slide.clicks || 0}</span>
                         </div>
                         <div class="action-item">
                             <i class="far fa-comment" data-action="comment" data-slide-id="${slide.slideId}"></i>
-                            <span id="comment-count-${slide.slideId}">${JSON.parse(slide.comments || '[]').length}</span>
+                            <span id="comment-count-${slide.slideId}">${slide.comments || 0}</span>
                         </div>
                         <div class="action-item">
                             <i class="far fa-paper-plane" data-action="share" data-slide-id="${slide.slideId}"></i>
