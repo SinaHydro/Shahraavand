@@ -1,0 +1,210 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>روش‌های اجرا و کاربردها</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #FFD54F;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .title .material-icons {
+            font-size: 36px;
+            margin-left: 15px;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            flex-direction: column;
+            padding: 0 70px 40px;
+        }
+        .methods-container {
+            display: flex;
+            gap: 20px;
+            flex-grow: 1;
+        }
+        .method-card {
+            flex: 1;
+            background-color: rgba(255, 213, 79, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            transition: transform 0.3s ease;
+        }
+        .method-card:hover {
+            transform: translateY(-5px);
+        }
+        .method-icon {
+            background-color: rgba(255, 213, 79, 0.2);
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: 15px;
+        }
+        .method-icon .material-icons {
+            font-size: 32px;
+            color: #FFD54F;
+        }
+        .method-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFD54F;
+            margin-bottom: 15px;
+        }
+        .method-description {
+            font-size: 20px;
+            line-height: 1.5;
+            margin-bottom: 15px;
+            flex-grow: 1;
+        }
+        .method-features {
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        .feature-item .material-icons {
+            color: #FFD54F;
+            font-size: 20px;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+        .feature-text {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        .highlight {
+            color: #FFD54F;
+            font-weight: 500;
+        }
+        .note {
+            font-size: 18px;
+            color: #E0E0E0;
+            text-align: center;
+            margin-top: 20px;
+            font-style: italic;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">
+                <i class="material-icons">build_circle</i>
+                روش‌های اجرا و کاربردها
+            </h1>
+        </div>
+        <div class="content">
+            <div class="methods-container">
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="material-icons">horizontal_rule</i>
+                    </div>
+                    <h2 class="method-title">خطوط متصل</h2>
+                    <p class="method-description">
+                        خطوط پیوسته و مداوم که با جریان مستمر از دستگاه اجرا می‌شوند
+                    </p>
+                    <div class="method-features">
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <p class="feature-text"><span class="highlight">کاربرد:</span> خط حاشیه جاده، خطوط ایست، مناطق ممنوع عبور</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <p class="feature-text"><span class="highlight">اجرا:</span> جریان پیوسته از دستگاه</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <p class="feature-text"><span class="highlight">عرض:</span> معمولاً ۱۰ تا ۱۵ سانتی‌متر</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="material-icons">linear_scale</i>
+                    </div>
+                    <h2 class="method-title">خطوط منقطع</h2>
+                    <p class="method-description">
+                        خطوط متناوب که برای تقسیم مسیرهای قابل سبقت استفاده می‌شوند
+                    </p>
+                    <div class="method-features">
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <p class="feature-text"><span class="highlight">کاربرد:</span> تقسیم خطوط عبور در مسیرهای قابل سبقت</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <p class="feature-text"><span class="highlight">الگو:</span> ۳ متر خط + ۶ متر فاصله (استاندارد رایج)</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <p class="feature-text"><span class="highlight">اجرا:</span> دستگاه پاشش خودکار با کنترل الگو</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="method-card">
+                    <div class="method-icon">
+                        <i class="material-icons">grid_on</i>
+                    </div>
+                    <h2 class="method-title">سطوح وسیع</h2>
+                    <p class="method-description">
+                        رنگ‌آمیزی سطوح بزرگ مانند خطوط عابر پیاده با رنگ‌های دوجزئی
+                    </p>
+                    <div class="method-features">
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <p class="feature-text"><span class="highlight">کاربرد:</span> خط عابر پیاده، سطوح پارکینگ، علائم سطحی</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <p class="feature-text"><span class="highlight">جنس:</span> رنگ‌های دوجزئی (MMA یا اپوکسی)</p>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">check_circle</i>
+                            <p class="feature-text"><span class="highlight">مزیت:</span> مقاومت بالا در برابر سایش و لغزندگی</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <p class="note">هر روش اجرا نیازمند تجهیزات و مواد متفاوتی است که بر دوام و کیفیت نهایی تأثیر مستقیم دارد</p>
+        </div>
+    </div>
+</body>
+</html>
