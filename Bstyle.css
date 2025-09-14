@@ -53,11 +53,7 @@ section { margin-bottom: 4rem; }
 .main-header nav a { font-weight: 500; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: all 0.3s ease; }
 .main-header nav a:hover, .main-header nav a.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
 
-.post-meta { 
-    display: flex; 
-    gap: 25px; 
-    font-size: 1rem;
-}
+.post-meta { display: flex; gap: 25px; font-size: 1rem; }
 
 /* --- Slogan Section --- */
 .slogan-section {
