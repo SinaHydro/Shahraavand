@@ -1,4 +1,4 @@
-@import url('https://cdn.jsdelivr.net/gh/rastikerdar/vazirmatn@v33.003/Vazirmatn-font-face.css');
+@import url('https://fonts.googleapis.com/css2?family=Vazirmatn:wght@300;400;500;700;800&display=swap');
 
 :root {
     --primary-color: #1E3A8A; /* رنگ اصلی الهام گرفته از category.html */
@@ -26,7 +26,7 @@ body {
 }
 
 * { box-sizing: border-box; }
-.container { max-width: 1280px; margin: 40px auto; padding-top: 20px; }
+.container { max-width: 1280px; margin: 40px auto; padding-top: 20px; padding-left: 20px; padding-right: 20px; }
 a { color: inherit; text-decoration: none; }
 h1, h2, h3, h4 { font-weight: 700; margin: 0 0 1rem 0; }
 section { margin-bottom: 4rem; }
@@ -496,3 +496,65 @@ section { margin-bottom: 4rem; }
     border-radius: 8px;
     margin-top: 15px;
 }
+/* --- Inline Comment Section Styles --- */
+.inline-comment-section {
+    padding: 15px;
+    background-color: var(--light-gray);
+    border-top: 1px solid var(--border-color);
+}
+
+.comments-list {
+    max-height: 400px;
+    overflow-y: auto;
+    margin-bottom: 20px;
+}
+
+.comment {
+    margin-bottom: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #ddd;
+}
+.comment:last-child {
+    border-bottom: none;
+    margin-bottom: 0;
+}
+
+.comment-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 10px;
+}
+
+.comment-header img {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    margin-left: 10px;
+}
+
+.comment-author { font-weight: 600; }
+.comment-date { font-size: 0.8rem; color: #999; margin-right: 10px; }
+.comment-text { line-height: 1.7; }
+
+.add-comment textarea {
+    width: 100%;
+    min-height: 80px;
+    padding: 10px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    font-family: 'Vazirmatn', sans-serif;
+    resize: vertical;
+    margin-bottom: 10px;
+}
+
+.add-comment button {
+    background-color: var(--primary-color);
+    color: white;
+    border: none;
+    padding: 8px 15px;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.add-comment button:hover { background-color: var(--primary-light); }
