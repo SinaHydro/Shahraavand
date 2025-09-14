@@ -241,7 +241,7 @@ function renderSlides(slides) {
             <div class="slide-container" id="slide-${slide.slideId}">
                 <div class="slide-header">
                     <div class="slide-author"><img src="${slide.authorImageUrl}" alt="${slide.authorName}"><span>${slide.authorName}</span></div>
-                    <div class="slide-brand"><img src="https://shahraavand.ir/images/logoT.png" alt="لوگو شركت مهندسين مشاور شهرآوند"><span>وبلاگ شركت شهرآوند</span></div>
+                    <div class="slide-brand"><span>وبلاگ شركت شهرآوند</span><img src="https://shahraavand.ir/images/logoT.png" alt="لوگو شركت مهندسين مشاور شهرآوند"></div>
                 </div>
                 <div class="slide-content-wrapper">
                     <iframe src="${slide.contentUrl}" scrolling="no" loading="lazy" title="${slide.title || 'Slide Content'}" onload="adjustSlideScaling(this)"></iframe>
