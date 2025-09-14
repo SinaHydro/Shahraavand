@@ -1,0 +1,302 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>تجهیزات تخصصی</title>
+    <link href="https://fonts.googleapis.com/css2?family=Vazirmatn:wght@400;500;700;900&display=swap" rel="stylesheet">
+    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        body {
+            font-family: 'Vazirmatn', sans-serif;
+            background-color: #121212;
+            color: #ffffff;
+        }
+        .slide {
+            width: 1280px;
+            min-height: 720px;
+            position: relative;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+        }
+        .header {
+            padding: 40px 70px 20px;
+        }
+        .title {
+            font-size: 40px;
+            font-weight: 700;
+            color: #FFD54F;
+            margin-bottom: 10px;
+            display: flex;
+            align-items: center;
+        }
+        .title .material-icons {
+            font-size: 36px;
+            margin-left: 15px;
+        }
+        .content {
+            flex-grow: 1;
+            display: flex;
+            padding: 0 70px 40px;
+            gap: 30px;
+        }
+        .text-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+        }
+        .image-content {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+        }
+        .image-container {
+            width: 100%;
+            height: 320px;
+            overflow: hidden;
+            border-radius: 10px;
+            box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+            margin-bottom: 20px;
+        }
+        .image-container img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+        .equipment-box {
+            background-color: rgba(255, 213, 79, 0.1);
+            border-radius: 12px;
+            padding: 20px;
+            margin-bottom: 20px;
+            flex-grow: 1;
+        }
+        .equipment-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFD54F;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .equipment-title .material-icons {
+            font-size: 28px;
+            margin-left: 10px;
+        }
+        .equipment-features {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+        .feature-item {
+            display: flex;
+            align-items: flex-start;
+        }
+        .feature-item .material-icons {
+            color: #FFD54F;
+            font-size: 24px;
+            margin-left: 15px;
+            flex-shrink: 0;
+        }
+        .feature-text {
+            font-size: 20px;
+            line-height: 1.5;
+        }
+        .highlight {
+            color: #FFD54F;
+            font-weight: 500;
+        }
+        .comparison-box {
+            background-color: rgba(255, 255, 255, 0.05);
+            border-radius: 12px;
+            padding: 20px;
+            display: flex;
+            flex-direction: column;
+            height: 100%;
+        }
+        .comparison-title {
+            font-size: 24px;
+            font-weight: 700;
+            color: #FFD54F;
+            margin-bottom: 15px;
+            display: flex;
+            align-items: center;
+        }
+        .comparison-title .material-icons {
+            font-size: 28px;
+            margin-left: 10px;
+        }
+        .comparison-content {
+            display: flex;
+            gap: 15px;
+            flex-grow: 1;
+        }
+        .comparison-column {
+            flex: 1;
+            display: flex;
+            flex-direction: column;
+            gap: 10px;
+        }
+        .comparison-item {
+            background-color: rgba(255, 213, 79, 0.1);
+            border-radius: 8px;
+            padding: 12px;
+            display: flex;
+            align-items: center;
+        }
+        .comparison-item .material-icons {
+            color: #FFD54F;
+            font-size: 24px;
+            margin-left: 10px;
+            flex-shrink: 0;
+        }
+        .comparison-text {
+            font-size: 18px;
+            line-height: 1.4;
+        }
+        .negative {
+            color: #FF5252;
+        }
+        .positive {
+            color: #4CAF50;
+        }
+    </style>
+</head>
+<body>
+    <div class="slide">
+        <div class="header">
+            <h1 class="title">
+                <i class="material-icons">construction</i>
+                تجهیزات تخصصی
+            </h1>
+        </div>
+        <div class="content">
+            <div class="text-content">
+                <div class="equipment-box">
+                    <h2 class="equipment-title">
+                        <i class="material-icons">precision_manufacturing</i>
+                        دستگاه خط‌کشی مجهز به دو مخزن جداگانه
+                    </h2>
+                    <div class="equipment-features">
+                        <div class="feature-item">
+                            <i class="material-icons">inventory_2</i>
+                            <div class="feature-text">
+                                <span class="highlight">مخزن جزء A:</span> حاوی رزین (اپوکسی یا MMA) و رنگدانه‌ها
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">science</i>
+                            <div class="feature-text">
+                                <span class="highlight">مخزن جزء B:</span> حاوی سخت‌کننده (کاتالیست‌های آلی)
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">sync_alt</i>
+                            <div class="feature-text">
+                                <span class="highlight">نسبت اختلاط:</span> ۹۸:۲ تا ۹۵:۵ حجمی در نازل دستگاه
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">speed</i>
+                            <div class="feature-text">
+                                <span class="highlight">سرعت و دبی:</span> کنترل دقیق برای تضمین یکنواختی عرض و ضخامت
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div class="equipment-box">
+                    <h2 class="equipment-title">
+                        <i class="material-icons">handyman</i>
+                        ابزارهای غیرخودرویی
+                    </h2>
+                    <div class="equipment-features">
+                        <div class="feature-item">
+                            <i class="material-icons">brush</i>
+                            <div class="feature-text">
+                                <span class="highlight">اپلیکاتورهای دستی:</span> برای کارهای جزئی و نمادها
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="material-icons">dashboard_customize</i>
+                            <div class="feature-text">
+                                <span class="highlight">شابلون‌ها:</span> برای فلش‌ها و علائم خاص
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+            <div class="image-content">
+                <div class="image-container">
+                    <img src="https://sfile.chatglm.cn/images-ppt/535798f7583b.jpg" alt="دستگاه خط کشی دو مخزنه">
+                </div>
+                <div class="comparison-box">
+                    <h2 class="comparison-title">
+                        <i class="material-icons">compare</i>
+                        مقایسه تجهیزات
+                    </h2>
+                    <div class="comparison-content">
+                        <div class="comparison-column">
+                            <div class="comparison-item">
+                                <i class="material-icons">directions_car</i>
+                                <div class="comparison-text">
+                                    <span class="highlight">ماشین‌آلات مکانیزه:</span>
+                                </div>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="material-icons">thumb_up</i>
+                                <div class="comparison-text">
+                                    <span class="positive">کیفیت بالا</span>
+                                </div>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="material-icons">thumb_up</i>
+                                <div class="comparison-text">
+                                    <span class="positive">سرعت اجرا بیشتر</span>
+                                </div>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="material-icons">thumb_up</i>
+                                <div class="comparison-text">
+                                    <span class="positive">دقت در اختلاط</span>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="comparison-column">
+                            <div class="comparison-item">
+                                <i class="material-icons">pan_tool</i>
+                                <div class="comparison-text">
+                                    <span class="highlight">ابزارهای غیرخودرویی:</span>
+                                </div>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="material-icons">thumb_down</i>
+                                <div class="comparison-text">
+                                    <span class="negative">افزایش هزینه</span>
+                                </div>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="material-icons">thumb_down</i>
+                                <div class="comparison-text">
+                                    <span class="negative">کاهش کیفیت</span>
+                                </div>
+                            </div>
+                            <div class="comparison-item">
+                                <i class="material-icons">thumb_down</i>
+                                <div class="comparison-text">
+                                    <span class="negative">عدم یکنواختی</span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</body>
+</html>
