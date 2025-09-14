@@ -364,7 +364,7 @@ async function loadComments(slideId) {
             commentsContainer.innerHTML = comments.slice(0, 3).map(comment => `
                 <div class="comment">
                     <div class="comment-header">
-                        <img src="${comment.userImage || 'https://via.placeholder.com/40'}" alt="${comment.userName}">
+                        <img src="${comment.userImage || 'https://shahraavand.ir/images/imgProfileR.avif'}" alt="${comment.userName}">
                         <div>
                             <span class="comment-author">${comment.userName}</span>
                             <span class="comment-date">${new Date(comment.date).toLocaleDateString('fa-IR')}</span>
@@ -495,7 +495,7 @@ async function submitComment(slideId) {
             text: commentText,
             userId: 'anonymous', // در نسخه واقعی، شناسه کاربر لاگین شده را ارسال کنید
             userName: 'کاربر مهمان', // در نسخه واقعی، نام کاربر لاگین شده را ارسال کنید
-            userImage: 'https://via.placeholder.com/40' // در نسخه واقعی، تصویر کاربر لاگین شده را ارسال کنید
+            userImage: 'https://shahraavand.ir/images/imgProfileR.avif' // در نسخه واقعی، تصویر کاربر لاگین شده را ارسال کنید
         });
         if (result) {
             alert('نظر شما با موفقیت ثبت شد.');
