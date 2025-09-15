@@ -669,22 +669,14 @@ section { margin-bottom: 4rem; }
     display: flex;
     align-items: center;
     gap: 8px;
-    background-color: rgba(255, 255, 255, 0.15);
+    background-color: rgba(255, 255, 255, 0.9);
     padding: 8px 16px;
     border-radius: 20px;
     transition: background-color 0.3s ease;
-    white-space: nowrap; /* جلوگیری از شکستن متن */
+    /*white-space: nowrap;  جلوگیری از شکستن متن */
 }
-.tandis-btn:hover {
-    background-color: rgba(255, 255, 255, 0.25);
-}
-.tandis-btn img {
-    height: 24px;
-}
+.tandis-btn:hover { background-color: rgba(255, 255, 255, 0.25);}
+.tandis-btn img { height: 24px;}
 /* این استایل برای هر دو صفحه کار می‌کند */
 .suggested-posts-section h2,
-.posts-section .section-header h2 {
-    font-size: 2.2rem;
-    margin-bottom: 2.5rem;
-    text-align: center;
-}
+.posts-section .section-header h2 { font-size: 2.2rem; margin-bottom: 2.5rem; text-align: center;}
