@@ -1,0 +1,343 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اسلاید شو حرفه‌ای</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', sans-serif;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            width: 1280px;
+            height: 720px;
+            position: relative;
+            background-color: #000;
+            border-radius: 12px;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .slides-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .slide img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .nav-button:hover {
+            color: #ccc;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-button:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .prev {
+            right: 20px;
+        }
+
+        .next {
+            left: 20px;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            z-index: 10;
+        }
+
+        .caption {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            z-index: 10;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .bullets-container {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .bullet {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bullet:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.2);
+        }
+
+        .bullet.active {
+            background-color: white;
+            width: 32px;
+            border-radius: 6px;
+        }
+
+        /* Loading animation */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 20px;
+            z-index: 20;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1280px) {
+            .slideshow-container {
+                width: 90vw;
+                height: calc(90vw * 0.5625); /* Maintain 16:9 aspect ratio */
+            }
+            
+            .caption {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+
+        /* Touch swipe support */
+        .slides-wrapper {
+            touch-action: pan-y;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <div class="slides-wrapper" id="slidesWrapper">
+            <div class="loading">در حال بارگذاری...</div>
+        </div>
+        
+        <button class="nav-button prev" id="prevBtn">❮</button>
+        <button class="nav-button next" id="nextBtn">❯</button>
+        
+        <div class="slide-counter" id="slideCounter">1/5</div>
+        
+        <div class="caption" id="caption">گالری تصاویر</div>
+        
+        <div class="bullets-container" id="bulletsContainer"></div>
+    </div>
+
+    <script>
+        class Slideshow {
+            constructor() {
+                this.currentSlide = 0;
+                this.slides = [];
+                this.slidesWrapper = document.getElementById('slidesWrapper');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.slideCounter = document.getElementById('slideCounter');
+                this.bulletsContainer = document.getElementById('bulletsContainer');
+                this.caption = document.getElementById('caption');
+                
+                // Sample images - you can replace these with your own
+                this.imageUrls = [
+                    'https://teknimatrafik.com/wp-content/uploads/2020/11/On-Isitici-Gerektirmeyen-Termoplastik-Yol-Isaretleme-Makinesi-Thermoplastic-Road-Marking-Machine-No-Need-Pre-Heater1.jpg',
+                    'https://www.trafficmarkingmachine.com/uploads/20200429143620808.jpg',
+                    'https://www.hofmannmarking.de/fileadmin/user_upload/bilder/maschinen/760-roadmarking-hofmann.jpg',
+                    'https://www.valves-community.com/wp-content/uploads/2018/08/markiertechnik-2-1024x576.jpg',
+                    'https://rikoribnica.com/wp-content/uploads/2021/08/borum-airport-marking-1000x666.jpg',
+                    'https://nwzimg.wezhan.net/contents/sitefiles3606/18030052/images/9717421.jpg',
+                    'https://images.unsplash.com/photo-1748356804416-c31b303000c9?q=80&w=687&auto=format&fit=crop&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D'
+                ];
+                
+                // Captions for each slide
+                this.captions = [
+                    'ماشین های خط کشی',
+                    'ماشین خط کشی هافمن',
+                    'ماشین خط کشی خودران',
+                    'ماشین های خط کشی',
+                    'ماشین خط کشی هافمن',
+                    'ماشین خط کشی خودران',
+                    'ماشین های خط کشی',
+              ];
+                
+                this.init();
+            }
+            
+            init() {
+                this.createSlides();
+                this.createBullets();
+                this.bindEvents();
+                this.showSlide(0);
+                this.setupTouchSwipe();
+            }
+            
+            createSlides() {
+                this.slidesWrapper.innerHTML = '';
+                
+                this.imageUrls.forEach((url, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'slide';
+                    
+                    const img = document.createElement('img');
+                    img.src = url;
+                    img.alt = `Slide ${index + 1}`;
+                    img.loading = 'lazy';
+                    
+                    slide.appendChild(img);
+                    this.slidesWrapper.appendChild(slide);
+                    this.slides.push(slide);
+                });
+            }
+            
+            createBullets() {
+                this.bulletsContainer.innerHTML = '';
+                
+                this.imageUrls.forEach((_, index) => {
+                    const bullet = document.createElement('div');
+                    bullet.className = 'bullet';
+                    bullet.addEventListener('click', () => this.showSlide(index));
+                    this.bulletsContainer.appendChild(bullet);
+                });
+            }
+            
+            showSlide(index) {
+                // Remove active class from all slides and bullets
+                this.slides.forEach(slide => slide.classList.remove('active'));
+                document.querySelectorAll('.bullet').forEach(bullet => bullet.classList.remove('active'));
+                
+                // Add active class to current slide and bullet
+                this.slides[index].classList.add('active');
+                document.querySelectorAll('.bullet')[index].classList.add('active');
+                
+                // Update counter
+                this.slideCounter.textContent = `${index + 1}/${this.imageUrls.length}`;
+                
+                // Update caption
+                this.caption.textContent = this.captions[index];
+                
+                this.currentSlide = index;
+            }
+            
+            nextSlide() {
+                const nextIndex = (this.currentSlide + 1) % this.imageUrls.length;
+                this.showSlide(nextIndex);
+            }
+            
+            prevSlide() {
+                const prevIndex = (this.currentSlide - 1 + this.imageUrls.length) % this.imageUrls.length;
+                this.showSlide(prevIndex);
+            }
+            
+            bindEvents() {
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight') this.nextSlide();
+                    if (e.key === 'ArrowLeft') this.prevSlide();
+                });
+                
+                // Auto-play (optional - remove if not needed)
+                // this.startAutoPlay();
+            }
+            
+            setupTouchSwipe() {
+                let touchStartX = 0;
+                let touchEndX = 0;
+                
+                this.slidesWrapper.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                });
+                
+                this.slidesWrapper.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    this.handleSwipe();
+                });
+                
+                const handleSwipe = () => {
+                    if (touchEndX < touchStartX - 50) this.nextSlide();
+                    if (touchEndX > touchStartX + 50) this.prevSlide();
+                };
+            }
+            
+            // Optional auto-play method
+            startAutoPlay() {
+                setInterval(() => this.nextSlide(), 5000);
+            }
+        }
+        
+        // Initialize slideshow when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new Slideshow();
+        });
+    </script>
+</body>
+</html>
