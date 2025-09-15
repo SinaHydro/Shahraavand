@@ -12,6 +12,7 @@
     --card-shadow: 0 4px 15px rgba(0,0,0,0.01);
     --card-hover-shadow: 0 10px 25px rgba(0,0,0,0.1);
     --border-radius: 12px;
+    --accent-color: #F59E0B; /* رنگ نارنجی برای تاکید */
 }
 
 /* --- General & Resets --- */
@@ -36,18 +37,8 @@ h1, h2, h3, h4 { font-weight: 700; margin: 0 0 1rem 0; }
 section { margin-bottom: 4rem; }
 
 /* --- Header --- */
-.main-header {
-    background-color: rgba(255, 255, 255, 0.95);
-    backdrop-filter: blur(10px);
-    padding: 0 30px;
-    height: var(--header-height);
-    border-bottom: 1px solid var(--border-color);
-    box-shadow: var(--card-shadow);
-    position: relative; /* تغییر از sticky یا fixed به relative */
-    z-index: 1000;
-    display: flex;
-    align-items: center;
-}
+.main-header { background-color: rgba(255, 255, 255, 0.95); backdrop-filter: blur(10px); padding: 0 30px; height: var(--header-height); 
+    border-bottom: 1px solid var(--border-color); box-shadow: var(--card-shadow); position: relative; z-index: 1000; display: flex; align-items: center; }
 .header-content { display: flex; justify-content: space-between; align-items: center; width: 100%; max-width: 1280px; margin: 0 auto; }
 .logo-container { display: flex; align-items: center; gap: 15px; }
 .logo { height: 50px; }
@@ -55,7 +46,8 @@ section { margin-bottom: 4rem; }
 .title-container h2 { font-size: 0.8rem; margin: 0; font-weight: 400; color: var(--text-light); }
 .main-header nav { display: flex; gap: 30px; }
 .main-header nav a { font-weight: 500; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: all 0.3s ease; }
-.main-header nav a:hover, .main-header nav a.active { color: var(--primary-color); border-bottom-color: var(--primary-color); }
+.main-header nav a.active { color: var(--accent-color); border-bottom-color: var(--accent-color); font-weight: bold; }
+.main-header nav a:hover { opacity: 0.8; border-bottom-color: #fff; }
 
 .post-meta { display: flex; gap: 25px; font-size: 1rem; }
 
@@ -278,6 +270,7 @@ section { margin-bottom: 4rem; }
     background-size: cover;
     background-position: center;
     transition: transform 0.3s ease;
+    padding-top: var(--header-height); /* این خط اضافه شود */
 }
 .hero-content {
     position: relative; /* z-index دیگر ضروری نیست اما بودن آن مشکلی ایجاد نمی‌کند */
@@ -611,7 +604,7 @@ section { margin-bottom: 4rem; }
     font-size: 1.1rem;
     color: #555;
 }
-/* Hamburger Menu Styles */
+/* --- Hamburger Menu & Responsive Header Styles --- */
 .hamburger-btn {
     display: none; /* در حالت دسکتاپ مخفی است */
     cursor: pointer;
@@ -619,37 +612,59 @@ section { margin-bottom: 4rem; }
     border: none;
     padding: 10px;
     z-index: 1002;
+    position: absolute; /* برای قرارگیری صحیح در هدر */
+    right: 20px;
 }
 .hamburger-btn i {
     font-size: 24px;
-    color: #fff; /* رنگ آیکون در حالت شفاف */
+    color: #fff;
 }
-.main-header.scrolled .hamburger-btn i {
-    color: var(--text-color); /* رنگ آیکون بعد از اسکرول */
+.nav-logo {
+    display: none; /* لوگوی داخل منو در حالت دسکتاپ مخفی است */
 }
 
 @media (max-width: 992px) {
-    .main-header nav .nav-links {
-        display: none; /* مخفی کردن لینک‌های اصلی */
-        flex-direction: column;
-        position: absolute;
-        top: var(--header-height);
-        right: 0;
-        background-color: var(--secondary-color);
-        width: 100%;
-        padding: 20px;
-        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+    .header-content {
+        justify-content: flex-end; /* دکمه همبرگری را به سمت راست هول می‌دهد */
     }
-    .main-header nav.active .nav-links {
+    .main-header nav {
+        display: none; /* منو به صورت پیش‌فرض مخفی است */
+        position: fixed;
+        top: 0;
+        right: 0;
+        width: 100%;
+        height: 100vh;
+        background-color: var(--secondary-color);
+        flex-direction: column;
+        padding: 60px 20px 20px;
+        gap: 25px;
+        box-shadow: 0 8px 15px rgba(0,0,0,0.2);
+        justify-content: flex-start;
+        align-items: center;
+    }
+    .main-header nav.active {
         display: flex; /* نمایش منو در حالت فعال */
     }
     .hamburger-btn {
         display: block; /* نمایش دکمه همبرگری */
     }
+    .logo-container {
+        display: none; /* مخفی کردن لوگوی اصلی در هدر */
+    }
+    .nav-logo {
+        display: flex; /* نمایش لوگوی داخل منو */
+        margin-bottom: 20px;
+    }
+    .nav-links {
+        flex-direction: column;
+        gap: 20px;
+        align-items: center;
+    }
     .main-header nav .tandis-btn {
-        margin-right: auto; /* دکمه تندیس را در سمت چپ قرار می‌دهد */
+        margin-top: 20px;
     }
 }
+
 .tandis-btn {
     display: flex;
     align-items: center;
