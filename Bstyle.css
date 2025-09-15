@@ -45,8 +45,8 @@ section { margin-bottom: 4rem; }
 .title-container h1 { font-size: 1.4rem; margin: 0; color: var(--secondary-color); }
 .title-container h2 { font-size: 0.8rem; margin: 0; font-weight: 400; color: var(--text-light); }
 .main-header nav { display: flex; gap: 30px; }
-.main-header nav a { font-weight: 500; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: all 0.3s ease; }
-.main-header nav a.active { color: var(--accent-color); border-bottom-color: var(--accent-color); font-weight: bold; }
+.main-header nav a { font-weight: 500; padding-bottom: 5px; transition: all 0.3s ease; }
+.main-header nav a.active { color: #fff; font-weight: bold; }
 .main-header nav a:hover { opacity: 0.8; border-bottom-color: #fff; }
 
 .post-meta { display: flex; gap: 25px; font-size: 1rem; }
