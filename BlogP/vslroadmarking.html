@@ -1,0 +1,389 @@
+<!DOCTYPE html>
+<html lang="fa" dir="rtl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>اسلاید شو ویدیویی حرفه‌ای</title>
+    <link href="https://cdn.jsdelivr.net/gh/rastikerdar/vazir-font@v30.1.0/dist/font-face.css" rel="stylesheet" type="text/css" />
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Vazir', sans-serif;
+            background-color: #1a1a1a;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            overflow: hidden;
+        }
+
+        .slideshow-container {
+            width: 1280px;
+            height: 900px;
+            position: relative;
+            background-color: #000;
+            border-radius: 0;
+            overflow: hidden;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.5);
+        }
+
+        .slides-wrapper {
+            width: 100%;
+            height: 100%;
+            position: relative;
+            overflow: hidden;
+        }
+
+        .slide {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            opacity: 0;
+            transition: opacity 0.5s ease-in-out;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+
+        .slide.active {
+            opacity: 1;
+        }
+
+        .video-container {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+        }
+
+        .video-container iframe,
+        .video-container video {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        .nav-button {
+            position: absolute;
+            top: 50%;
+            transform: translateY(-50%);
+            background: none;
+            color: white;
+            border: none;
+            width: 60px;
+            height: 60px;
+            border-radius: 50%;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 24px;
+            transition: all 0.3s ease;
+            z-index: 10;
+        }
+
+        .nav-button:hover {
+            color: #ccc;
+            transform: translateY(-50%) scale(1.1);
+        }
+
+        .nav-button:active {
+            transform: translateY(-50%) scale(0.95);
+        }
+
+        .prev {
+            right: 20px;
+        }
+
+        .next {
+            left: 20px;
+        }
+
+        .slide-counter {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            color: white;
+            padding: 10px 20px;
+            font-size: 16px;
+            font-weight: 500;
+            z-index: 10;
+        }
+
+        .caption {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+            color: white;
+            padding: 12px 24px;
+            font-size: 18px;
+            font-weight: 600;
+            z-index: 10;
+            letter-spacing: 1px;
+            text-shadow: 0 2px 4px rgba(0, 0, 0, 0.5);
+        }
+
+        .bullets-container {
+            position: absolute;
+            bottom: 30px;
+            left: 50%;
+            transform: translateX(-50%);
+            display: flex;
+            gap: 12px;
+            z-index: 10;
+        }
+
+        .bullet {
+            width: 12px;
+            height: 12px;
+            border-radius: 50%;
+            background-color: rgba(255, 255, 255, 0.3);
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .bullet:hover {
+            background-color: rgba(255, 255, 255, 0.5);
+            transform: scale(1.2);
+        }
+
+        .bullet.active {
+            background-color: white;
+            width: 32px;
+            border-radius: 6px;
+        }
+
+        /* Loading animation */
+        .loading {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-size: 20px;
+            z-index: 20;
+        }
+
+        /* Responsive adjustments */
+        @media (max-width: 1280px) {
+            .slideshow-container {
+                width: 90vw;
+                height: calc(90vw * 0.703125);
+            }
+            
+            .caption {
+                font-size: 16px;
+                padding: 10px 20px;
+            }
+        }
+
+        /* Touch swipe support */
+        .slides-wrapper {
+            touch-action: pan-y;
+        }
+    </style>
+</head>
+<body>
+    <div class="slideshow-container">
+        <div class="slides-wrapper" id="slidesWrapper">
+            <div class="loading">در حال بارگذاری...</div>
+        </div>
+        
+        <button class="nav-button prev" id="prevBtn">❮</button>
+        <button class="nav-button next" id="nextBtn">❯</button>
+        
+        <div class="slide-counter" id="slideCounter">1/5</div>
+        
+        <div class="caption" id="caption">گالری ویدیو</div>
+        
+        <div class="bullets-container" id="bulletsContainer"></div>
+    </div>
+
+    <script>
+        class VideoSlideshow {
+            constructor() {
+                this.currentSlide = 0;
+                this.slides = [];
+                this.slidesWrapper = document.getElementById('slidesWrapper');
+                this.prevBtn = document.getElementById('prevBtn');
+                this.nextBtn = document.getElementById('nextBtn');
+                this.slideCounter = document.getElementById('slideCounter');
+                this.bulletsContainer = document.getElementById('bulletsContainer');
+                this.caption = document.getElementById('caption');
+                
+                // Sample videos from different platforms
+                this.videos = [
+                    {
+                        platform: 'youtube',
+                        id: 'wLrDbVF96pg',
+                        embedUrl: 'https://youtu.be/wLrDbVF96pg',
+                        caption: 'ماشین خط کشی خیابان'
+                    },
+                    {
+                        platform: 'aparat',
+                        id: 'h292768',
+                        embedUrl: 'https://www.aparat.com/v/h292768',
+                        caption: 'ماشین خط کشی ایرلس پاششی'
+                    },
+                    {
+                        platform: 'facebook',
+                        id: '415569725981968',
+                        embedUrl: 'https://www.facebook.com/HOFMANNroadmarking/videos/hofmann-road-marking-machine-h18-2/415569725981968/',
+                        caption: 'ماشین خط کشی هافمن'
+                    }
+                ];
+                
+                this.init();
+            }
+            
+            init() {
+                this.createSlides();
+                this.createBullets();
+                this.bindEvents();
+                this.showSlide(0);
+                this.setupTouchSwipe();
+            }
+            
+            createSlides() {
+                this.slidesWrapper.innerHTML = '';
+                
+                this.videos.forEach((video, index) => {
+                    const slide = document.createElement('div');
+                    slide.className = 'slide';
+                    
+                    const videoContainer = document.createElement('div');
+                    videoContainer.className = 'video-container';
+                    
+                    if (video.platform === 'direct') {
+                        // For direct video files
+                        const videoElement = document.createElement('video');
+                        videoElement.controls = true;
+                        videoElement.src = video.url;
+                        videoElement.preload = 'metadata';
+                        videoContainer.appendChild(videoElement);
+                    } else {
+                        // For embedded videos
+                        const iframe = document.createElement('iframe');
+                        iframe.src = video.embedUrl;
+                        iframe.allowFullscreen = true;
+                        iframe.frameBorder = "0";
+                        iframe.allow = "accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture";
+                        videoContainer.appendChild(iframe);
+                    }
+                    
+                    slide.appendChild(videoContainer);
+                    this.slidesWrapper.appendChild(slide);
+                    this.slides.push(slide);
+                });
+            }
+            
+            createBullets() {
+                this.bulletsContainer.innerHTML = '';
+                
+                this.videos.forEach((_, index) => {
+                    const bullet = document.createElement('div');
+                    bullet.className = 'bullet';
+                    bullet.addEventListener('click', () => this.showSlide(index));
+                    this.bulletsContainer.appendChild(bullet);
+                });
+            }
+            
+            showSlide(index) {
+                // Pause any playing videos
+                this.pauseAllVideos();
+                
+                // Remove active class from all slides and bullets
+                this.slides.forEach(slide => slide.classList.remove('active'));
+                document.querySelectorAll('.bullet').forEach(bullet => bullet.classList.remove('active'));
+                
+                // Add active class to current slide and bullet
+                this.slides[index].classList.add('active');
+                document.querySelectorAll('.bullet')[index].classList.add('active');
+                
+                // Update counter
+                this.slideCounter.textContent = `${index + 1}/${this.videos.length}`;
+                
+                // Update caption
+                this.caption.textContent = this.videos[index].caption;
+                
+                this.currentSlide = index;
+            }
+            
+            pauseAllVideos() {
+                // Pause all HTML5 videos
+                document.querySelectorAll('.slide video').forEach(video => {
+                    video.pause();
+                });
+                
+                // For YouTube, Aparat, etc., we need to reload the iframe to stop playback
+                document.querySelectorAll('.slide iframe').forEach(iframe => {
+                    const src = iframe.src;
+                    iframe.src = '';
+                    iframe.src = src;
+                });
+            }
+            
+            nextSlide() {
+                const nextIndex = (this.currentSlide + 1) % this.videos.length;
+                this.showSlide(nextIndex);
+            }
+            
+            prevSlide() {
+                const prevIndex = (this.currentSlide - 1 + this.videos.length) % this.videos.length;
+                this.showSlide(prevIndex);
+            }
+            
+            bindEvents() {
+                this.nextBtn.addEventListener('click', () => this.nextSlide());
+                this.prevBtn.addEventListener('click', () => this.prevSlide());
+                
+                // Keyboard navigation
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'ArrowRight') this.nextSlide();
+                    if (e.key === 'ArrowLeft') this.prevSlide();
+                });
+                
+                // Auto-play (optional - remove if not needed)
+                // this.startAutoPlay();
+            }
+            
+            setupTouchSwipe() {
+                let touchStartX = 0;
+                let touchEndX = 0;
+                
+                this.slidesWrapper.addEventListener('touchstart', (e) => {
+                    touchStartX = e.changedTouches[0].screenX;
+                });
+                
+                this.slidesWrapper.addEventListener('touchend', (e) => {
+                    touchEndX = e.changedTouches[0].screenX;
+                    this.handleSwipe();
+                });
+                
+                const handleSwipe = () => {
+                    if (touchEndX < touchStartX - 50) this.nextSlide();
+                    if (touchEndX > touchStartX + 50) this.prevSlide();
+                };
+            }
+            
+            // Optional auto-play method
+            startAutoPlay() {
+                setInterval(() => this.nextSlide(), 5000);
+            }
+        }
+        
+        // Initialize slideshow when DOM is loaded
+        document.addEventListener('DOMContentLoaded', () => {
+            new VideoSlideshow();
+        });
+    </script>
+</body>
+</html>
