@@ -477,6 +477,43 @@
                 text-align: center;
             }
         }
+            .qr-container {
+              display: flex;
+              gap: 40px;
+              justify-content: center;
+              flex-wrap: wrap;
+              margin-top: 20px;
+            }
+            .qr-box {
+              text-align: center;
+              background: rgba(255,255,255,0.00);
+              padding: 20px;
+              border-radius: 20px;
+              backdrop-filter: blur(5px);
+              box-shadow: 0 5px 15px rgba(0,0,0,0.0);
+              transition: all 0.4s ease;
+            }
+            .qr-box:hover {
+              transform: translateY(-8px);
+              box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+            }
+            .qr-label {
+              color: #fff;
+              font-size: 1.1em;
+              margin-bottom: 15px;
+              display: block;
+              font-weight: 500;
+            }
+            .qr-code {
+              width: 130px;
+              height: 130px;
+              background: var(--primary-color);
+              padding: 10px;
+              border-radius: 15px;
+              display: inline-block;
+              box-shadow: 0 5px 15px rgba(0,0,0,0.1);
+            }
+
     </style>
 </head>
 <body>
@@ -741,6 +778,27 @@
                 <a href="#contact" class="btn" style="font-size: 1.2rem; padding: 15px 40px;">درخواست دوره آزمایشی رایگان</a>
             </div>
         </section>
+
+        <section id="cta" class="section-padding">
+            <div class="container fade-in">
+                <h2>لطفاً اسکن کنید!</h2>
+                <div class="qr-container">
+                  <div class="qr-box">
+                    <span class="qr-label"><p>این وب‌سایت را به اشتراک بگذارید!</p></span>
+                    <a href="https://shahraavand.ir/altinapp.html" target="_blank">
+                      <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://shahraavand.ir/altinapp.html&color=111111&bgcolor=D4AF37" alt="QR وب‌سایت">
+                    </a>
+                  </div>
+                  <div class="qr-box">
+                    <span class="qr-label"><p>ما را در شبکه اجتماعی دنبال کنید!</p></span>
+                    <a href="https://www.instagram.com/civil.soltani.azar/#" target="_blank">
+                      <img class="qr-code" src="https://api.qrserver.com/v1/create-qr-code/?size=256x256&data=https://www.instagram.com/civil.soltani.azar&color=111111&bgcolor=D4AF37" alt="QR اینستاگرام">
+                    </a>
+                  </div>
+                </div>
+            </div>
+        </section>
+
     </main>
 
     <!-- Footer -->
@@ -815,3 +873,4 @@
 </body>
 
 </html>
+
