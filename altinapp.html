@@ -22,6 +22,7 @@
             --light-bg: #0e1807;
             --text-primary: #fbfff8;
             --text-secondary: #a6be95;
+            --border-color: #395d21;
             --accent-color: #407a19; /* A touch of blue for contrast */
             --font-persian: 'Vazirmatn', sans-serif;
             --font-english: 'Poppins', sans-serif;
@@ -132,7 +133,7 @@
 
         /* --- Header & Navigation --- */
         header {
-            background-color: rgba(26, 26, 26, 0.9);
+            background-color: #1a1a1ae6;
             backdrop-filter: blur(10px);
             position: fixed;
             width: 100%;
@@ -196,7 +197,7 @@
             min-height: 100vh;
             display: flex;
             align-items: center;
-            background: linear-gradient(#203214fc, #203214, #203214f2), url('/images/logo_AltinApp.avif') no-repeat center center/cover;
+            background: linear-gradient(#203214fc, #203214, #203214f2), url('/images/altin_bg.avif') no-repeat center center/cover;
             text-align: center;
             padding-top: 80px;
         }
@@ -238,7 +239,7 @@
             padding: 2rem;
             border-radius: 10px;
             text-align: center;
-            border: 1px solid #30491f;
+            border: 1px solid var(--border-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
 
@@ -267,7 +268,7 @@
         }
 
         .panel-card {
-            background-color: #2a2a2a;
+            background-color: var(--light-bg);
             padding: 1.5rem;
             border-radius: 8px;
             border-right: 4px solid var(--primary-color);
@@ -286,7 +287,7 @@
             background-color: var(--dark-bg);
             padding: 1.5rem;
             border-radius: 10px;
-            border: 1px solid #333;
+            border: 1px solid var(--border-color);
             transition: transform 0.3s ease, box-shadow 0.3s ease;
         }
         .panel-detail-card:hover {
@@ -349,7 +350,7 @@
             background-color: var(--dark-bg);
             padding: 1.5rem 2rem;
             border-radius: 10px;
-            border: 1px solid #333;
+            border: 1px solid var(--border-color);
             display: flex;
             align-items: center;
             gap: 1.5rem;
@@ -392,9 +393,9 @@
 
         /* --- Footer --- */
         footer {
-            background-color: #111;
+            background-color: #0c310e;
             padding: 40px 0 20px;
-            border-top: 1px solid #333;
+            border-top: 1px solid #b8941f;
         }
 
         .footer-content {
@@ -421,7 +422,7 @@
         .footer-bottom {
             text-align: center;
             padding-top: 20px;
-            border-top: 1px solid #333;
+            border-top: 1px solid #325a1b;
             font-size: 0.9rem;
             color: #666;
         }
@@ -865,6 +866,7 @@
 </body>
 
 </html>
+
 
 
 
